@@ -1,0 +1,158 @@
+﻿@model Contanct
+@{
+    ViewData["Title"] = "Contact";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>İletisim</title>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <link rel="stylesheet" href="css/font-awesome.css" />
+    <link rel="stylesheet" href="css/bootstrap.css" />
+    <link rel="stylesheet" href="css/style.css" />
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@300;400;500;600;700&display=swap"
+    rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/all.min.css">
+
+    <style>
+        body {
+        background-color: #f8f9fa;
+        }
+
+        .hakkimizda-container {
+        background: white;
+        padding: 50px;
+        border-radius: 10px;
+        box-shadow: 0 0 15px rgba(0, 0, 0, 0.1);
+        }
+
+        .section-title {
+        font-size: 2.5rem;
+        color: #007bff;
+        font-weight: bold;
+        text-align: center;
+        margin-bottom: 20px;
+        }
+    </style>
+</head>
+
+<body>
+
+
+
+    <header class="header">
+
+        <!--Hero-->
+        <div class="hero text-white pt-7">
+            <div class="container-xl">
+                <div class="row">
+                    <div class="col-12">
+                        <h1>İletişim | Destek</h1>
+                    </div>
+                </div>
+            </div>
+        </div>
+        </div>
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1440 320">
+            <path fill="#f8f9fa" fill-opacity="1"
+            d="M0,0L26.7,0C53.3,0,107,0,160,53.3C213.3,107,267,213,320,240C373.3,267,427,213,480,181.3C533.3,149,587,139,640,149.3C693.3,160,747,192,800,213.3C853.3,235,907,245,960,224C1013.3,203,1067,149,1120,117.3C1173.3,85,1227,75,1280,69.3C1333.3,64,1387,64,1413,64L1440,64L1440,320L1413.3,320C1386.7,320,1333,320,1280,320C1226.7,320,1173,320,1120,320C1066.7,320,1013,320,960,320C906.7,320,853,320,800,320C746.7,320,693,320,640,320C586.7,320,533,320,480,320C426.7,320,373,320,320,320C266.7,320,213,320,160,320C106.7,320,53,320,27,320L0,320Z">
+            </path>
+        </svg>
+    </header>
+
+    <!-- Contact Form-->
+    @if (TempData["SuccesContant"]!=null)
+    {
+
+        <div id="alert-message" class="alert alert-success" role="alert">
+            @TempData["SuccesContant"]
+        </div>
+
+
+    }
+    @if (TempData["ErrrorContant"]!=null)
+    {
+        <div id="alert-message" class="alert alert-warning" role="alert">
+            @TempData["ErrrorContant"]
+        </div>
+    }
+
+    <section class="contact bg-light pb-4">
+        <div class="container">
+            <div class="row">
+                <div class="col-12">
+                    <form asp-action="Contact" asp-controller="Home" method="POST">
+                         
+                        <div class="mb-3">
+                            <input type="text" asp-for="FullName" class="form-control form-control-lg"
+                                   placeholder="İsim ve soyisim">
+
+                        </div>
+                        <div class="mb-3">
+                            <input type="email" asp-for="Mail" class="form-control form-control-lg" placeholder="Email">
+
+                        </div>
+                        <div class="mb-3">
+                            <textarea asp-for="Subject" class="form-control form-control-lg" placeholder="Mesajını yaz"
+                                      rows="6"></textarea>
+                        </div>
+                        <div class="d-grid">
+                            <button type="submit" class="btn btn-primary text-white mt-3">Gönder</button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Map -->
+    <section class="location my-5">
+        <div class="container">
+            <div class="col-10 offset-1">
+                <h3>Lokasyon</h3>
+                <p class="mb-3">
+                    Dergi otomasyon sistemin merkezin nerede olduğunu gösteren haritadır.
+                </p>
+                <!--https://www.embedmymap.com/-->
+                <div class="map">
+                    <iframe src="https://maps.google.com/maps?width=1200&amp;height=800&amp;hl=en&amp;q=Cumhuriyet
+                        Üniveritesi&amp;t=&amp;z=14&amp;ie=UTF8&amp;iwloc=B&amp;output=embed" allowfullscreen
+                            frameborder="0"></iframe>
+                </div>
+            </div>
+        </div>
+    </section>
+
+ 
+    <script src=" js/bootstrap.bundle.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/js/bootstrap.bundle.min.js"
+            integrity="sha384-ka7Sk0Gln4gmtz2MlQnikT1wXgYsOg+OMhuP+IlRH9sENBO0LRn5q+8nbTov4+1p"
+            crossorigin="anonymous"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/lottie-web/5.9.6/lottie.min.js"></script>
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="js/script.js"></script>
+
+    <script>
+
+        setTimeout(function () {
+        var alertMessage = document.getElementById("alert-message");
+        if (alertMessage) {
+        alertMessage.style.display = "none";
+        }
+        },10000);
+    </script>
+
+
+</body>
+
+</html>

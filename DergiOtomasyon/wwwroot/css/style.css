@@ -1,0 +1,276 @@
+@charset "UTF-8";
+
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+.navbar {
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+}
+
+.hover-blue:hover {
+    color: #351fc8 !important;
+    font-weight: bold;
+}
+
+.card {
+    border: none;
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+
+    .card:hover {
+        transform: translateY(-5px);
+        box-shadow: 0 8px 16px rgba(0, 0, 0, 0.15);
+    }
+
+.card-category {
+    height: 12.5rem;
+    width: 11rem;
+}
+
+@media (min-width: 1200) and (max-width: 992px) {
+    .card-category {
+        width: 10rem;
+    }
+}
+
+@media (min-width: 992px) and (max-width: 1199px) {
+    .card-category {
+        width: 9rem;
+    }
+}
+
+@media (min-width: 768px) and (max-width: 991px) {
+    .card-category {
+        width: 7rem;
+    }
+}
+
+@media (min-width: 481px) and (max-width: 767px) {
+    .card-category {
+        width: 4rem;
+    }
+}
+
+.tecnology-category {
+    background: linear-gradient(to bottom right, rgba(205, 19, 19, 0.8), rgba(0, 0, 0, 0.8)), url("../img/tecnology.jpg") center center no-repeat;
+    background-size: cover;
+}
+
+.art-category {
+    background: linear-gradient(to bottom right, rgba(203, 9, 158, 0.8), rgba(0, 0, 0, 0.8)), url("../img/art.jpg") center center no-repeat;
+    background-size: cover;
+}
+
+.history-category {
+    background: linear-gradient(to bottom right, rgba(32, 189, 77, 0.8), rgba(0, 0, 0, 0.8)), url("../img/tarih.jpg") center center no-repeat;
+    background-size: cover;
+}
+
+.literature-category {
+    background: linear-gradient(to bottom right, rgba(79, 48, 30, 0.8), rgba(0, 0, 0, 0.8)), url("../img/edebiyat.jpeg") center center no-repeat;
+    background-size: cover;
+}
+
+.music-category {
+    background: linear-gradient(to bottom right, rgb(185, 91, 99), rgba(0, 0, 0, 0.8)), url("../img/müzik.jpeg") center center no-repeat;
+    background-size: cover;
+}
+
+.economy-category {
+    background: linear-gradient(to bottom right, rgb(220, 214, 30), rgba(0, 0, 0, 0.8)), url("../img/ekonomi.jpeg") center center no-repeat;
+    background-size: cover;
+}
+
+.slide {
+    width: 70%;
+    margin: 0 auto;
+}
+
+@media (prefers-reduced-motion: reduce) {
+    .carousel-indicators [data-bs-target] {
+        transition: none;
+    }
+}
+
+.carousel-indicators {
+    position: relative;
+    flex-direction: row-reverse;
+    justify-content: normal;
+    margin: 0;
+}
+
+    .carousel-indicators [data-bs-target] {
+        background-color: #351fc8;
+        width: 40px;
+        width: 40px;
+        transition: opacity 0.6sease;
+    }
+
+.footer .container .row .list-unstyled li a {
+    text-decoration: none;
+}
+
+.basimbilgileri .bilgilogo {
+    bottom: 260px;
+    left: 360px;
+}
+
+.basimbilgileri .bilgiyıl {
+    bottom: 150px;
+    left: 355px;
+}
+
+.basimbilgileri .bilgiyılp {
+    bottom: 250px;
+}
+
+.basimbilgileri .sayi {
+    bottom: 60px;
+    left: 343px;
+}
+
+.abonelik {
+    background: url("../img/Güzel Arka Plan.jpg") center center no-repeat;
+    background-size: cover;
+}
+
+footer {
+    background-color: #e9ecef;
+    padding: 20px;
+    border-top: 1px solid #dee2e6;
+    color: #6c757d;
+}
+
+.btn-check:active + .btn-outline-primary,
+.btn-check:checked + .btn-outline-primary,
+.btn-outline-primary.active,
+.btn-outline-primary.dropdown-toggle.show,
+.btn-outline-primary:active {
+    background-color: #351fc8;
+    border-color: #351fc8;
+    color: white;
+}
+
+.category-list a:hover,
+.category-list a:active {
+    background-color: #351fc8;
+    color: white;
+    font-weight: 500;
+}
+
+.form-check-input {
+    --bs-form-check-bg: var(--bs-gray-400);
+}
+
+.dergi-style {
+    width: 13.5rem;
+    height: 27rem;
+}
+
+.detay-btn {
+    --bs-btn-padding-x: 0.4rem;
+    --bs-btn-font-size: 1.5rem;
+    --bs-btn-border-radius: 50px;
+    --bs-btn-padding-y: 0.4rem;
+    position: absolute;
+    bottom: 1.1rem;
+    font-size: 0.6rem;
+}
+
+    .detay-btn:hover {
+        background-color: #2108c0;
+    }
+
+    .detay-btn a {
+        text-decoration-line: none;
+    }
+
+.star {
+    font-size: 2rem;
+    cursor: pointer;
+    color: gray;
+}
+
+    .star.selected {
+        color: gold;
+    }
+
+    .star.hover {
+        color: darkgoldenrod;
+    }
+
+.star-container {
+    position: absolute;
+    top: 5px;
+    right: 5px;
+}
+
+    .star-container .star {
+        font-size: 1.1rem;
+        line-height: 0.9rem;
+    }
+
+.card-detay-text {
+    font-size: 0.95rem;
+    position: absolute;
+    bottom: 1.5rem;
+    right: 1.5rem;
+}
+
+.yayin-tarihi-text {
+    font-size: 0.9rem;
+}
+
+body {
+    background-color: #fbf9f5;
+}
+
+.header {
+    background: url(../img/Güzel\ Arka\ Plan.jpg) center center no-repeat;
+    background-size: cover;
+}
+
+.map iframe {
+    height: 25rem;
+    width: 100%;
+}
+
+.book-card {
+    width: 14.5rem;
+    height: 30rem;
+}
+
+    .book-card img {
+        width: 100%;
+        height: 50%;
+        background-image: cover;
+    }
+
+.index-detay-btn {
+    --bs-btn-padding-x: 0.4rem;
+    --bs-btn-font-size: 1.5rem;
+    --bs-btn-border-radius: 50px;
+    --bs-btn-padding-y: 0.4rem;
+    font-size: 0.6rem;
+}
+
+.page-item.active .page-link {
+    z-index: 3;
+    color: #fff;
+    font-weight: bold;
+    background-color: #351fc8;
+    border-color: #351fc8;
+}
+
+.detay-icon {
+    cursor: pointer;
+}
+
+    .detay-icon:hover {
+        color: rgba(var(--bs-primary-border-subtle), var(--bs-text-opacity));
+        scale: 1.2;
+        transition: all 0.3s ease-in-out;
+    }

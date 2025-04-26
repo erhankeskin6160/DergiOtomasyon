@@ -1,0 +1,49 @@
+﻿@model List<User>
+@{
+    ViewData["Title"] = "Index";
+}
+
+<h1>Index</h1>
+
+
+<table class="table table-striped">
+    <tr>
+        <th>Name</th>
+        <th>LastName</th>
+        <th>UserName</th>
+        <th>Password</th>
+        <th>E-mail</th>
+        <th>Balance</th>
+        <th>RegistrationDate</th>
+        <th>Subscription</th>
+        <th>UserImg</th>
+        <th>Eylemeler</th>
+
+
+
+    </tr>
+    @foreach (var item in Model)
+    {
+        
+    
+    <tr>
+            <td>@item.Name</td>
+            <td>@item.LastName</td>
+            <td>@item.UserName</td>
+            <td>@item.Password</td>
+            <td>@item.Email</td>
+            <td>@item.Balance</td>
+            <td>@item.RegistrationDate.ToShortDateString()</td>
+            <td>@item.Subscription</td>
+            <td>
+                <div>
+                  <img src="/User/@item.UserImg">                    
+                </div>
+            </td>
+            <td>
+                <a href="/User/DeleteUser/@item.Id" class="btn btn-outline-danger">Sil</a>
+                <a href="/User/EditUser/@item.Id" class="btn btn-outline-info">Düzenle</a>
+           </td>
+    </tr>
+    }
+</table>

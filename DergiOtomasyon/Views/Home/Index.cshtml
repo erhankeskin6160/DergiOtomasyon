@@ -1,0 +1,988 @@
+﻿@using System.Globalization
+@model List<MagazineInfo>
+@{
+    ViewData["Title"] = "Home Page";
+}
+
+@{
+    // var magazine =ViewBag.lastmagazine as List<Magazine>;
+    // var dergilerinyayınları = ViewBag.dergilerbaskı as List<MagazineInfo>;
+}
+<head>
+    <style>
+        .highlight-section h2 {
+        color: rgb(51, 51, 51);
+        font-weight: bold;
+        }
+
+        .highlight-card {
+        border: none;
+        margin-bottom: 0.8rem;
+        border-radius: 10px;
+        transition: transform 0.3s ease, box-shadow 0.3s ease;
+        padding: 20px;
+        color: #fff;
+        background: #351fc8;
+        }
+
+        .highlight-card .icon {
+        font-size: 2.5rem;
+        color: #fff;
+        margin-bottom: 15px;
+        }
+
+        .highlight-card:hover {
+        transform: translateY(-5px);
+        box-shadow: 0 8px 16px rgba(0, 0, 0, 0.2);
+        }
+
+        /* Yeni Yayınlar - Kitap Kartları */
+        .book-card {
+        background-color: #f8f9fa;
+        border: 1px solid #ddd;
+        border-radius: 10px;
+        overflow: hidden;
+        transition: transform 0.3s ease, box-shadow 0.3s ease;
+        }
+
+        .book-card:hover {
+        transform: translateY(-5px);
+        box-shadow: 0 8px 16px rgba(0, 0, 0, 0.2);
+        }
+    </style>
+</head>
+<body>
+
+    <section>
+
+
+        <div class="container py-4 vh-50 mt-2">
+            <div class="row">
+                <div class="col-12">
+
+                    <div id="slider" class="carousel slide" data-bs-ride="carousel">
+
+
+                        <div class="carousel-inner rounded-3">
+
+                            <div class="carousel-item active">
+                                <span class="start-25 bottom-75 position-absolute p-2 opacity-75">
+                                    <svg xmlns="http://www.w3.org/2000/svg" x="0px" y="0px" width="45" height="45"
+                                    viewBox="0,0,256,256">
+                                        <g fill="#db0404" fill-rule="nonzero" stroke="none" stroke-width="1"
+                                        stroke-linecap="butt" stroke-linejoin="miter" stroke-miterlimit="10"
+                                        stroke-dasharray="" stroke-dashoffset="0" font-family="none"
+                                        font-weight="none" font-size="none" text-anchor="none"
+                                        style="mix-blend-mode: normal">
+                                            <path d="M66.56,256c-36.76007,0 -66.56,-29.79993 -66.56,-66.56v-122.88c0,-36.76007 29.79993,-66.56 66.56,-66.56h122.88c36.76007,0 66.56,29.79993 66.56,66.56v122.88c0,36.76007 -29.79993,66.56 -66.56,66.56z"
+                                            id="shape"></path>
+                                        </g>
+                                        <g fill="#040303" fill-rule="nonzero" stroke="none" stroke-width="1"
+                                        stroke-linecap="butt" stroke-linejoin="miter" stroke-miterlimit="10"
+                                        stroke-dasharray="" stroke-dashoffset="0" font-family="none"
+                                        font-weight="none" font-size="none" text-anchor="none"
+                                        style="mix-blend-mode: normal">
+                                            <g transform="scale(3.2,3.2)">
+                                                <path d="M19,4c-2.75,0 -5,2.25 -5,5v56c0,2.75 2.25,5 5,5h43v-5h4v-58h-42.43359c-0.77734,-1.75781 -2.53125,-3 -4.56641,-3zM19,6c1.66797,0 3,1.33203 3,3h42v54h-40.43359c-0.77734,-1.75781 -2.53125,-3 -4.56641,-3c-1.14453,0 -2.15625,0.45703 -3,1.10938v-52.10937c0,-1.66797 1.33203,-3 3,-3zM23,10c-0.55078,0 -1,0.44922 -1,1c0,0.55078 0.44922,1 1,1c0.55078,0 1,-0.44922 1,-1c0,-0.55078 -0.44922,-1 -1,-1zM23,14c-0.55078,0 -1,0.44922 -1,1c0,0.55078 0.44922,1 1,1c0.55078,0 1,-0.44922 1,-1c0,-0.55078 -0.44922,-1 -1,-1zM30,16v2h28v-2zM23,18c-0.55078,0 -1,0.44922 -1,1c0,0.55078 0.44922,1 1,1c0.55078,0 1,-0.44922 1,-1c0,-0.55078 -0.44922,-1 -1,-1zM23,22c-0.55078,0 -1,0.44922 -1,1c0,0.55078 0.44922,1 1,1c0.55078,0 1,-0.44922 1,-1c0,-0.55078 -0.44922,-1 -1,-1zM30,24v12h17v-12zM50,24v2h8v-2zM23,26c-0.55078,0 -1,0.44922 -1,1c0,0.55078 0.44922,1 1,1c0.55078,0 1,-0.44922 1,-1c0,-0.55078 -0.44922,-1 -1,-1zM32,26h13v8h-13zM50,29v2h8v-2zM23,30c-0.55078,0 -1,0.44922 -1,1c0,0.55078 0.44922,1 1,1c0.55078,0 1,-0.44922 1,-1c0,-0.55078 -0.44922,-1 -1,-1zM23,34c-0.55078,0 -1,0.44922 -1,1c0,0.55078 0.44922,1 1,1c0.55078,0 1,-0.44922 1,-1c0,-0.55078 -0.44922,-1 -1,-1zM50,34v2h8v-2zM23,38c-0.55078,0 -1,0.44922 -1,1c0,0.55078 0.44922,1 1,1c0.55078,0 1,-0.44922 1,-1c0,-0.55078 -0.44922,-1 -1,-1zM30,39v2h28v-2zM23,42c-0.55078,0 -1,0.44922 -1,1c0,0.55078 0.44922,1 1,1c0.55078,0 1,-0.44922 1,-1c0,-0.55078 -0.44922,-1 -1,-1zM30,44v2h28v-2zM23,46c-0.55078,0 -1,0.44922 -1,1c0,0.55078 0.44922,1 1,1c0.55078,0 1,-0.44922 1,-1c0,-0.55078 -0.44922,-1 -1,-1zM30,49v2h10v-2zM43,49v7h15v-7zM23,50c-0.55078,0 -1,0.44922 -1,1c0,0.55078 0.44922,1 1,1c0.55078,0 1,-0.44922 1,-1c0,-0.55078 -0.44922,-1 -1,-1zM45,51h11v3h-11zM23,54c-0.55078,0 -1,0.44922 -1,1c0,0.55078 0.44922,1 1,1c0.55078,0 1,-0.44922 1,-1c0,-0.55078 -0.44922,-1 -1,-1zM30,54v2h10v-2zM23,58c-0.55078,0 -1,0.44922 -1,1c0,0.55078 0.44922,1 1,1c0.55078,0 1,-0.44922 1,-1c0,-0.55078 -0.44922,-1 -1,-1zM19,62c1.66797,0 3,1.33203 3,3h38v3h-41c-1.66797,0 -3,-1.33203 -3,-3c0,-1.66797 1.33203,-3 3,-3z">
+                                                </path>
+                                            </g>
+                                        </g>
+                                    </svg>
+                                </span>
+                                <img src="https://avrasyavizyon.com/wp-content/uploads/2021/09/IQ_Duyuru_Say__3-Slider_op.jpg"
+                                class="w-100 d-block rounded-3">
+                            </div>
+
+
+                            <div class=" carousel-item">
+                                <span class="bottom-75 position-absolute p-2 opacity-75">
+                                    <svg xmlns="http://www.w3.org/2000/svg" x="0px" y="0px" width="45" height="45"
+                                    viewBox="0,0,256,256">
+                                        <g fill-opacity="0.8" fill="#4f301e" fill-rule="nonzero" stroke="none"
+                                        stroke-width="1" stroke-linecap="butt" stroke-linejoin="miter"
+                                        stroke-miterlimit="10" stroke-dasharray="" stroke-dashoffset="0"
+                                        font-family="none" font-weight="none" font-size="none" text-anchor="none"
+                                        style="mix-blend-mode: normal">
+                                            <path d="M66.56,256c-36.76007,0 -66.56,-29.79993 -66.56,-66.56v-122.88c0,-36.76007 29.79993,-66.56 66.56,-66.56h122.88c36.76007,0 66.56,29.79993 66.56,66.56v122.88c0,36.76007 -29.79993,66.56 -66.56,66.56z"
+                                            id="shape"></path>
+                                        </g>
+                                        <g fill="#040303" fill-rule="nonzero" stroke="none" stroke-width="1"
+                                        stroke-linecap="butt" stroke-linejoin="miter" stroke-miterlimit="10"
+                                        stroke-dasharray="" stroke-dashoffset="0" font-family="none"
+                                        font-weight="none" font-size="none" text-anchor="none"
+                                        style="mix-blend-mode: normal">
+                                            <g transform="scale(3.2,3.2)">
+                                                <path d="M19,4c-2.75,0 -5,2.25 -5,5v56c0,2.75 2.25,5 5,5h43v-5h4v-58h-42.43359c-0.77734,-1.75781 -2.53125,-3 -4.56641,-3zM19,6c1.66797,0 3,1.33203 3,3h42v54h-40.43359c-0.77734,-1.75781 -2.53125,-3 -4.56641,-3c-1.14453,0 -2.15625,0.45703 -3,1.10938v-52.10937c0,-1.66797 1.33203,-3 3,-3zM23,10c-0.55078,0 -1,0.44922 -1,1c0,0.55078 0.44922,1 1,1c0.55078,0 1,-0.44922 1,-1c0,-0.55078 -0.44922,-1 -1,-1zM23,14c-0.55078,0 -1,0.44922 -1,1c0,0.55078 0.44922,1 1,1c0.55078,0 1,-0.44922 1,-1c0,-0.55078 -0.44922,-1 -1,-1zM30,16v2h28v-2zM23,18c-0.55078,0 -1,0.44922 -1,1c0,0.55078 0.44922,1 1,1c0.55078,0 1,-0.44922 1,-1c0,-0.55078 -0.44922,-1 -1,-1zM23,22c-0.55078,0 -1,0.44922 -1,1c0,0.55078 0.44922,1 1,1c0.55078,0 1,-0.44922 1,-1c0,-0.55078 -0.44922,-1 -1,-1zM30,24v12h17v-12zM50,24v2h8v-2zM23,26c-0.55078,0 -1,0.44922 -1,1c0,0.55078 0.44922,1 1,1c0.55078,0 1,-0.44922 1,-1c0,-0.55078 -0.44922,-1 -1,-1zM32,26h13v8h-13zM50,29v2h8v-2zM23,30c-0.55078,0 -1,0.44922 -1,1c0,0.55078 0.44922,1 1,1c0.55078,0 1,-0.44922 1,-1c0,-0.55078 -0.44922,-1 -1,-1zM23,34c-0.55078,0 -1,0.44922 -1,1c0,0.55078 0.44922,1 1,1c0.55078,0 1,-0.44922 1,-1c0,-0.55078 -0.44922,-1 -1,-1zM50,34v2h8v-2zM23,38c-0.55078,0 -1,0.44922 -1,1c0,0.55078 0.44922,1 1,1c0.55078,0 1,-0.44922 1,-1c0,-0.55078 -0.44922,-1 -1,-1zM30,39v2h28v-2zM23,42c-0.55078,0 -1,0.44922 -1,1c0,0.55078 0.44922,1 1,1c0.55078,0 1,-0.44922 1,-1c0,-0.55078 -0.44922,-1 -1,-1zM30,44v2h28v-2zM23,46c-0.55078,0 -1,0.44922 -1,1c0,0.55078 0.44922,1 1,1c0.55078,0 1,-0.44922 1,-1c0,-0.55078 -0.44922,-1 -1,-1zM30,49v2h10v-2zM43,49v7h15v-7zM23,50c-0.55078,0 -1,0.44922 -1,1c0,0.55078 0.44922,1 1,1c0.55078,0 1,-0.44922 1,-1c0,-0.55078 -0.44922,-1 -1,-1zM45,51h11v3h-11zM23,54c-0.55078,0 -1,0.44922 -1,1c0,0.55078 0.44922,1 1,1c0.55078,0 1,-0.44922 1,-1c0,-0.55078 -0.44922,-1 -1,-1zM30,54v2h10v-2zM23,58c-0.55078,0 -1,0.44922 -1,1c0,0.55078 0.44922,1 1,1c0.55078,0 1,-0.44922 1,-1c0,-0.55078 -0.44922,-1 -1,-1zM19,62c1.66797,0 3,1.33203 3,3h38v3h-41c-1.66797,0 -3,-1.33203 -3,-3c0,-1.66797 1.33203,-3 3,-3z">
+                                                </path>
+                                            </g>
+                                        </g>
+                                    </svg>
+                                </span>
+                                <img src="img/edebiyatdergisi.jpg" class="d-block w-100 rounded-3">
+
+                            </div>
+
+                            <div class="carousel-item">
+                                <span class="bottom-75 position-absolute p-2 opacity-75">
+                                    <svg xmlns="http://www.w3.org/2000/svg" x="0px" y="0px" width="45" height="45"
+                                    viewBox="0,0,256,256">
+                                        <g fill-opacity="0.8" fill="#4f301e" fill-rule="nonzero" stroke="none"
+                                        stroke-width="1" stroke-linecap="butt" stroke-linejoin="miter"
+                                        stroke-miterlimit="10" stroke-dasharray="" stroke-dashoffset="0"
+                                        font-family="none" font-weight="none" font-size="none" text-anchor="none"
+                                        style="mix-blend-mode: normal">
+                                            <path d="M66.56,256c-36.76007,0 -66.56,-29.79993 -66.56,-66.56v-122.88c0,-36.76007 29.79993,-66.56 66.56,-66.56h122.88c36.76007,0 66.56,29.79993 66.56,66.56v122.88c0,36.76007 -29.79993,66.56 -66.56,66.56z"
+                                            id="shape"></path>
+                                        </g>
+                                        <g fill="#040303" fill-rule="nonzero" stroke="none" stroke-width="1"
+                                        stroke-linecap="butt" stroke-linejoin="miter" stroke-miterlimit="10"
+                                        stroke-dasharray="" stroke-dashoffset="0" font-family="none"
+                                        font-weight="none" font-size="none" text-anchor="none"
+                                        style="mix-blend-mode: normal">
+                                            <g transform="scale(3.2,3.2)">
+                                                <path d="M19,4c-2.75,0 -5,2.25 -5,5v56c0,2.75 2.25,5 5,5h43v-5h4v-58h-42.43359c-0.77734,-1.75781 -2.53125,-3 -4.56641,-3zM19,6c1.66797,0 3,1.33203 3,3h42v54h-40.43359c-0.77734,-1.75781 -2.53125,-3 -4.56641,-3c-1.14453,0 -2.15625,0.45703 -3,1.10938v-52.10937c0,-1.66797 1.33203,-3 3,-3zM23,10c-0.55078,0 -1,0.44922 -1,1c0,0.55078 0.44922,1 1,1c0.55078,0 1,-0.44922 1,-1c0,-0.55078 -0.44922,-1 -1,-1zM23,14c-0.55078,0 -1,0.44922 -1,1c0,0.55078 0.44922,1 1,1c0.55078,0 1,-0.44922 1,-1c0,-0.55078 -0.44922,-1 -1,-1zM30,16v2h28v-2zM23,18c-0.55078,0 -1,0.44922 -1,1c0,0.55078 0.44922,1 1,1c0.55078,0 1,-0.44922 1,-1c0,-0.55078 -0.44922,-1 -1,-1zM23,22c-0.55078,0 -1,0.44922 -1,1c0,0.55078 0.44922,1 1,1c0.55078,0 1,-0.44922 1,-1c0,-0.55078 -0.44922,-1 -1,-1zM30,24v12h17v-12zM50,24v2h8v-2zM23,26c-0.55078,0 -1,0.44922 -1,1c0,0.55078 0.44922,1 1,1c0.55078,0 1,-0.44922 1,-1c0,-0.55078 -0.44922,-1 -1,-1zM32,26h13v8h-13zM50,29v2h8v-2zM23,30c-0.55078,0 -1,0.44922 -1,1c0,0.55078 0.44922,1 1,1c0.55078,0 1,-0.44922 1,-1c0,-0.55078 -0.44922,-1 -1,-1zM23,34c-0.55078,0 -1,0.44922 -1,1c0,0.55078 0.44922,1 1,1c0.55078,0 1,-0.44922 1,-1c0,-0.55078 -0.44922,-1 -1,-1zM50,34v2h8v-2zM23,38c-0.55078,0 -1,0.44922 -1,1c0,0.55078 0.44922,1 1,1c0.55078,0 1,-0.44922 1,-1c0,-0.55078 -0.44922,-1 -1,-1zM30,39v2h28v-2zM23,42c-0.55078,0 -1,0.44922 -1,1c0,0.55078 0.44922,1 1,1c0.55078,0 1,-0.44922 1,-1c0,-0.55078 -0.44922,-1 -1,-1zM30,44v2h28v-2zM23,46c-0.55078,0 -1,0.44922 -1,1c0,0.55078 0.44922,1 1,1c0.55078,0 1,-0.44922 1,-1c0,-0.55078 -0.44922,-1 -1,-1zM30,49v2h10v-2zM43,49v7h15v-7zM23,50c-0.55078,0 -1,0.44922 -1,1c0,0.55078 0.44922,1 1,1c0.55078,0 1,-0.44922 1,-1c0,-0.55078 -0.44922,-1 -1,-1zM45,51h11v3h-11zM23,54c-0.55078,0 -1,0.44922 -1,1c0,0.55078 0.44922,1 1,1c0.55078,0 1,-0.44922 1,-1c0,-0.55078 -0.44922,-1 -1,-1zM30,54v2h10v-2zM23,58c-0.55078,0 -1,0.44922 -1,1c0,0.55078 0.44922,1 1,1c0.55078,0 1,-0.44922 1,-1c0,-0.55078 -0.44922,-1 -1,-1zM19,62c1.66797,0 3,1.33203 3,3h38v3h-41c-1.66797,0 -3,-1.33203 -3,-3c0,-1.66797 1.33203,-3 3,-3z">
+                                                </path>
+                                            </g>
+                                        </g>
+                                    </svg>
+                                </span>
+                                <img src="https://i0.wp.com/sanatormani.com/wp-content/uploads/2021/01/Turk-Edebiyat-Dergileri-10-Dergi-Onerisi.jpg?    fit=1687%2C853&ssl=1"
+                                class="d-block w-100 rounded-3">
+
+                            </div>
+
+                            <div class="carousel-item">
+                                <span class="start-25 bottom-75 position-absolute p-2 opacity-75 ">
+                                    <svg xmlns="http://www.w3.org/2000/svg" x="0px" y="0px" width="45" height="45"
+                                    viewBox="0,0,256,256">
+                                        <g fill="#dcd61e" fill-rule="nonzero" stroke="none" stroke-width="1"
+                                        stroke-linecap="butt" stroke-linejoin="miter" stroke-miterlimit="10"
+                                        stroke-dasharray="" stroke-dashoffset="0" font-family="none"
+                                        font-weight="none" font-size="none" text-anchor="none"
+                                        style="mix-blend-mode: normal">
+                                            <path d="M66.56,256c-36.76007,0 -66.56,-29.79993 -66.56,-66.56v-122.88c0,-36.76007 29.79993,-66.56 66.56,-66.56h122.88c36.76007,0 66.56,29.79993 66.56,66.56v122.88c0,36.76007 -29.79993,66.56 -66.56,66.56z"
+                                            id="shape"></path>
+                                        </g>
+                                        <g fill="#040303" fill-rule="nonzero" stroke="none" stroke-width="1"
+                                        stroke-linecap="butt" stroke-linejoin="miter" stroke-miterlimit="10"
+                                        stroke-dasharray="" stroke-dashoffset="0" font-family="none"
+                                        font-weight="none" font-size="none" text-anchor="none"
+                                        style="mix-blend-mode: normal">
+                                            <g transform="scale(3.2,3.2)">
+                                                <path d="M19,4c-2.75,0 -5,2.25 -5,5v56c0,2.75 2.25,5 5,5h43v-5h4v-58h-42.43359c-0.77734,-1.75781 -2.53125,-3 -4.56641,-3zM19,6c1.66797,0 3,1.33203 3,3h42v54h-40.43359c-0.77734,-1.75781 -2.53125,-3 -4.56641,-3c-1.14453,0 -2.15625,0.45703 -3,1.10938v-52.10937c0,-1.66797 1.33203,-3 3,-3zM23,10c-0.55078,0 -1,0.44922 -1,1c0,0.55078 0.44922,1 1,1c0.55078,0 1,-0.44922 1,-1c0,-0.55078 -0.44922,-1 -1,-1zM23,14c-0.55078,0 -1,0.44922 -1,1c0,0.55078 0.44922,1 1,1c0.55078,0 1,-0.44922 1,-1c0,-0.55078 -0.44922,-1 -1,-1zM30,16v2h28v-2zM23,18c-0.55078,0 -1,0.44922 -1,1c0,0.55078 0.44922,1 1,1c0.55078,0 1,-0.44922 1,-1c0,-0.55078 -0.44922,-1 -1,-1zM23,22c-0.55078,0 -1,0.44922 -1,1c0,0.55078 0.44922,1 1,1c0.55078,0 1,-0.44922 1,-1c0,-0.55078 -0.44922,-1 -1,-1zM30,24v12h17v-12zM50,24v2h8v-2zM23,26c-0.55078,0 -1,0.44922 -1,1c0,0.55078 0.44922,1 1,1c0.55078,0 1,-0.44922 1,-1c0,-0.55078 -0.44922,-1 -1,-1zM32,26h13v8h-13zM50,29v2h8v-2zM23,30c-0.55078,0 -1,0.44922 -1,1c0,0.55078 0.44922,1 1,1c0.55078,0 1,-0.44922 1,-1c0,-0.55078 -0.44922,-1 -1,-1zM23,34c-0.55078,0 -1,0.44922 -1,1c0,0.55078 0.44922,1 1,1c0.55078,0 1,-0.44922 1,-1c0,-0.55078 -0.44922,-1 -1,-1zM50,34v2h8v-2zM23,38c-0.55078,0 -1,0.44922 -1,1c0,0.55078 0.44922,1 1,1c0.55078,0 1,-0.44922 1,-1c0,-0.55078 -0.44922,-1 -1,-1zM30,39v2h28v-2zM23,42c-0.55078,0 -1,0.44922 -1,1c0,0.55078 0.44922,1 1,1c0.55078,0 1,-0.44922 1,-1c0,-0.55078 -0.44922,-1 -1,-1zM30,44v2h28v-2zM23,46c-0.55078,0 -1,0.44922 -1,1c0,0.55078 0.44922,1 1,1c0.55078,0 1,-0.44922 1,-1c0,-0.55078 -0.44922,-1 -1,-1zM30,49v2h10v-2zM43,49v7h15v-7zM23,50c-0.55078,0 -1,0.44922 -1,1c0,0.55078 0.44922,1 1,1c0.55078,0 1,-0.44922 1,-1c0,-0.55078 -0.44922,-1 -1,-1zM45,51h11v3h-11zM23,54c-0.55078,0 -1,0.44922 -1,1c0,0.55078 0.44922,1 1,1c0.55078,0 1,-0.44922 1,-1c0,-0.55078 -0.44922,-1 -1,-1zM30,54v2h10v-2zM23,58c-0.55078,0 -1,0.44922 -1,1c0,0.55078 0.44922,1 1,1c0.55078,0 1,-0.44922 1,-1c0,-0.55078 -0.44922,-1 -1,-1zM19,62c1.66797,0 3,1.33203 3,3h38v3h-41c-1.66797,0 -3,-1.33203 -3,-3c0,-1.66797 1.33203,-3 3,-3z">
+                                                </path>
+                                            </g>
+                                        </g>
+                                    </svg>
+                                </span>
+                                <img src="https://tarihvemedeniyet.org/wp-content/uploads/2024/06/buyukslayt2.jpg"
+                                class="d-block w-100 rounded-3">
+                            </div>
+                        </div>
+
+                        <button class="carousel-control-next" type="button" data-bs-slide="prev"
+                        data-bs-target="#slider">
+
+                            <span class="carousel-control-next-icon"></span>
+                            <span class="visually-hidden">Geri</span>
+                        </button>
+                        <button class="carousel-control-prev" type="button" data-bs-slide="next"
+                        data-bs-target="#slider">
+                            <span class="carousel-control-prev-icon"></span>
+                            <span class="visually-hidden">İleri</span>
+                        </button>
+
+                        <div class="carousel-indicators">
+                            <button class="active" type="button" data-bs-slide-to="0" data-bs-target="#slider"
+                            aria-current="true" aria-label="slide 1"></button>
+                            <button type="button" data-bs-slide-to="1" data-bs-target="#slider"
+                            aria-label="Slide 2"></button>
+                            <button type="button" data-bs-slide-to="2" data-bs-target="#slider"
+                            aria-label="Slide 3"></button>
+                            <button type="button" data-bs-slide-to="3" data-bs-target="#slider"
+                            aria-label="Slide 4"></button>
+                        </div>
+
+                    </div>
+
+                </div>
+            </div>
+        </div>
+    </section>
+
+
+    <div class="container mt-5 highlight-section">
+        <h2 class="mb-4">Öne Çıkanlar</h2>
+
+
+
+
+        <!-- Öne Çıkan Bölümler -->
+        <div class="row">
+
+            <div class="col-4">
+                <div class="highlight-card text-center">
+                    <i class="icon bi bi-journal-bookmark"></i>
+                    <h4 class="mb-2">Yeni Yayınlar</h4>
+                    <p>En yeni dergi ve kitap sayıları burada. Güncel içeriklere hızlıca ulaşın.</p>
+                </div>
+            </div>
+            <div class="col-4">
+                <div class="highlight-card text-center">
+                    <i class="icon bi bi-star"></i>
+                    <h4 class="mb-2">Popüler Dergiler</h4>
+                    <p>Okuyucuların favorisi olan en popüler dergilere göz atın.</p>
+                </div>
+            </div>
+            <div class="col-4">
+                <div class="highlight-card text-center">
+                    <i class="icon bi bi-tags"></i>
+                    <h4 class="mb-2">Kategoriler</h4>
+                    <p>Eğitimden sanata, birçok kategorideki içerikleri keşfedin.</p>
+                </div>
+            </div>
+
+        </div>
+    </div>
+    <section>
+        <!-- Kitap Kartları -->
+        <div class="container">
+            <div class="mt-5">
+                <h3 class="mb-3">Yeni Yayınlar</h3>
+                <div class="row">
+                    @foreach(var item in Model){
+                        <div class="me-4 mb-2 col-xl-2 col-lg-4 col-md-6 col-sm-6" id="books-card">
+
+                            <div class="book-card">
+                                <img class="book-img" src="img/yansımadergisi.jpg" alt="Kitap Kapağı">
+                                <div class="book-card-body">
+                                    <h5 class="book-title text-center mt-2">@item.Magazine.MagazineName</h5>
+                                    <p class="text-muted fs-6 text-center">@item.Magazine.PublisDate.ToString("MMMM yyy",new CultureInfo("tr_TR") )</p>
+                                    <p class="text-break fw-medium ps-1 mt-2">
+                                        @item.MagazineDescrition? 
+                                    </p>
+                                    <a href="@Url.Action("MagazineDetail","Dergiler")/@item.Id" class="btn btn-primary btn-sm index-detay-btn ms-3 mt-2 me-5">
+                                        Detayları
+                                        Gör
+                                    </a>
+                                    <a href="@Url.Action("Borrow", "Dergiler", new { MagazineInfoId = item.Id })" class="btn btn-primary btn-sm index-detay-btn ms-3 mt-2 me-5">
+                                        Ödünç Al
+                                    </a>
+                                   
+                                <!-- <a href="#" class="btn btn-primary btn-sm ms-2 me-5">Detayları Gör</a> -->
+
+
+                                <div class=" d-inline justify-content-end gap-2">
+                                    <a href="" style="color: #333;">
+                                        <svg xmlns="http://www.w3.org/2000/svg"
+                                             viewBox="-2 -2 24 24" width="20" fill="currentColor">
+                                            <path d="M1 0h6a1 1 0 1 1 0 2H3.414L18 16.586V13a1 1 0 0 1 2 0v6a1 1 0 0 1-1 1h-6a1 1 0 0 1 0-2h3.586L2 3.414V7a1 1 0 1 1-2 0V1a1 1 0 0 1 1-1z">
+                                            </path>
+                                        </svg>
+                                    </a>
+                                    <a href="" style="color: #333;">
+                                        <svg xmlns="http://www.w3.org/2000/svg"
+                                             viewBox="-2 -2.5 24 24" width="28" fill="currentColor">
+                                            <path class=""
+                                                  d="M10 13.554l3.517 1.85-.672-3.917 2.846-2.774-3.932-.571L10 4.579 8.241 8.142l-3.932.571 2.846 2.774-.672 3.916L10 13.554zm0 2.26L3.827 19.06l1.179-6.875L.01 7.317l6.902-1.003L10 .06l3.087 6.254 6.902 1.003-4.995 4.868 1.18 6.875L10 15.814z">
+                                            </path>
+                                        </svg>
+                                    </a>
+
+                                </div>
+                            </div>
+                                
+                        </div>
+                        
+                    </div>
+                    }
+                   
+
+                    <div class="mt-1 p-3">
+                        <nav aria-label="page navigation">
+                            <ul class="pagination">
+                                <li class="page-item disabled">
+                                    <a href="#" class="page-link">Geri</a>
+                                </li>
+                                <li class="page-item active"><a href="#" class="page-link">1</a></li>
+                                <li class="page-item"><a href="#" class="page-link">2</a></li>
+                                <li class="page-item"><a href="#" class="page-link">3</a></li>
+                                <li class="page-item">
+                                    <a href="#" class="page-link" aria-label="Next">İleri</a>
+                                </li>
+                            </ul>
+                        </nav>
+                    </div>
+                </div>
+            </div>
+    </section>
+    <!-- Popüler Dergiler -->
+    <section>
+
+        <div class="container">
+            <div class="row">
+
+                <div class="col-12 mt-3 p-1 mb-1">
+
+                    <h3 class="p-3"> Popüler Dergiler</h3>
+
+                </div>
+
+                <div class="col-xl-2 me-4 mb-2 col-lg-4 col-md-6 col-sm-6">
+                    <div class="book-card">
+                        <img src="img/edebiyatdergisi.jpg" alt="Kitap Kapağı" class="mb-3">
+                        <div class="book-card-body">
+                            <h5 class="book-title text-center">Kitap Başlığı 1</h5>
+                            <p class="text-muted fs-6 text-center">Yayın Tarihi: Ekim 2024</p>
+                            <p class="text-break fw-medium ps-1">
+                                Kısa kitap açıklaması. Kitabın ana konuları ve içeriği
+                                hakkında kısa bilgi.
+                            </p>
+
+
+                            <!--Button-->
+                            <div class="row">
+
+                                <div class="col-6">
+
+
+                                    <a href="#" class="btn btn-primary btn-sm index-detay-btn ms-2">Detayları Gör</a>
+                                </div>
+                                <div class="col-6 d-flex justify-content-end gap-2">
+                                    <a href="" style="color: #333;">
+                                        <svg xmlns="http://www.w3.org/2000/svg"
+                                             viewBox="-2 -2 24 24" width="20" fill="currentColor">
+                                            <path d="M1 0h6a1 1 0 1 1 0 2H3.414L18 16.586V13a1 1 0 0 1 2 0v6a1 1 0 0 1-1 1h-6a1 1 0 0 1 0-2h3.586L2 3.414V7a1 1 0 1 1-2 0V1a1 1 0 0 1 1-1z">
+                                            </path>
+                                        </svg>
+                                    </a>
+                                    <a href="" style="color: #333;">
+                                        <svg xmlns="http://www.w3.org/2000/svg"
+                                             viewBox="-2 -2.5 24 24" width="28" fill="currentColor">
+                                            <path class=""
+                                                  d="M10 13.554l3.517 1.85-.672-3.917 2.846-2.774-3.932-.571L10 4.579 8.241 8.142l-3.932.571 2.846 2.774-.672 3.916L10 13.554zm0 2.26L3.827 19.06l1.179-6.875L.01 7.317l6.902-1.003L10 .06l3.087 6.254 6.902 1.003-4.995 4.868 1.18 6.875L10 15.814z">
+                                            </path>
+                                        </svg>
+                                    </a>
+
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div div class="col-xl-2 me-4 mb-2 col-lg-4 col-md-6 col-sm-6">
+                    <div class="book-card">
+                        <img src="img/dergiyayın1.jpg" alt="Kitap Kapağı" class="mb-3">
+                        <div class="book-card-body">
+                            <h5 class="book-title text-center">Kitap Başlığı 1</h5>
+                            <p class="text-muted fs-6 text-center">Yayın Tarihi: Ekim 2024</p>
+                            <p class="text-break fw-medium ps-1">
+                                Kısa kitap açıklaması. Kitabın ana konuları ve içeriği
+                                hakkında kısa bilgi.
+                            </p>
+
+
+                            <!--Button-->
+                            <div class="row">
+
+                                <div class="col-6">
+
+
+                                    <a href="#" class="btn btn-primary btn-sm index-detay-btn ms-2">Detayları Gör</a>
+                                </div>
+                                <div class="col-6 d-flex justify-content-end gap-2">
+                                    <a href="" style="color: #333;">
+                                        <svg xmlns="http://www.w3.org/2000/svg"
+                                             viewBox="-2 -2 24 24" width="20" fill="currentColor">
+                                            <path d="M1 0h6a1 1 0 1 1 0 2H3.414L18 16.586V13a1 1 0 0 1 2 0v6a1 1 0 0 1-1 1h-6a1 1 0 0 1 0-2h3.586L2 3.414V7a1 1 0 1 1-2 0V1a1 1 0 0 1 1-1z">
+                                            </path>
+                                        </svg>
+                                    </a>
+                                    <a href="" style="color: #333;">
+                                        <svg xmlns="http://www.w3.org/2000/svg"
+                                             viewBox="-2 -2.5 24 24" width="28" fill="currentColor">
+                                            <path class=""
+                                                  d="M10 13.554l3.517 1.85-.672-3.917 2.846-2.774-3.932-.571L10 4.579 8.241 8.142l-3.932.571 2.846 2.774-.672 3.916L10 13.554zm0 2.26L3.827 19.06l1.179-6.875L.01 7.317l6.902-1.003L10 .06l3.087 6.254 6.902 1.003-4.995 4.868 1.18 6.875L10 15.814z">
+                                            </path>
+                                        </svg>
+                                    </a>
+
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div div class="col-xl-2 me-4 mb-2 col-lg-4 col-md-6 col-sm-6">
+                    <div class="book-card">
+                        <img src="img/dergiyayın1.jpg" alt="Kitap Kapağı" class="mb-3">
+                        <div class="book-card-body">
+                            <h5 class="book-title text-center">Kitap Başlığı 1</h5>
+                            <p class="text-muted fs-6 text-center">Yayın Tarihi: Ekim 2024</p>
+                            <p class="text-break fw-medium ps-1">
+                                Kısa kitap açıklaması. Kitabın ana konuları ve içeriği
+                                hakkında kısa bilgi.
+                            </p>
+
+
+                            <!--Button-->
+                            <div class="row">
+
+                                <div class="col-6">
+
+
+                                    <a href="#" class="btn btn-primary btn-sm index-detay-btn ms-2">Detayları Gör</a>
+                                </div>
+                                <div class="col-6 d-flex justify-content-end gap-2">
+                                    <a href="" style="color: #333;">
+                                        <svg xmlns="http://www.w3.org/2000/svg"
+                                             viewBox="-2 -2 24 24" width="20" fill="currentColor">
+                                            <path d="M1 0h6a1 1 0 1 1 0 2H3.414L18 16.586V13a1 1 0 0 1 2 0v6a1 1 0 0 1-1 1h-6a1 1 0 0 1 0-2h3.586L2 3.414V7a1 1 0 1 1-2 0V1a1 1 0 0 1 1-1z">
+                                            </path>
+                                        </svg>
+                                    </a>
+                                    <a href="" style="color: #333;">
+                                        <svg xmlns="http://www.w3.org/2000/svg"
+                                             viewBox="-2 -2.5 24 24" width="28" fill="currentColor">
+                                            <path class=""
+                                                  d="M10 13.554l3.517 1.85-.672-3.917 2.846-2.774-3.932-.571L10 4.579 8.241 8.142l-3.932.571 2.846 2.774-.672 3.916L10 13.554zm0 2.26L3.827 19.06l1.179-6.875L.01 7.317l6.902-1.003L10 .06l3.087 6.254 6.902 1.003-4.995 4.868 1.18 6.875L10 15.814z">
+                                            </path>
+                                        </svg>
+                                    </a>
+
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div div class="col-xl-2 me-4 mb-2 col-lg-4 col-md-6 col-sm-6">
+                    <div class="book-card">
+                        <img src="img/dergiyayın1.jpg" alt="Kitap Kapağı" class="mb-3">
+                        <div class="book-card-body">
+                            <h5 class="book-title text-center">Kitap Başlığı 1</h5>
+                            <p class="text-muted fs-6 text-center">Yayın Tarihi: Ekim 2024</p>
+                            <p class="text-break fw-medium ps-1">
+                                Kısa kitap açıklaması. Kitabın ana konuları ve içeriği
+                                hakkında kısa bilgi.
+                            </p>
+
+
+                            <!--Button-->
+                            <div class="row">
+
+                                <div class="col-6">
+
+
+                                    <a href="#" class="btn btn-primary btn-sm index-detay-btn ms-2">Detayları Gör</a>
+                                </div>
+                                <div class="col-6 d-flex justify-content-end gap-2">
+                                    <a href="" style="color: #333;">
+                                        <svg xmlns="http://www.w3.org/2000/svg"
+                                             viewBox="-2 -2 24 24" width="20" fill="currentColor">
+                                            <path d="M1 0h6a1 1 0 1 1 0 2H3.414L18 16.586V13a1 1 0 0 1 2 0v6a1 1 0 0 1-1 1h-6a1 1 0 0 1 0-2h3.586L2 3.414V7a1 1 0 1 1-2 0V1a1 1 0 0 1 1-1z">
+                                            </path>
+                                        </svg>
+                                    </a>
+                                    <a href="" style="color: #333;">
+                                        <svg xmlns="http://www.w3.org/2000/svg"
+                                             viewBox="-2 -2.5 24 24" width="28" fill="currentColor">
+                                            <path class=""
+                                                  d="M10 13.554l3.517 1.85-.672-3.917 2.846-2.774-3.932-.571L10 4.579 8.241 8.142l-3.932.571 2.846 2.774-.672 3.916L10 13.554zm0 2.26L3.827 19.06l1.179-6.875L.01 7.317l6.902-1.003L10 .06l3.087 6.254 6.902 1.003-4.995 4.868 1.18 6.875L10 15.814z">
+                                            </path>
+                                        </svg>
+                                    </a>
+
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-xl-2 me-4 mb-2 col-lg-4 col-md-6 col-sm-6">
+                    <div class="book-card">
+                        <img src="img/akev.jpg" alt="Kitap Kapağı" class="mb-3">
+                        <div class="book-card-body">
+                            <h5 class="book-title text-center">Kitap Başlığı 1</h5>
+                            <p class="text-muted fs-6 text-center">Yayın Tarihi: Ekim 2024</p>
+                            <p class="text-break fw-medium ps-1">
+                                Kısa kitap açıklaması. Kitabın ana konuları ve içeriği
+                                hakkında kısa bilgi.
+                            </p>
+
+
+                            <!--Button-->
+                            <div class="row">
+
+                                <div class="col-6">
+
+
+                                    <a href="#" class="btn btn-primary btn-sm index-detay-btn ms-2">Detayları Gör</a>
+                                </div>
+                                <div class="col-6 d-flex justify-content-end gap-2">
+                                    <a href="" style="color: #333;">
+                                        <svg xmlns="http://www.w3.org/2000/svg"
+                                             viewBox="-2 -2 24 24" width="20" fill="currentColor">
+                                            <path d="M1 0h6a1 1 0 1 1 0 2H3.414L18 16.586V13a1 1 0 0 1 2 0v6a1 1 0 0 1-1 1h-6a1 1 0 0 1 0-2h3.586L2 3.414V7a1 1 0 1 1-2 0V1a1 1 0 0 1 1-1z">
+                                            </path>
+                                        </svg>
+                                    </a>
+                                    <a href="" style="color: #333;">
+                                        <svg xmlns="http://www.w3.org/2000/svg"
+                                             viewBox="-2 -2.5 24 24" width="28" fill="currentColor">
+                                            <path class=""
+                                                  d="M10 13.554l3.517 1.85-.672-3.917 2.846-2.774-3.932-.571L10 4.579 8.241 8.142l-3.932.571 2.846 2.774-.672 3.916L10 13.554zm0 2.26L3.827 19.06l1.179-6.875L.01 7.317l6.902-1.003L10 .06l3.087 6.254 6.902 1.003-4.995 4.868 1.18 6.875L10 15.814z">
+                                            </path>
+                                        </svg>
+                                    </a>
+
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+
+                <div class="col-xl-2 me-4 mb-2 col-lg-4 col-md-6 col-sm-6">
+                    <div class="book-card">
+                        <img src="img/nazialmanyası.jpg" alt="Kitap Kapağı" class="mb-3">
+                        <div class="book-card-body">
+                            <h5 class="book-title text-center">Kitap Başlığı 1</h5>
+                            <p class="text-muted fs-6 text-center">Yayın Tarihi: Ekim 2024</p>
+                            <p class="text-break fw-medium ps-1">
+                                Kısa kitap açıklaması. Kitabın ana konuları ve içeriği
+                                hakkında kısa bilgi.
+                            </p>
+
+
+                            <!--Button-->
+                            <div class="row">
+
+                                <div class="col-6">
+
+
+                                    <a href="#" class="btn btn-primary btn-sm index-detay-btn ms-2">Detayları Gör</a>
+                                </div>
+                                <div class="col-6 d-flex justify-content-end gap-2">
+                                    <a href="" style="color: #333;">
+                                        <svg xmlns="http://www.w3.org/2000/svg"
+                                             viewBox="-2 -2 24 24" width="20" fill="currentColor">
+                                            <path d="M1 0h6a1 1 0 1 1 0 2H3.414L18 16.586V13a1 1 0 0 1 2 0v6a1 1 0 0 1-1 1h-6a1 1 0 0 1 0-2h3.586L2 3.414V7a1 1 0 1 1-2 0V1a1 1 0 0 1 1-1z">
+                                            </path>
+                                        </svg>
+                                    </a>
+                                    <a href="" style="color: #333;">
+                                        <svg xmlns="http://www.w3.org/2000/svg"
+                                             viewBox="-2 -2.5 24 24" width="28" fill="currentColor">
+                                            <path class=""
+                                                  d="M10 13.554l3.517 1.85-.672-3.917 2.846-2.774-3.932-.571L10 4.579 8.241 8.142l-3.932.571 2.846 2.774-.672 3.916L10 13.554zm0 2.26L3.827 19.06l1.179-6.875L.01 7.317l6.902-1.003L10 .06l3.087 6.254 6.902 1.003-4.995 4.868 1.18 6.875L10 15.814z">
+                                            </path>
+                                        </svg>
+                                    </a>
+
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+
+            <div class="mt-1 p-3">
+                <nav aria-label="page navigation">
+                    <ul class="pagination">
+                        <li class="page-item disabled">
+                            <a href="#" class="page-link">Geri</a>
+                        </li>
+                        <li class="page-item active"><a href="#" class="page-link">1</a></li>
+                        <li class="page-item"><a href="#" class="page-link">2</a></li>
+                        <li class="page-item"><a href="#" class="page-link">3</a></li>
+                        <li class="page-item">
+                            <a href="#" class="page-link" aria-label="Next">İleri</a>
+                        </li>
+                    </ul>
+                </nav>
+            </div>
+        </div>
+    </section>
+
+
+    <!-- Kategoriler -->
+
+    <section>
+        <div class="container">
+
+            <div class="row">
+
+
+                <div class="col-12 mt-3 p-1 mb-1">
+
+                    <h3 class="p-3"> Kategoriler</h3>
+
+                </div>
+
+                <div class="col-2 mb-3">
+                    <div class="card card-category tecnology-category ">
+                        <div class="text-center text-white p-2">Teknoloji</div>
+
+                    </div>
+                </div>
+                <div class="col-2 mb-2">
+                    <div class="card card-category art-category ">
+                        <div class="text-center text-white p-2"> Sanat</div>
+
+                    </div>
+                </div>
+                <div class="col-2 mb-2">
+                    <div class="card card-category history-category ">
+                        <div class="text-center text-white p-2">Tarih</div>
+
+                    </div>
+                </div>
+                <div class="col-2 mb-2">
+                    <div class="card card-category literature-category">
+                        <div class="text-center text-white p-2">Edebiyat</div>
+                    </div>
+                </div>
+                <div class="col-2 mb-2">
+                    <div class="card card-category music-category">
+                        <div class="text-center text-white p-2">Müzik</div>
+
+                    </div>
+                </div>
+                <div class="col-2 mb-2">
+                    <div class="card card-category economy-category">
+                        <div class="text-center text-white p-2">Ekonomi</div>
+
+                    </div>
+                </div>
+
+
+
+            </div>
+
+        </div>
+    </section>
+
+    <!-- Günün önerisi
+    -->
+    <section class="w-100">
+        <div class="container ">
+            <div class="row">
+                <div class="col-12 mt-3 p-1 mb-1">
+
+                    <h3 class="py-3 pb-2"> Günün Önerisi</h3>
+
+                </div>
+                <div class="row text-bg-primary rounded-5 justify-content-around p-5">
+                    
+
+                    <div class="col-6">
+
+
+                        <div class="card-img  d-flex justify-content-start text-center ms-5 pe-2">
+                            <img class=" d-flex my-4 rounded-4" src="@ViewBag.DayRandom.MagazineImg"
+                                 style="height: 300px; width: 200px;" alt="">
+                        </div>
+
+                        <!-- Basım Yılı ve Bilgiler-->
+
+                        <div class="basimbilgileri position-relative mt-3">
+
+
+                            <span class="bilgilogo position-absolute text-center justify-content-center">
+
+                                <h6 class="logop d-block font-weight-bolder mt-3 ">Yayınevi</h6>
+                                <img src="img/tarihlogo/aktüeltarihlogo.jpg" class="img-fluid rounded-2"
+                                     style="width: 2.5rem; height: 2.5rem;" alt="">
+                            </span>
+                            <span class="position-absolute bilgiyıl">
+                                <h6 class="mb-1">Basım Yılı</h6>
+                                <p class="d-block text-center ">@ViewBag.DayRandom.PublicationDate.ToString("yyyy")</p>
+                            </span>
+
+                            <span class="position-absolute sayi">
+                                <h6 class="mb-1">Dergi Sayı No</h6>
+                                <p class="d-block text-center ">@ViewBag.DayRandom.IssueNumber.ToString()</p>
+                            </span>
+
+                        </div>
+
+
+                    </div>
+                    <div class="col-6 ">
+
+
+                        <div class="card-body m-auto me-xl-5">
+                            <div class="card-title">
+                                <h1 class="display-2 justify-content-center p-3 text-center">
+                                    @ViewBag.DayRandom.Magazine.MagazineName
+                                </h1>
+                            </div>
+                            <div class="card-text  text center justify-content-center fw-medium text-center">
+                                @ViewBag.DayRandom.MagazineDescrition
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+    </section>
+
+    <!--Bulunanlar-->
+    <section class="mt-6">
+        <div class="container mt-4 text-center d-flex  justify-content-center flex-column my-3">
+
+            <div class="row">
+                <div class="col-3">
+                    <i>
+                        <svg xmlns="http://www.w3.org/2000/svg" x="0px" y="0px" width="75" height="75" fill="#351fc8"
+                             viewBox="0 0 50 50">
+                            <path d="M 41.027344 1.8125 C 40.8125 1.808594 40.601563 1.871094 40.425781 1.992188 C 40.425781 1.992188 39.121094 2.925781 35.597656 3.945313 C 32.074219 4.964844 26.417969 6 18 6 C 17.621094 6 17.273438 6.214844 17.105469 6.554688 L 2.179688 36.40625 C 1.90625 36.789063 1.933594 37.308594 2.246094 37.65625 C 2.261719 37.675781 2.277344 37.691406 2.289063 37.703125 C 2.308594 37.722656 2.324219 37.738281 2.34375 37.753906 C 2.34375 37.757813 2.34375 37.757813 2.34375 37.757813 C 2.363281 37.773438 2.378906 37.785156 2.398438 37.796875 C 2.675781 38.035156 14.480469 48 34 48 C 34.382813 48 34.730469 47.78125 34.898438 47.4375 L 47.914063 20.839844 C 48.066406 20.535156 48.058594 20.171875 47.882813 19.878906 C 47.710938 19.585938 47.402344 19.402344 47.0625 19.386719 C 46.660156 19.371094 46.289063 19.59375 46.117188 19.957031 L 33.394531 45.964844 C 27.089844 45.890625 21.675781 44.753906 17.238281 43.285156 C 20.789063 43.785156 24.855469 43.863281 29.359375 43.078125 C 29.675781 43.023438 29.945313 42.820313 30.089844 42.53125 L 46.105469 9.796875 C 46.269531 9.476563 46.246094 9.09375 46.050781 8.792969 C 45.855469 8.492188 45.511719 8.324219 45.15625 8.34375 C 44.789063 8.367188 44.464844 8.585938 44.3125 8.914063 L 28.53125 41.15625 C 20.839844 42.394531 14.523438 41.082031 10.171875 39.5 C 10.226563 39.503906 10.28125 39.515625 10.339844 39.519531 C 14.695313 40.042969 20.171875 40.082031 24.707031 37.902344 C 24.910156 37.804688 25.074219 37.640625 25.171875 37.4375 L 41.898438 3.25 C 42.046875 2.945313 42.03125 2.585938 41.855469 2.296875 C 41.675781 2.003906 41.367188 1.824219 41.027344 1.8125 Z M 38.886719 4.855469 L 23.550781 36.199219 C 19.644531 37.96875 14.640625 38.023438 10.578125 37.535156 C 7.554688 37.175781 5.566406 36.667969 4.441406 36.355469 L 18.636719 7.960938 C 26.8125 7.902344 32.535156 6.910156 36.152344 5.867188 C 37.390625 5.507813 38.085938 5.1875 38.886719 4.855469 Z">
+                            </path>
+                        </svg>
+                    </i>
+                    <h3 class="dergi-sayi mb-1">@ViewBag.MagazineCount.ToString()</h3>
+                    <p class="fw-light">Dergi</p>
+                </div>
+                <div class="col-3">
+                    <i>
+                        <svg xmlns="http://www.w3.org/2000/svg" x="0px" y="0px" width="75" height="75" fill="#351fc8"
+                             viewBox="0 0 50 50">
+                            <path d="M 4.8125 9 C 4.335938 9.089844 3.992188 9.511719 4 10 C 4 11.65625 2.65625 13 1 13 C 0.449219 13 0 13.449219 0 14 L 0 36 C 0 36.550781 0.449219 37 1 37 C 2.65625 37 4 38.34375 4 40 C 4 40.550781 4.449219 41 5 41 L 45 41 C 45.550781 41 46 40.550781 46 40 C 46 38.34375 47.34375 37 49 37 C 49.550781 37 50 36.550781 50 36 L 50 14 C 50 13.449219 49.550781 13 49 13 C 47.34375 13 46 11.65625 46 10 C 46 9.449219 45.550781 9 45 9 L 5 9 C 4.96875 9 4.9375 9 4.90625 9 C 4.875 9 4.84375 9 4.8125 9 Z M 5.78125 11 L 44.21875 11 C 44.628906 12.917969 46.082031 14.371094 48 14.78125 L 48 35.21875 C 46.082031 35.628906 44.628906 37.082031 44.21875 39 L 5.78125 39 C 5.371094 37.082031 3.917969 35.628906 2 35.21875 L 2 14.78125 C 3.917969 14.371094 5.371094 12.917969 5.78125 11 Z M 10 20 L 10 22 L 40 22 L 40 20 Z M 10 28 L 10 30 L 40 30 L 40 28 Z">
+                            </path>
+                        </svg>
+                    </i>
+                    <h3 class="dergi-category mb-1">@ViewBag.CategoryCount</h3>
+                    <p class="fw-light">Kategori</p>
+                </div>
+
+                <div class="col-3">
+                    <i>
+                        <svg xmlns="http://www.w3.org/2000/svg" x="0px" y="0px" width="75" height="75" fill="#351fc8"
+                             viewBox="0 0 48 48">
+                            <path d="M 11.792969 3.0058594 C 9.6006524 3.1166233 8 5.0374475 8 7.1640625 L 8 33 A 1.0001 1.0001 0 1 0 10 33 L 10 7.1640625 C 10 6.0386775 10.840847 5.0551892 11.894531 5.0019531 C 13.072028 4.9427722 14 5.8429065 14 7 A 1.0001 1.0001 0 0 0 15 8 L 38 8 C 38.554545 8 39 8.4454545 39 9 L 39 37 C 39 37.56503 38.56503 38 38 38 L 15.789062 38 C 15.313496 36.23214 13.719528 34.909031 11.792969 35.005859 C 9.6006524 35.116623 8 37.037447 8 39.164062 C 8 42.374637 10.625363 45 13.835938 45 L 36 45 A 1.0001 1.0001 0 1 0 36 43 L 13.835938 43 C 11.706511 43 10 41.293489 10 39.164062 C 10 38.038678 10.840847 37.055189 11.894531 37.001953 C 13.072028 36.942772 14 37.842907 14 39 A 1.0001 1.0001 0 0 0 15 40 L 38 40 C 39.64497 40 41 38.64497 41 37 L 41 9 C 41 7.3545455 39.645455 6 38 6 L 15.789062 6 C 15.313496 4.2321403 13.719528 2.9090306 11.792969 3.0058594 z M 21 12 C 19.906937 12 19 12.906937 19 14 L 19 20 C 19 21.093063 19.906937 22 21 22 L 33 22 C 34.093063 22 35 21.093063 35 20 L 35 14 C 35 12.906937 34.093063 12 33 12 L 21 12 z M 21 14 L 33 14 L 33 20 L 21 20 L 21 14 z M 20 27 A 1.0001 1.0001 0 1 0 20 29 L 34 29 A 1.0001 1.0001 0 1 0 34 27 L 20 27 z M 20 32 A 1.0001 1.0001 0 1 0 20 34 L 30 34 A 1.0001 1.0001 0 1 0 30 32 L 20 32 z">
+                            </path>
+                        </svg>
+                    </i>
+                    <h3 class="sayi-category mb-1">@ViewBag.MagazineInfoCount</h3>
+                    <p class="fw-light">Dergi Sayısı</p>
+                </div>
+                <div class="col-3">
+                    <i>
+                        <svg xmlns="http://www.w3.org/2000/svg" x="0px" y="0px" width="75" height="75" fill="#351fc8"
+                             viewBox="0 0 24 24">
+                            <path d="M 12 3 C 9.8027056 3 8 4.8027056 8 7 C 8 9.1972944 9.8027056 11 12 11 C 14.197294 11 16 9.1972944 16 7 C 16 4.8027056 14.197294 3 12 3 z M 12 5 C 13.116414 5 14 5.8835859 14 7 C 14 8.1164141 13.116414 9 12 9 C 10.883586 9 10 8.1164141 10 7 C 10 5.8835859 10.883586 5 12 5 z M 6.9980469 9.0019531 C 6.9980469 9.0019531 5.1049531 8.8989531 4.0019531 10.001953 C 2.8989531 11.104953 3.0039062 12.996094 3.0039062 12.996094 C 3.0039063 12.996094 4.8950469 13.101047 5.9980469 11.998047 C 7.1010469 10.895047 6.9980469 9.0019531 6.9980469 9.0019531 z M 12 14 C 8.859 14 3 15.546 3 18.5 L 3 21 L 13.171875 21 L 13.585938 20.585938 L 15.171875 19 L 5 19 L 5 18.5 C 5 17.631 8.708 16 12 16 C 13.801 16 15.722656 16.489219 17.097656 17.074219 L 18.597656 15.574219 C 16.615656 14.536219 13.843 14 12 14 z M 22.207031 15 C 22.079156 15 21.951016 15.048984 21.853516 15.146484 L 20.853516 16.146484 L 22.853516 18.146484 L 23.853516 17.146484 C 24.048516 16.951484 24.048516 16.634453 23.853516 16.439453 L 22.560547 15.146484 C 22.462547 15.048984 22.334906 15 22.207031 15 z M 20.146484 16.853516 L 15 22 L 15 24 L 17 24 L 22.146484 18.853516 L 20.146484 16.853516 z">
+                            </path>
+                        </svg>
+                    </i>
+                    <h3 class="sayi-category mb-1">@ViewBag.UserCount</h3>
+                    <p class="fw-light">Kullanıcı</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!--Neden Üye olmalıyım-->
+
+    <section>
+        <div class="container">
+            <div class="row">
+                <div class="col-12 mt-3 p-1 mb-1">
+                    <h3 class="p-3">Neden Üye Olmalıyım</h3>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-md-4">
+                    <div class="card mb-4 border-0 rounded-2 bg-primary p-4">
+                        <div class="card-body text-center text-white">
+                            <svg class="bg-light mb-4 rounded-circle p-3" xmlns="http://www.w3.org/2000/svg" x="0px"
+                                 y="0px" width="100" height="100" viewBox="0,0,256,256">
+                                <g fill="#351fc8" fill-rule="nonzero" stroke="none" stroke-width="1"
+                                   stroke-linecap="butt" stroke-linejoin="miter" stroke-miterlimit="10"
+                                   stroke-dasharray="" stroke-dashoffset="0" font-family="none" font-weight="none"
+                                   font-size="none" text-anchor="none" style="mix-blend-mode: normal">
+                                    <g transform="scale(5.12,5.12)">
+                                        <path d="M21.36133,2c-5.45129,0 -8.95455,2.51761 -10.04883,5.2207c-4.29347,0.91294 -7.3125,5.61003 -7.3125,10.77734c0,2.12705 0.61708,4.25657 1.68555,6.62109c-0.87275,1.06772 -1.68555,2.40668 -1.68555,4.38086c0,2.58744 1.69422,5.08032 4.71289,6.46875c-0.94805,2.20587 -0.7448,4.33366 0.38477,5.84766c1.17325,1.57255 3.14477,2.39083 5.26172,2.55273c0.64175,1.68559 1.79762,2.85661 3.07813,3.41406c1.45837,0.63488 2.95048,0.7168 3.92383,0.7168c1.48811,0 2.79282,-0.70138 3.64063,-1.78906c0.84728,1.08134 2.1481,1.77835 3.62891,1.78906h0.00195c0.92016,0.0066 2.40627,-0.07729 3.87695,-0.71094c1.26914,-0.54681 2.42302,-1.69803 3.08398,-3.33984c1.59865,-0.05162 3.25254,-0.2884 4.6543,-1.07812c1.57493,-0.88731 2.75195,-2.56693 2.75195,-4.87109c0,-0.90093 -0.32477,-1.73248 -0.70898,-2.56836c1.28414,-0.63839 2.29596,-1.4556 2.84961,-2.46484c0.69789,-1.27218 0.85938,-2.66677 0.85938,-3.9668c0,-1.9933 -0.9414,-3.19232 -1.85547,-4.17187c1.08443,-2.36421 1.89081,-4.6494 1.85547,-6.8457c-0.09297,-5.83438 -4.02486,-9.93006 -8.28906,-10.77734c-0.95024,-2.49788 -3.65232,-5.20508 -9.07227,-5.20508c-1.36408,0 -2.68945,0.35043 -3.52539,1.42773c-0.04122,0.05313 -0.07474,0.11269 -0.11328,0.16797c-0.03854,-0.05528 -0.07206,-0.11484 -0.11328,-0.16797c-0.83594,-1.0773 -2.16131,-1.42773 -3.52539,-1.42773zM21.36133,4c1.07892,0 1.57251,0.1719 1.94531,0.65234c0.37281,0.48045 0.69336,1.55898 0.69336,3.5332v5.64648c-0.01785,0.10799 -0.01785,0.21818 0,0.32617v3.8418h-3v-5h-4.1875c-0.41736,-1.15733 -1.51934,-2 -2.8125,-2c-1.64501,0 -3,1.35499 -3,3c0,1.64501 1.35499,3 3,3c1.29316,0 2.39514,-0.84267 2.8125,-2h2.1875v5h5v8h-7v6.1875c-1.15733,0.41736 -2,1.51934 -2,2.8125c0,1.64501 1.35499,3 3,3c1.64501,0 3,-1.35499 3,-3c0,-1.29316 -0.84267,-2.39514 -2,-2.8125v-4.1875h5v6.83203c-0.01785,0.10799 -0.01785,0.21818 0,0.32617v6.17383c0,1.63648 -1.05969,2.66797 -2.63867,2.66797c-0.84266,0 -2.08187,-0.09667 -3.125,-0.55078c-1.04313,-0.45412 -1.88916,-1.16518 -2.26562,-2.68945l-0.1875,-0.75977h-0.7832c-1.83389,0 -3.46636,-0.76312 -4.29883,-1.87891c-0.83246,-1.11578 -1.05282,-2.57412 0.1582,-4.60937l0.63281,-1.06445l-1.17383,-0.39453c-3.05174,-1.02569 -4.31836,-3.07675 -4.31836,-5.05273c0,-1.71967 0.63829,-2.58704 1.54102,-3.57422l0.38867,-0.42578h3.25781c0.41736,1.15733 1.51934,2 2.8125,2c1.64501,0 3,-1.35499 3,-3c0,-1.64501 -1.35499,-3 -3,-3c-1.29316,0 -2.39514,0.84267 -2.8125,2h-4.05469c-0.75798,-1.84651 -1.13281,-3.43873 -1.13281,-5.00195c0,-4.58985 2.87546,-8.60717 6.12109,-9.00586l0.66016,-0.08008l0.17969,-0.63867c0.44769,-1.57434 3.27824,-4.27344 8.40039,-4.27344zM28.63867,4c5.12215,0 6.87611,2.43269 7.40039,4.27344l0.18164,0.63867l0.6582,0.08008c3.37176,0.41418 7.03846,3.83753 7.12109,9.02344c0.02961,1.8402 -0.72319,4.08402 -1.90234,6.55273l-0.30273,0.63477l0.49219,0.49805c1.04245,1.05754 1.71289,1.62016 1.71289,3.29883c0,1.12697 -0.15367,2.16609 -0.61328,3.00391c-0.29282,0.53379 -0.73525,1.00487 -1.38672,1.41211v-4.41602h-9v-3.1875c1.15733,-0.41736 2,-1.51934 2,-2.8125c0,-1.64501 -1.35499,-3 -3,-3c-1.64501,0 -3,1.35499 -3,3c0,1.29316 0.84267,2.39514 2,2.8125v5.1875h9v3.85742c-0.03454,0.22833 0.01101,0.46159 0.12891,0.66016c0.00065,0.00065 0.0013,0.0013 0.00195,0.00195c0.51824,1.05789 0.86914,1.95502 0.86914,2.48047c0,1.69583 -0.64685,2.51622 -1.73437,3.12891c-1.08752,0.61269 -2.69013,0.87109 -4.26562,0.87109h-0.7832l-0.1875,0.75977c-0.3738,1.51347 -1.24673,2.23501 -2.31055,2.69336c-1.06382,0.45835 -2.30843,0.55232 -3.07227,0.54688c-1.58748,-0.01148 -2.64648,-1.03149 -2.64648,-2.66797v-5.33203h4.1875c0.41736,1.15733 1.51934,2 2.8125,2c1.64501,0 3,-1.35499 3,-3c0,-1.64501 -1.35499,-3 -3,-3c-1.29316,0 -2.39514,0.84267 -2.8125,2h-4.1875v-6.83203c0.01785,-0.10799 0.01785,-0.21818 0,-0.32617v-9.67383c0.01785,-0.10799 0.01785,-0.21818 0,-0.32617v-3.8418h8.1875c0.41736,1.15733 1.51934,2 2.8125,2c1.64501,0 3,-1.35499 3,-3c0,-1.64501 -1.35499,-3 -3,-3c-1.29316,0 -2.39514,0.84267 -2.8125,2h-8.1875v-4.81445c0,-1.97423 0.32055,-3.05276 0.69336,-3.5332c0.37281,-0.48045 0.8664,-0.65234 1.94531,-0.65234zM14,13c0.54383,0 0.95843,0.40881 0.98828,0.94336c-0.00221,0.03838 -0.00221,0.07686 0,0.11524c-0.03079,0.53357 -0.44512,0.94141 -0.98828,0.94141c-0.56413,0 -1,-0.43587 -1,-1c0,-0.56413 0.43587,-1 1,-1zM37,13c0.56413,0 1,0.43587 1,1c0,0.56413 -0.43587,1 -1,1c-0.54383,0 -0.95843,-0.40881 -0.98828,-0.94336c0.00221,-0.03838 0.00221,-0.07686 0,-0.11524c0.03079,-0.53357 0.44512,-0.94141 0.98828,-0.94141zM32,22c0.56413,0 1,0.43587 1,1c0,0.54383 -0.40881,0.95843 -0.94336,0.98828c-0.02406,-0.00152 -0.04816,-0.00217 -0.07227,-0.00195c-0.01434,0.00034 -0.02866,0.00099 -0.04297,0.00195c-0.53356,-0.03079 -0.94141,-0.44512 -0.94141,-0.98828c0,-0.56413 0.43587,-1 1,-1zM14,23c0.56413,0 1,0.43587 1,1c0,0.56413 -0.43587,1 -1,1c-0.54383,0 -0.95843,-0.40881 -0.98828,-0.94336c0.00221,-0.03838 0.00221,-0.07686 0,-0.11523c0.03079,-0.53356 0.44512,-0.94141 0.98828,-0.94141zM33,36c0.56413,0 1,0.43587 1,1c0,0.56413 -0.43587,1 -1,1c-0.54383,0 -0.95843,-0.40881 -0.98828,-0.94336c0.00221,-0.03838 0.00221,-0.07686 0,-0.11523c0.03079,-0.53357 0.44512,-0.94141 0.98828,-0.94141zM17.94336,36.01172c0.03838,0.00221 0.07686,0.00221 0.11523,0c0.53356,0.03079 0.94141,0.44512 0.94141,0.98828c0,0.56413 -0.43587,1 -1,1c-0.56413,0 -1,-0.43587 -1,-1c0,-0.54383 0.40881,-0.95843 0.94336,-0.98828z">
+                                        </path>
+                                    </g>
+                                </g>
+                            </svg>
+                            <h5 class="card-title">Yapay Zeka Destekli</h5>
+                            <p class="card-text">
+                                Sana özel dergi önerileri, ilgi alanlarına göre şekillenen okuma
+                                listeleri. Teknolojinin sunduğu en akıllı dergi otomasyon sistemi oluşturduk.
+                            </p>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-4">
+                    <div class="card mb-4 border-0 rounded-2 bg-primary p-2">
+                        <div class="card-body text-center text-white">
+
+                            <svg class="mb-4 p-3 rounded-circle bg-light" xmlns="http://www.w3.org/2000/svg" x="0px"
+                                 y="0px" width="100" height="100" viewBox="0,0,256,256">
+                                <g fill="#351fc8" fill-rule="nonzero" stroke="none" stroke-width="1"
+                                   stroke-linecap="butt" stroke-linejoin="miter" stroke-miterlimit="10"
+                                   stroke-dasharray="" stroke-dashoffset="0" font-family="none" font-weight="none"
+                                   font-size="none" text-anchor="none" style="mix-blend-mode: normal">
+                                    <g transform="scale(3.2,3.2)">
+                                        <path d="M39,9v2h-33c-1.09375,0 -2,0.90625 -2,2v4c0,1.09375 0.90625,2 2,2h1v35c-1.09375,0 -2,0.90625 -2,2v3c0,1.09375 0.90625,2 2,2h32v0.43359l-12.17969,8.74609c-0.25781,-0.11719 -0.53906,-0.17969 -0.82031,-0.17969c-1.10547,0 -2,0.89453 -2,2c0,1.10547 0.89453,2 2,2c1.10547,0 2,-0.89453 2,-2c0,-0.06641 -0.00391,-0.13281 -0.01172,-0.19922l11.01172,-7.90625v3.10547h2v-3.01172l11.01172,7.82422c-0.00781,0.0625 -0.01172,0.125 -0.01172,0.1875c0,1.10547 0.89453,2 2,2c1.10547,0 2,-0.89453 2,-2c0,-1.10547 -0.89453,-2 -2,-2c-0.28906,0 -0.57031,0.0625 -0.83203,0.18359l-12.16797,-8.64844v-0.53516h32c1.09375,0 2,-0.90625 2,-2v-3c0,-1.09375 -0.90625,-2 -2,-2v-35h1c1.09375,0 2,-0.90625 2,-2v-4c0,-1.09375 -0.90625,-2 -2,-2h-33v-2zM6,13h68v4h-3v39h2v3h-66v-3h2v-39h-3zM12,17c-0.55078,0 -1,0.44922 -1,1c0,0.55078 0.44922,1 1,1c0.55078,0 1,-0.44922 1,-1c0,-0.55078 -0.44922,-1 -1,-1zM16,17c-0.55078,0 -1,0.44922 -1,1c0,0.55078 0.44922,1 1,1c0.55078,0 1,-0.44922 1,-1c0,-0.55078 -0.44922,-1 -1,-1zM20,17c-0.55078,0 -1,0.44922 -1,1c0,0.55078 0.44922,1 1,1c0.55078,0 1,-0.44922 1,-1c0,-0.55078 -0.44922,-1 -1,-1zM24,17c-0.55078,0 -1,0.44922 -1,1c0,0.55078 0.44922,1 1,1c0.55078,0 1,-0.44922 1,-1c0,-0.55078 -0.44922,-1 -1,-1zM28,17c-0.55078,0 -1,0.44922 -1,1c0,0.55078 0.44922,1 1,1c0.55078,0 1,-0.44922 1,-1c0,-0.55078 -0.44922,-1 -1,-1zM32,17c-0.55078,0 -1,0.44922 -1,1c0,0.55078 0.44922,1 1,1c0.55078,0 1,-0.44922 1,-1c0,-0.55078 -0.44922,-1 -1,-1zM36,17c-0.55078,0 -1,0.44922 -1,1c0,0.55078 0.44922,1 1,1c0.55078,0 1,-0.44922 1,-1c0,-0.55078 -0.44922,-1 -1,-1zM40,17c-0.55078,0 -1,0.44922 -1,1c0,0.55078 0.44922,1 1,1c0.55078,0 1,-0.44922 1,-1c0,-0.55078 -0.44922,-1 -1,-1zM44,17c-0.55078,0 -1,0.44922 -1,1c0,0.55078 0.44922,1 1,1c0.55078,0 1,-0.44922 1,-1c0,-0.55078 -0.44922,-1 -1,-1zM48,17c-0.55078,0 -1,0.44922 -1,1c0,0.55078 0.44922,1 1,1c0.55078,0 1,-0.44922 1,-1c0,-0.55078 -0.44922,-1 -1,-1zM52,17c-0.55078,0 -1,0.44922 -1,1c0,0.55078 0.44922,1 1,1c0.55078,0 1,-0.44922 1,-1c0,-0.55078 -0.44922,-1 -1,-1zM56,17c-0.55078,0 -1,0.44922 -1,1c0,0.55078 0.44922,1 1,1c0.55078,0 1,-0.44922 1,-1c0,-0.55078 -0.44922,-1 -1,-1zM60,17c-0.55078,0 -1,0.44922 -1,1c0,0.55078 0.44922,1 1,1c0.55078,0 1,-0.44922 1,-1c0,-0.55078 -0.44922,-1 -1,-1zM64,17c-0.55078,0 -1,0.44922 -1,1c0,0.55078 0.44922,1 1,1c0.55078,0 1,-0.44922 1,-1c0,-0.55078 -0.44922,-1 -1,-1zM68,17c-0.55078,0 -1,0.44922 -1,1c0,0.55078 0.44922,1 1,1c0.55078,0 1,-0.44922 1,-1c0,-0.55078 -0.44922,-1 -1,-1zM59,24c-1.10547,0 -2,0.89453 -2,2c0,0.17578 0.02344,0.34766 0.07031,0.51563l-12.55469,12.55078c-0.16797,-0.04297 -0.33984,-0.06641 -0.51562,-0.06641c-0.17578,0 -0.34766,0.02344 -0.51562,0.07031l-8.55078,-8.55469c0.04297,-0.16797 0.06641,-0.33984 0.06641,-0.51562c0,-1.10547 -0.89453,-2 -2,-2c-1.10547,0 -2,0.89453 -2,2c0,0.17578 0.02344,0.34766 0.07031,0.51563l-10.55469,10.55078c-0.16797,-0.04297 -0.33984,-0.06641 -0.51562,-0.06641c-1.10547,0 -2,0.89453 -2,2c0,1.10547 0.89453,2 2,2c1.10547,0 2,-0.89453 2,-2c0,-0.17578 -0.02344,-0.34766 -0.07031,-0.51562l10.55469,-10.55078c0.16797,0.04297 0.33984,0.06641 0.51563,0.06641c0.17578,0 0.34766,-0.02344 0.51563,-0.07031l8.55078,8.55469c-0.04297,0.16797 -0.06641,0.33984 -0.06641,0.51563c0,1.10547 0.89453,2 2,2c1.10547,0 2,-0.89453 2,-2c0,-0.17578 -0.02344,-0.34766 -0.07031,-0.51562l12.55469,-12.55078c0.16797,0.04297 0.33984,0.06641 0.51563,0.06641c1.10547,0 2,-0.89453 2,-2c0,-1.10547 -0.89453,-2 -2,-2zM12,54c-0.55078,0 -1,0.44922 -1,1c0,0.55078 0.44922,1 1,1c0.55078,0 1,-0.44922 1,-1c0,-0.55078 -0.44922,-1 -1,-1zM16,54c-0.55078,0 -1,0.44922 -1,1c0,0.55078 0.44922,1 1,1c0.55078,0 1,-0.44922 1,-1c0,-0.55078 -0.44922,-1 -1,-1zM20,54c-0.55078,0 -1,0.44922 -1,1c0,0.55078 0.44922,1 1,1c0.55078,0 1,-0.44922 1,-1c0,-0.55078 -0.44922,-1 -1,-1zM24,54c-0.55078,0 -1,0.44922 -1,1c0,0.55078 0.44922,1 1,1c0.55078,0 1,-0.44922 1,-1c0,-0.55078 -0.44922,-1 -1,-1zM28,54c-0.55078,0 -1,0.44922 -1,1c0,0.55078 0.44922,1 1,1c0.55078,0 1,-0.44922 1,-1c0,-0.55078 -0.44922,-1 -1,-1zM32,54c-0.55078,0 -1,0.44922 -1,1c0,0.55078 0.44922,1 1,1c0.55078,0 1,-0.44922 1,-1c0,-0.55078 -0.44922,-1 -1,-1zM36,54c-0.55078,0 -1,0.44922 -1,1c0,0.55078 0.44922,1 1,1c0.55078,0 1,-0.44922 1,-1c0,-0.55078 -0.44922,-1 -1,-1zM40,54c-0.55078,0 -1,0.44922 -1,1c0,0.55078 0.44922,1 1,1c0.55078,0 1,-0.44922 1,-1c0,-0.55078 -0.44922,-1 -1,-1zM44,54c-0.55078,0 -1,0.44922 -1,1c0,0.55078 0.44922,1 1,1c0.55078,0 1,-0.44922 1,-1c0,-0.55078 -0.44922,-1 -1,-1zM48,54c-0.55078,0 -1,0.44922 -1,1c0,0.55078 0.44922,1 1,1c0.55078,0 1,-0.44922 1,-1c0,-0.55078 -0.44922,-1 -1,-1zM52,54c-0.55078,0 -1,0.44922 -1,1c0,0.55078 0.44922,1 1,1c0.55078,0 1,-0.44922 1,-1c0,-0.55078 -0.44922,-1 -1,-1zM56,54c-0.55078,0 -1,0.44922 -1,1c0,0.55078 0.44922,1 1,1c0.55078,0 1,-0.44922 1,-1c0,-0.55078 -0.44922,-1 -1,-1zM60,54c-0.55078,0 -1,0.44922 -1,1c0,0.55078 0.44922,1 1,1c0.55078,0 1,-0.44922 1,-1c0,-0.55078 -0.44922,-1 -1,-1zM64,54c-0.55078,0 -1,0.44922 -1,1c0,0.55078 0.44922,1 1,1c0.55078,0 1,-0.44922 1,-1c0,-0.55078 -0.44922,-1 -1,-1zM68,54c-0.55078,0 -1,0.44922 -1,1c0,0.55078 0.44922,1 1,1c0.55078,0 1,-0.44922 1,-1c0,-0.55078 -0.44922,-1 -1,-1z">
+                                        </path>
+                                    </g>
+                                </g>
+                            </svg>
+                            <h5 class="card-title">Kullanıcıya göre veriler</h5>
+                            <p class="card-text">
+                                Kullanıcının okuduğu dergilere göre istatiksel bilgiler, hangi dergi
+                                kategorisini daha çok okuduğunu, beğendiğini ve indirdiğine dair istatiksel veriler
+                                sunuyoruz.
+                            </p>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="col-md-4">
+                    <div class="card mb-4 border-0 rounded-2 bg-primary p-2">
+                        <div class="card-body text-center text-white">
+
+                            <svg class="mb-4 p-3 rounded-circle bg-light" xmlns="http://www.w3.org/2000/svg" x="0px"
+                                 y="0px" width="100" height="100" viewBox="0,0,256,256">
+                                <g fill="#351fc8" fill-rule="nonzero" stroke="none" stroke-width="1"
+                                   stroke-linecap="butt" stroke-linejoin="miter" stroke-miterlimit="10"
+                                   stroke-dasharray="" stroke-dashoffset="0" font-family="none" font-weight="none"
+                                   font-size="none" text-anchor="none" style="mix-blend-mode: normal">
+                                    <g transform="scale(3.2,3.2)">
+                                        <path d="M15,10c-2.74952,0 -5,2.25048 -5,5v50c0,2.74952 2.25048,5 5,5h50c2.74952,0 5,-2.25048 5,-5v-50c0,-2.74952 -2.25048,-5 -5,-5zM15,12h50c1.66848,0 3,1.33152 3,3v50c0,1.66848 -1.33152,3 -3,3h-50c-1.66848,0 -3,-1.33152 -3,-3v-50c0,-1.66848 1.33152,-3 3,-3zM18,17c-0.55228,0 -1,0.44772 -1,1c0,0.55228 0.44772,1 1,1c0.55228,0 1,-0.44772 1,-1c0,-0.55228 -0.44772,-1 -1,-1zM22,17c-0.55228,0 -1,0.44772 -1,1c0,0.55228 0.44772,1 1,1c0.55228,0 1,-0.44772 1,-1c0,-0.55228 -0.44772,-1 -1,-1zM26,17c-0.55228,0 -1,0.44772 -1,1c0,0.55228 0.44772,1 1,1c0.55228,0 1,-0.44772 1,-1c0,-0.55228 -0.44772,-1 -1,-1zM30,17c-0.55228,0 -1,0.44772 -1,1c0,0.55228 0.44772,1 1,1c0.55228,0 1,-0.44772 1,-1c0,-0.55228 -0.44772,-1 -1,-1zM34,17c-0.55228,0 -1,0.44772 -1,1c0,0.55228 0.44772,1 1,1c0.55228,0 1,-0.44772 1,-1c0,-0.55228 -0.44772,-1 -1,-1zM38,17c-0.55228,0 -1,0.44772 -1,1c0,0.55228 0.44772,1 1,1c0.55228,0 1,-0.44772 1,-1c0,-0.55228 -0.44772,-1 -1,-1zM42,17c-0.55228,0 -1,0.44772 -1,1c0,0.55228 0.44772,1 1,1c0.55228,0 1,-0.44772 1,-1c0,-0.55228 -0.44772,-1 -1,-1zM46,17c-0.55228,0 -1,0.44772 -1,1c0,0.55228 0.44772,1 1,1c0.55228,0 1,-0.44772 1,-1c0,-0.55228 -0.44772,-1 -1,-1zM50,17c-0.55228,0 -1,0.44772 -1,1c0,0.55228 0.44772,1 1,1c0.55228,0 1,-0.44772 1,-1c0,-0.55228 -0.44772,-1 -1,-1zM54,17c-0.55228,0 -1,0.44772 -1,1c0,0.55228 0.44772,1 1,1c0.55228,0 1,-0.44772 1,-1c0,-0.55228 -0.44772,-1 -1,-1zM58,17c-0.55228,0 -1,0.44772 -1,1c0,0.55228 0.44772,1 1,1c0.55228,0 1,-0.44772 1,-1c0,-0.55228 -0.44772,-1 -1,-1zM62,17c-0.55228,0 -1,0.44772 -1,1c0,0.55228 0.44772,1 1,1c0.55228,0 1,-0.44772 1,-1c0,-0.55228 -0.44772,-1 -1,-1zM18,21c-0.55228,0 -1,0.44772 -1,1c0,0.55228 0.44772,1 1,1c0.55228,0 1,-0.44772 1,-1c0,-0.55228 -0.44772,-1 -1,-1zM62,21c-0.55228,0 -1,0.44772 -1,1c0,0.55228 0.44772,1 1,1c0.55228,0 1,-0.44772 1,-1c0,-0.55228 -0.44772,-1 -1,-1zM34,24c-1.8503,0 -3.40559,1.28421 -3.85547,3h-7.14453v2h7.14453c0.44988,1.71579 2.00517,3 3.85547,3c1.8503,0 3.40559,-1.28421 3.85547,-3h19.14453v-2h-19.14453c-0.44988,-1.71579 -2.00517,-3 -3.85547,-3zM18,25c-0.55228,0 -1,0.44772 -1,1c0,0.55228 0.44772,1 1,1c0.55228,0 1,-0.44772 1,-1c0,-0.55228 -0.44772,-1 -1,-1zM62,25c-0.55228,0 -1,0.44772 -1,1c0,0.55228 0.44772,1 1,1c0.55228,0 1,-0.44772 1,-1c0,-0.55228 -0.44772,-1 -1,-1zM34,26c1.11641,0 2,0.88359 2,2c0,1.11641 -0.88359,2 -2,2c-1.11641,0 -2,-0.88359 -2,-2c0,-1.11641 0.88359,-2 2,-2zM18,29c-0.55228,0 -1,0.44772 -1,1c0,0.55228 0.44772,1 1,1c0.55228,0 1,-0.44772 1,-1c0,-0.55228 -0.44772,-1 -1,-1zM62,29c-0.55228,0 -1,0.44772 -1,1c0,0.55228 0.44772,1 1,1c0.55228,0 1,-0.44772 1,-1c0,-0.55228 -0.44772,-1 -1,-1zM18,33c-0.55228,0 -1,0.44772 -1,1c0,0.55228 0.44772,1 1,1c0.55228,0 1,-0.44772 1,-1c0,-0.55228 -0.44772,-1 -1,-1zM62,33c-0.55228,0 -1,0.44772 -1,1c0,0.55228 0.44772,1 1,1c0.55228,0 1,-0.44772 1,-1c0,-0.55228 -0.44772,-1 -1,-1zM47,36c-1.8503,0 -3.40559,1.28421 -3.85547,3h-20.14453v2h20.14453c0.44988,1.71579 2.00517,3 3.85547,3c1.8503,0 3.40559,-1.28421 3.85547,-3h6.14453v-2h-6.14453c-0.44988,-1.71579 -2.00517,-3 -3.85547,-3zM18,37c-0.55228,0 -1,0.44772 -1,1c0,0.55228 0.44772,1 1,1c0.55228,0 1,-0.44772 1,-1c0,-0.55228 -0.44772,-1 -1,-1zM62,37c-0.55228,0 -1,0.44772 -1,1c0,0.55228 0.44772,1 1,1c0.55228,0 1,-0.44772 1,-1c0,-0.55228 -0.44772,-1 -1,-1zM47,38c1.11641,0 2,0.88359 2,2c0,1.11641 -0.88359,2 -2,2c-1.11641,0 -2,-0.88359 -2,-2c0,-1.11641 0.88359,-2 2,-2zM18,41c-0.55228,0 -1,0.44772 -1,1c0,0.55228 0.44772,1 1,1c0.55228,0 1,-0.44772 1,-1c0,-0.55228 -0.44772,-1 -1,-1zM62,41c-0.55228,0 -1,0.44772 -1,1c0,0.55228 0.44772,1 1,1c0.55228,0 1,-0.44772 1,-1c0,-0.55228 -0.44772,-1 -1,-1zM18,45c-0.55228,0 -1,0.44772 -1,1c0,0.55228 0.44772,1 1,1c0.55228,0 1,-0.44772 1,-1c0,-0.55228 -0.44772,-1 -1,-1zM62,45c-0.55228,0 -1,0.44772 -1,1c0,0.55228 0.44772,1 1,1c0.55228,0 1,-0.44772 1,-1c0,-0.55228 -0.44772,-1 -1,-1zM39,48c-1.8503,0 -3.40559,1.28421 -3.85547,3h-12.14453v2h12.14453c0.44988,1.71579 2.00517,3 3.85547,3c1.8503,0 3.40559,-1.28421 3.85547,-3h14.14453v-2h-14.14453c-0.44988,-1.71579 -2.00517,-3 -3.85547,-3zM18,49c-0.55228,0 -1,0.44772 -1,1c0,0.55228 0.44772,1 1,1c0.55228,0 1,-0.44772 1,-1c0,-0.55228 -0.44772,-1 -1,-1zM62,49c-0.55228,0 -1,0.44772 -1,1c0,0.55228 0.44772,1 1,1c0.55228,0 1,-0.44772 1,-1c0,-0.55228 -0.44772,-1 -1,-1zM39,50c1.11641,0 2,0.88359 2,2c0,1.11641 -0.88359,2 -2,2c-1.11641,0 -2,-0.88359 -2,-2c0,-1.11641 0.88359,-2 2,-2zM18,53c-0.55228,0 -1,0.44772 -1,1c0,0.55228 0.44772,1 1,1c0.55228,0 1,-0.44772 1,-1c0,-0.55228 -0.44772,-1 -1,-1zM62,53c-0.55228,0 -1,0.44772 -1,1c0,0.55228 0.44772,1 1,1c0.55228,0 1,-0.44772 1,-1c0,-0.55228 -0.44772,-1 -1,-1zM18,57c-0.55228,0 -1,0.44772 -1,1c0,0.55228 0.44772,1 1,1c0.55228,0 1,-0.44772 1,-1c0,-0.55228 -0.44772,-1 -1,-1zM62,57c-0.55228,0 -1,0.44772 -1,1c0,0.55228 0.44772,1 1,1c0.55228,0 1,-0.44772 1,-1c0,-0.55228 -0.44772,-1 -1,-1zM18,61c-0.55228,0 -1,0.44772 -1,1c0,0.55228 0.44772,1 1,1c0.55228,0 1,-0.44772 1,-1c0,-0.55228 -0.44772,-1 -1,-1zM22,61c-0.55228,0 -1,0.44772 -1,1c0,0.55228 0.44772,1 1,1c0.55228,0 1,-0.44772 1,-1c0,-0.55228 -0.44772,-1 -1,-1zM26,61c-0.55228,0 -1,0.44772 -1,1c0,0.55228 0.44772,1 1,1c0.55228,0 1,-0.44772 1,-1c0,-0.55228 -0.44772,-1 -1,-1zM30,61c-0.55228,0 -1,0.44772 -1,1c0,0.55228 0.44772,1 1,1c0.55228,0 1,-0.44772 1,-1c0,-0.55228 -0.44772,-1 -1,-1zM34,61c-0.55228,0 -1,0.44772 -1,1c0,0.55228 0.44772,1 1,1c0.55228,0 1,-0.44772 1,-1c0,-0.55228 -0.44772,-1 -1,-1zM38,61c-0.55228,0 -1,0.44772 -1,1c0,0.55228 0.44772,1 1,1c0.55228,0 1,-0.44772 1,-1c0,-0.55228 -0.44772,-1 -1,-1zM42,61c-0.55228,0 -1,0.44772 -1,1c0,0.55228 0.44772,1 1,1c0.55228,0 1,-0.44772 1,-1c0,-0.55228 -0.44772,-1 -1,-1zM46,61c-0.55228,0 -1,0.44772 -1,1c0,0.55228 0.44772,1 1,1c0.55228,0 1,-0.44772 1,-1c0,-0.55228 -0.44772,-1 -1,-1zM50,61c-0.55228,0 -1,0.44772 -1,1c0,0.55228 0.44772,1 1,1c0.55228,0 1,-0.44772 1,-1c0,-0.55228 -0.44772,-1 -1,-1zM54,61c-0.55228,0 -1,0.44772 -1,1c0,0.55228 0.44772,1 1,1c0.55228,0 1,-0.44772 1,-1c0,-0.55228 -0.44772,-1 -1,-1zM58,61c-0.55228,0 -1,0.44772 -1,1c0,0.55228 0.44772,1 1,1c0.55228,0 1,-0.44772 1,-1c0,-0.55228 -0.44772,-1 -1,-1zM62,61c-0.55228,0 -1,0.44772 -1,1c0,0.55228 0.44772,1 1,1c0.55228,0 1,-0.44772 1,-1c0,-0.55228 -0.44772,-1 -1,-1z">
+                                        </path>
+                                    </g>
+                                </g>
+                            </svg>
+                            <h5 class="card-title">Filtreleme Sistemi</h5>
+                            <p class="card-text">
+                                Aradığınız dergiye göre dil,yıl,kategori,yazar,yayınevi,sayı ve isme
+                                göre
+                                filtreleme seçenekleriyle kullanıcının daha etkili bir şekilde arama yapmasını
+                                sağlıyoruz..
+                            </p>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-4">
+                    <div class="card mb-4 border-0 rounded-2 bg-primary p-3">
+                        <div class="card-body text-white text-center">
+                            <svg class="mb-4 p-3 rounded-circle bg-light" xmlns="http://www.w3.org/2000/svg" x="0px"
+                                 y="0px" width="100" height="100" viewBox="0,0,256,256">
+                                <g fill="#351fc8" fill-rule="nonzero" stroke="none" stroke-width="1"
+                                   stroke-linecap="butt" stroke-linejoin="miter" stroke-miterlimit="10"
+                                   stroke-dasharray="" stroke-dashoffset="0" font-family="none" font-weight="none"
+                                   font-size="none" text-anchor="none" style="mix-blend-mode: normal">
+                                    <g transform="scale(3.2,3.2)">
+                                        <path d="M13,10c-1.64453,0 -3,1.35547 -3,3v38c0,1.64453 1.35547,3 3,3h5v5c0,1.64453 1.35547,3 3,3h5v5c0,1.65234 1.34766,3 3,3h28.84766l-2,-2h-26.84766c-0.55078,0 -1,-0.44922 -1,-1v-38c0,-0.55078 0.44922,-1 1,-1h38c0.55078,0 1,0.44922 1,1v26.84766l2,2v-28.84766c0,-1.65234 -1.34766,-3 -3,-3h-5v-5c0,-1.64453 -1.35547,-3 -3,-3h-5v-5c0,-1.64453 -1.35547,-3 -3,-3zM13,12h38c0.56641,0 1,0.43359 1,1v5h-31c-1.64453,0 -3,1.35547 -3,3v31h-5c-0.56641,0 -1,-0.43359 -1,-1v-38c0,-0.56641 0.43359,-1 1,-1zM21,20h38c0.56641,0 1,0.43359 1,1v5h-31c-1.65234,0 -3,1.34766 -3,3v31h-5c-0.56641,0 -1,-0.43359 -1,-1v-38c0,-0.56641 0.43359,-1 1,-1zM32,31c-0.55078,0 -1,0.44922 -1,1c0,0.55078 0.44922,1 1,1c0.55078,0 1,-0.44922 1,-1c0,-0.55078 -0.44922,-1 -1,-1zM36,31c-0.55078,0 -1,0.44922 -1,1c0,0.55078 0.44922,1 1,1c0.55078,0 1,-0.44922 1,-1c0,-0.55078 -0.44922,-1 -1,-1zM40,31c-0.55078,0 -1,0.44922 -1,1c0,0.55078 0.44922,1 1,1c0.55078,0 1,-0.44922 1,-1c0,-0.55078 -0.44922,-1 -1,-1zM44,31c-0.55078,0 -1,0.44922 -1,1c0,0.55078 0.44922,1 1,1c0.55078,0 1,-0.44922 1,-1c0,-0.55078 -0.44922,-1 -1,-1zM48,31c-0.55078,0 -1,0.44922 -1,1c0,0.55078 0.44922,1 1,1c0.55078,0 1,-0.44922 1,-1c0,-0.55078 -0.44922,-1 -1,-1zM52,31c-0.55078,0 -1,0.44922 -1,1c0,0.55078 0.44922,1 1,1c0.55078,0 1,-0.44922 1,-1c0,-0.55078 -0.44922,-1 -1,-1zM56,31c-0.55078,0 -1,0.44922 -1,1c0,0.55078 0.44922,1 1,1c0.55078,0 1,-0.44922 1,-1c0,-0.55078 -0.44922,-1 -1,-1zM60,31c-0.55078,0 -1,0.44922 -1,1c0,0.55078 0.44922,1 1,1c0.55078,0 1,-0.44922 1,-1c0,-0.55078 -0.44922,-1 -1,-1zM64,31c-0.55078,0 -1,0.44922 -1,1c0,0.55078 0.44922,1 1,1c0.55078,0 1,-0.44922 1,-1c0,-0.55078 -0.44922,-1 -1,-1zM32,35c-0.55078,0 -1,0.44922 -1,1c0,0.55078 0.44922,1 1,1c0.55078,0 1,-0.44922 1,-1c0,-0.55078 -0.44922,-1 -1,-1zM64,35c-0.55078,0 -1,0.44922 -1,1c0,0.55078 0.44922,1 1,1c0.55078,0 1,-0.44922 1,-1c0,-0.55078 -0.44922,-1 -1,-1zM32,39c-0.55078,0 -1,0.44922 -1,1c0,0.55078 0.44922,1 1,1c0.55078,0 1,-0.44922 1,-1c0,-0.55078 -0.44922,-1 -1,-1zM64,39c-0.55078,0 -1,0.44922 -1,1c0,0.55078 0.44922,1 1,1c0.55078,0 1,-0.44922 1,-1c0,-0.55078 -0.44922,-1 -1,-1zM32,43c-0.55078,0 -1,0.44922 -1,1c0,0.55078 0.44922,1 1,1c0.55078,0 1,-0.44922 1,-1c0,-0.55078 -0.44922,-1 -1,-1zM64,43c-0.55078,0 -1,0.44922 -1,1c0,0.55078 0.44922,1 1,1c0.55078,0 1,-0.44922 1,-1c0,-0.55078 -0.44922,-1 -1,-1zM43.26172,43.26172l4.94141,12.84766l0.14844,0.15234l16.24609,16.24219v0.00391l5.47266,5.47266l0.53906,0.53516c1.96875,1.96875 5.1875,1.96875 7.15625,0l0.75391,-0.75c1.96875,-1.96875 1.96875,-5.1875 0,-7.15625l-0.53906,-0.53906l-5.47656,-5.47266l-16.39453,-16.39453zM32,47c-0.55078,0 -1,0.44922 -1,1c0,0.55078 0.44922,1 1,1c0.55078,0 1,-0.44922 1,-1c0,-0.55078 -0.44922,-1 -1,-1zM64,47c-0.55078,0 -1,0.44922 -1,1c0,0.55078 0.44922,1 1,1c0.55078,0 1,-0.44922 1,-1c0,-0.55078 -0.44922,-1 -1,-1zM48.91406,47.57813l5.56641,2.14063c-0.00781,0.02344 -0.00391,0.03516 -0.01172,0.05859c-0.07812,0.40625 -0.26562,0.83594 -0.4375,1.00781c-0.16797,0.17188 -0.60156,0.35547 -1.01172,0.4375c-0.40625,0.08203 -0.71484,0.08203 -0.71484,0.08203h-1v1c0,0 0,0.30859 -0.08203,0.71484c-0.08203,0.41016 -0.26562,0.84375 -0.4375,1.01172c-0.17187,0.17188 -0.60156,0.35938 -1.00781,0.4375c-0.02344,0.00781 -0.03906,0.00391 -0.05859,0.01172l-2.14062,-5.56641zM32,51c-0.55078,0 -1,0.44922 -1,1c0,0.55078 0.44922,1 1,1c0.55078,0 1,-0.44922 1,-1c0,-0.55078 -0.44922,-1 -1,-1zM64,51c-0.55078,0 -1,0.44922 -1,1c0,0.55078 0.44922,1 1,1c0.55078,0 1,-0.44922 1,-1c0,-0.55078 -0.44922,-1 -1,-1zM56.16406,51.08594l14.92969,14.92969l-5.07812,5.07813l-14.92969,-14.92578c0.37891,-0.15234 0.76563,-0.375 1.11328,-0.71875c0.64063,-0.64453 0.86328,-1.42578 0.98438,-2.03516c0.02344,-0.11328 0.00781,-0.10547 0.02344,-0.20703c0.10156,-0.01562 0.09375,0 0.20703,-0.02344c0.60938,-0.12109 1.39063,-0.34375 2.03516,-0.98437c0.34375,-0.34766 0.5625,-0.73437 0.71484,-1.11328zM32,55c-0.55078,0 -1,0.44922 -1,1c0,0.55078 0.44922,1 1,1c0.55078,0 1,-0.44922 1,-1c0,-0.55078 -0.44922,-1 -1,-1zM32,59c-0.55078,0 -1,0.44922 -1,1c0,0.55078 0.44922,1 1,1c0.55078,0 1,-0.44922 1,-1c0,-0.55078 -0.44922,-1 -1,-1zM32,63c-0.55078,0 -1,0.44922 -1,1c0,0.55078 0.44922,1 1,1c0.55078,0 1,-0.44922 1,-1c0,-0.55078 -0.44922,-1 -1,-1zM36,63c-0.55078,0 -1,0.44922 -1,1c0,0.55078 0.44922,1 1,1c0.55078,0 1,-0.44922 1,-1c0,-0.55078 -0.44922,-1 -1,-1zM40,63c-0.55078,0 -1,0.44922 -1,1c0,0.55078 0.44922,1 1,1c0.55078,0 1,-0.44922 1,-1c0,-0.55078 -0.44922,-1 -1,-1zM44,63c-0.55078,0 -1,0.44922 -1,1c0,0.55078 0.44922,1 1,1c0.55078,0 1,-0.44922 1,-1c0,-0.55078 -0.44922,-1 -1,-1zM48,63c-0.55078,0 -1,0.44922 -1,1c0,0.55078 0.44922,1 1,1c0.55078,0 1,-0.44922 1,-1c0,-0.55078 -0.44922,-1 -1,-1zM52,63c-0.55078,0 -1,0.44922 -1,1c0,0.55078 0.44922,1 1,1c0.55078,0 1,-0.44922 1,-1c0,-0.55078 -0.44922,-1 -1,-1zM72.50391,67.42578l2.64844,2.64453l-5.08203,5.08203l-2.64453,-2.64453zM76.5625,71.48438l0.54297,0.54297c1.20313,1.19922 1.20313,3.12109 0,4.32031l-0.75391,0.75781c-1.20312,1.19922 -3.125,1.19922 -4.32422,0l-0.54297,-0.54297z">
+                                        </path>
+                                    </g>
+                                </g>
+                            </svg>
+                            <h5 class="card-title"> Çoklu Kategori Sistemi</h5>
+
+                            <p class="card-text">
+                                Her kategorinin belli kategorilere ayırarak kullancıların istedikleri
+                                dergileri daha
+                                rahat bulmasını sağladık.Bu sayede rahat bir şekilde dergilerinizi bulabilirsiniz.
+                            </p>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-4">
+
+                    <div class="card mb-4 bg-primary rounded-2 p-3 border-0">
+                        <div class="card-body text-white text-center">
+                            <svg class="mb-4 p-3 bg-light rounded-circle" xmlns="http://www.w3.org/2000/svg" x="0px"
+                                 y="0px" width="95" height="95" viewBox="0,0,256,256">
+                                <g fill="#351fc8" fill-rule="nonzero" stroke="none" stroke-width="1"
+                                   stroke-linecap="butt" stroke-linejoin="miter" stroke-miterlimit="10"
+                                   stroke-dasharray="" stroke-dashoffset="0" font-family="none" font-weight="none"
+                                   font-size="none" text-anchor="none" style="mix-blend-mode: normal">
+                                    <g transform="scale(3.2,3.2)">
+                                        <path d="M11,11c-2.19733,0 -4,1.80267 -4,4v54h1h65v-54c0,-2.19733 -1.80267,-4 -4,-4zM11,13h58c1.11667,0 2,0.88333 2,2v7v45h-62v-45v-7c0,-1.11667 0.88333,-2 2,-2zM9,22c0,0.55228 0.44772,1 1,1c0.55228,0 1,-0.44772 1,-1c0,-0.55228 -0.44772,-1 -1,-1c-0.55228,0 -1,0.44772 -1,1zM71,22c0,-0.55228 -0.44772,-1 -1,-1c-0.55228,0 -1,0.44772 -1,1c0,0.55228 0.44772,1 1,1c0.55228,0 1,-0.44772 1,-1zM13,15c-1.10457,0 -2,0.89543 -2,2c0,1.10457 0.89543,2 2,2c1.10457,0 2,-0.89543 2,-2c0,-1.10457 -0.89543,-2 -2,-2zM19,15c-1.10457,0 -2,0.89543 -2,2c0,1.10457 0.89543,2 2,2c1.10457,0 2,-0.89543 2,-2c0,-1.10457 -0.89543,-2 -2,-2zM25,15c-1.10457,0 -2,0.89543 -2,2c0,1.10457 0.89543,2 2,2c1.10457,0 2,-0.89543 2,-2c0,-1.10457 -0.89543,-2 -2,-2zM14,21c-0.55228,0 -1,0.44772 -1,1c0,0.55228 0.44772,1 1,1c0.55228,0 1,-0.44772 1,-1c0,-0.55228 -0.44772,-1 -1,-1zM18,21c-0.55228,0 -1,0.44772 -1,1c0,0.55228 0.44772,1 1,1c0.55228,0 1,-0.44772 1,-1c0,-0.55228 -0.44772,-1 -1,-1zM22,21c-0.55228,0 -1,0.44772 -1,1c0,0.55228 0.44772,1 1,1c0.55228,0 1,-0.44772 1,-1c0,-0.55228 -0.44772,-1 -1,-1zM26,21c-0.55228,0 -1,0.44772 -1,1c0,0.55228 0.44772,1 1,1c0.55228,0 1,-0.44772 1,-1c0,-0.55228 -0.44772,-1 -1,-1zM30,21c-0.55228,0 -1,0.44772 -1,1c0,0.55228 0.44772,1 1,1c0.55228,0 1,-0.44772 1,-1c0,-0.55228 -0.44772,-1 -1,-1zM34,21c-0.55228,0 -1,0.44772 -1,1c0,0.55228 0.44772,1 1,1c0.55228,0 1,-0.44772 1,-1c0,-0.55228 -0.44772,-1 -1,-1zM38,21c-0.55228,0 -1,0.44772 -1,1c0,0.55228 0.44772,1 1,1c0.55228,0 1,-0.44772 1,-1c0,-0.55228 -0.44772,-1 -1,-1zM42,21c-0.55228,0 -1,0.44772 -1,1c0,0.55228 0.44772,1 1,1c0.55228,0 1,-0.44772 1,-1c0,-0.55228 -0.44772,-1 -1,-1zM46,21c-0.55228,0 -1,0.44772 -1,1c0,0.55228 0.44772,1 1,1c0.55228,0 1,-0.44772 1,-1c0,-0.55228 -0.44772,-1 -1,-1zM50,21c-0.55228,0 -1,0.44772 -1,1c0,0.55228 0.44772,1 1,1c0.55228,0 1,-0.44772 1,-1c0,-0.55228 -0.44772,-1 -1,-1zM54,21c-0.55228,0 -1,0.44772 -1,1c0,0.55228 0.44772,1 1,1c0.55228,0 1,-0.44772 1,-1c0,-0.55228 -0.44772,-1 -1,-1zM58,21c-0.55228,0 -1,0.44772 -1,1c0,0.55228 0.44772,1 1,1c0.55228,0 1,-0.44772 1,-1c0,-0.55228 -0.44772,-1 -1,-1zM62,21c-0.55228,0 -1,0.44772 -1,1c0,0.55228 0.44772,1 1,1c0.55228,0 1,-0.44772 1,-1c0,-0.55228 -0.44772,-1 -1,-1zM66,21c-0.55228,0 -1,0.44772 -1,1c0,0.55228 0.44772,1 1,1c0.55228,0 1,-0.44772 1,-1c0,-0.55228 -0.44772,-1 -1,-1zM17,28c-1.64497,0 -3,1.35503 -3,3v28c0,1.64497 1.35503,3 3,3h1c0.36064,0.0051 0.69608,-0.18438 0.87789,-0.49587c0.18181,-0.3115 0.18181,-0.69676 0,-1.00825c-0.18181,-0.3115 -0.51725,-0.50097 -0.87789,-0.49587h-1c-0.56503,0 -1,-0.43497 -1,-1v-28c0,-0.56503 0.43497,-1 1,-1h18c0.56503,0 1,0.43497 1,1v28c0,0.56503 -0.43497,1 -1,1h-1c-0.36064,-0.0051 -0.69608,0.18438 -0.87789,0.49587c-0.18181,0.3115 -0.18181,0.69676 0,1.00825c0.18181,0.3115 0.51725,0.50097 0.87789,0.49587h1c1.64497,0 3,-1.35503 3,-3v-28c0,-1.64497 -1.35503,-3 -3,-3zM45,28c-1.64497,0 -3,1.35503 -3,3v3c0,1.64497 1.35503,3 3,3h18c1.64497,0 3,-1.35503 3,-3v-3c0,-1.64497 -1.35503,-3 -3,-3zM45,30h18c0.56503,0 1,0.43497 1,1v3c0,0.56503 -0.43497,1 -1,1h-18c-0.56503,0 -1,-0.43497 -1,-1v-3c0,-0.56503 0.43497,-1 1,-1zM42,42v2h24v-2zM42,48v2h24v-2zM42,54v2h24v-2zM22,60c-0.55228,0 -1,0.44772 -1,1c0,0.55228 0.44772,1 1,1c0.55228,0 1,-0.44772 1,-1c0,-0.55228 -0.44772,-1 -1,-1zM26,60c-0.55228,0 -1,0.44772 -1,1c0,0.55228 0.44772,1 1,1c0.55228,0 1,-0.44772 1,-1c0,-0.55228 -0.44772,-1 -1,-1zM30,60c-0.55228,0 -1,0.44772 -1,1c0,0.55228 0.44772,1 1,1c0.55228,0 1,-0.44772 1,-1c0,-0.55228 -0.44772,-1 -1,-1zM42,60v2h14v-2z">
+                                        </path>
+                                    </g>
+                                </g>
+                            </svg>
+                            <h5 class="card-title">Minimalist Site Tasarımı</h5>
+                            <p class="card-text">
+                                Modern ve sade tasarımımız sayesinde aradığınız içeriklere hızlı ve
+                                kolayca
+                                ulaşabilirsiniz. Üyelerimize özel içerikler ve ayrıcalıklar sunuyoruz.
+                            </p>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-4">
+
+                    <div class="card mb-4 bg-primary rounded-2 p-2 border-0">
+                        <div class="card-body text-white text-center">
+                            <svg class="p-3 mb-4 rounded-circle bg-light" xmlns="http://www.w3.org/2000/svg" x="0px"
+                                 y="0px" width="100" height="100" viewBox="0,0,256,256">
+                                <g fill="#351fc8" fill-rule="nonzero" stroke="none" stroke-width="1"
+                                   stroke-linecap="butt" stroke-linejoin="miter" stroke-miterlimit="10"
+                                   stroke-dasharray="" stroke-dashoffset="0" font-family="none" font-weight="none"
+                                   font-size="none" text-anchor="none" style="mix-blend-mode: normal">
+                                    <g transform="scale(3.2,3.2)">
+                                        <path d="M40,5c-2.19922,0 -4,1.80078 -4,4v1.46875c-6.92187,1.57813 -12.36328,7.14844 -13.6875,14.24219c-1.41406,0.75781 -2.51172,2.0625 -2.69141,3.75391l-3.07812,28.45703c-0.25,2.32813 -2.20312,4.07813 -4.54297,4.07813h-1v6h22c0,3.85547 3.14453,7 7,7c3.85547,0 7,-3.14453 7,-7h22v-6h-1c-2.33984,0 -4.29297,-1.75 -4.54297,-4.07812l-3.07812,-28.45703c-0.17969,-1.69141 -1.27734,-2.99609 -2.69141,-3.75391c-1.32422,-7.09375 -6.76562,-12.66406 -13.6875,-14.24219v-1.46875c0,-2.19922 -1.80078,-4 -4,-4zM40,7c1.11719,0 2,0.88281 2,2v1.125c-0.65625,-0.07422 -1.32422,-0.125 -2,-0.125c-0.67578,0 -1.34375,0.05078 -2,0.125v-1.125c0,-1.11719 0.88281,-2 2,-2zM40,12c7.92578,0 14.55859,5.75781 15.8125,13.41797l0.09766,0.57031l0.54297,0.20313c1.03906,0.38672 1.8125,1.32422 1.9375,2.48438l3.07813,28.46094c0.03516,0.32031 0.10156,0.625 0.18359,0.92578c-0.39453,0.14844 -0.65234,0.51953 -0.65234,0.9375c0,0.55078 0.44922,1 1,1c0.16016,0 0.32031,-0.03906 0.46484,-0.11328c1.00391,1.54297 2.64453,2.62109 4.53516,2.92578v2.1875h-54v-2.1875c1.89063,-0.30469 3.53125,-1.38281 4.53516,-2.92578c0.14453,0.07422 0.30469,0.11328 0.46484,0.11328c0.55078,0 1,-0.44922 1,-1c0,-0.41797 -0.25781,-0.78906 -0.65234,-0.9375c0.08203,-0.30078 0.14844,-0.60547 0.18359,-0.92578l3.07813,-28.46094c0.125,-1.16016 0.89844,-2.09766 1.9375,-2.48437l0.54297,-0.20312l0.09766,-0.57031c1.25391,-7.66016 7.88672,-13.41797 15.8125,-13.41797zM26,24c-0.55078,0 -1,0.44922 -1,1c0,0.55078 0.44922,1 1,1c0.55078,0 1,-0.44922 1,-1c0,-0.55078 -0.44922,-1 -1,-1zM30,24c-0.55078,0 -1,0.44922 -1,1c0,0.55078 0.44922,1 1,1c0.55078,0 1,-0.44922 1,-1c0,-0.55078 -0.44922,-1 -1,-1zM34,24c-0.55078,0 -1,0.44922 -1,1c0,0.55078 0.44922,1 1,1c0.55078,0 1,-0.44922 1,-1c0,-0.55078 -0.44922,-1 -1,-1zM38,24c-0.55078,0 -1,0.44922 -1,1c0,0.55078 0.44922,1 1,1c0.55078,0 1,-0.44922 1,-1c0,-0.55078 -0.44922,-1 -1,-1zM42,24c-0.55078,0 -1,0.44922 -1,1c0,0.55078 0.44922,1 1,1c0.55078,0 1,-0.44922 1,-1c0,-0.55078 -0.44922,-1 -1,-1zM46,24c-0.55078,0 -1,0.44922 -1,1c0,0.55078 0.44922,1 1,1c0.55078,0 1,-0.44922 1,-1c0,-0.55078 -0.44922,-1 -1,-1zM50,24c-0.55078,0 -1,0.44922 -1,1c0,0.55078 0.44922,1 1,1c0.55078,0 1,-0.44922 1,-1c0,-0.55078 -0.44922,-1 -1,-1zM54,24c-0.55078,0 -1,0.44922 -1,1c0,0.55078 0.44922,1 1,1c0.55078,0 1,-0.44922 1,-1c0,-0.55078 -0.44922,-1 -1,-1zM22,58c-0.55078,0 -1,0.44922 -1,1c0,0.55078 0.44922,1 1,1c0.55078,0 1,-0.44922 1,-1c0,-0.55078 -0.44922,-1 -1,-1zM26,58c-0.55078,0 -1,0.44922 -1,1c0,0.55078 0.44922,1 1,1c0.55078,0 1,-0.44922 1,-1c0,-0.55078 -0.44922,-1 -1,-1zM30,58c-0.55078,0 -1,0.44922 -1,1c0,0.55078 0.44922,1 1,1c0.55078,0 1,-0.44922 1,-1c0,-0.55078 -0.44922,-1 -1,-1zM34,58c-0.55078,0 -1,0.44922 -1,1c0,0.55078 0.44922,1 1,1c0.55078,0 1,-0.44922 1,-1c0,-0.55078 -0.44922,-1 -1,-1zM38,58c-0.55078,0 -1,0.44922 -1,1c0,0.55078 0.44922,1 1,1c0.55078,0 1,-0.44922 1,-1c0,-0.55078 -0.44922,-1 -1,-1zM42,58c-0.55078,0 -1,0.44922 -1,1c0,0.55078 0.44922,1 1,1c0.55078,0 1,-0.44922 1,-1c0,-0.55078 -0.44922,-1 -1,-1zM46,58c-0.55078,0 -1,0.44922 -1,1c0,0.55078 0.44922,1 1,1c0.55078,0 1,-0.44922 1,-1c0,-0.55078 -0.44922,-1 -1,-1zM50,58c-0.55078,0 -1,0.44922 -1,1c0,0.55078 0.44922,1 1,1c0.55078,0 1,-0.44922 1,-1c0,-0.55078 -0.44922,-1 -1,-1zM54,58c-0.55078,0 -1,0.44922 -1,1c0,0.55078 0.44922,1 1,1c0.55078,0 1,-0.44922 1,-1c0,-0.55078 -0.44922,-1 -1,-1zM58,58c-0.55078,0 -1,0.44922 -1,1c0,0.55078 0.44922,1 1,1c0.55078,0 1,-0.44922 1,-1c0,-0.55078 -0.44922,-1 -1,-1zM35,67h10c0,2.77344 -2.22656,5 -5,5c-2.77344,0 -5,-2.22656 -5,-5z">
+                                        </path>
+                                    </g>
+                                </g>
+                            </svg>
+                            <h5 class="card-title">Bildirim ve Güncellemeler</h5>
+                            <p class="card-text">
+                                Sitede yeni dergiler eklendiğinde size bildirim ile haberdar ediyoruz.
+                                Bu sayede sevdiğiniz dergileri hemen okuyabilirsiniz.Güncellemeler ile sitedeki
+                                değişiklikleri öğrenebilirsiniz
+                            </p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!--Abonelik Sistemi-->
+    <section class="abonelik mt-6 mb-7">
+        <div class="container">
+            <div class="row">
+                <div class="col-lg-5">
+                    <div class="image-container mt-n6 mb-5">
+                        <svg xmlns="http://www.w3.org/2000/svg" x="0px" y="0px" width="400" height="400"
+                             viewBox="0 0 48 48">
+                            <path fill="#3dd9eb" d="M8,7v33l8-1h27V6H15.875L8,7z"></path>
+                            <rect width="24" height="33" x="16" y="6" fill="#00b3d7"></rect>
+                            <rect width="18" height="9" x="19" y="11" fill="#3dd9eb"></rect>
+                            <rect width="18" height="4" x="19" y="24" fill="#3dd9eb"></rect>
+                            <rect width="18" height="4" x="19" y="31" fill="#3dd9eb"></rect>
+                            <path fill="#7debf5"
+                                  d="M12,3C9.791,3,8,4.791,8,7c0,0,0,30.791,0,33l8-1V6C15.554,4.278,13.862,3,12,3z">
+                            </path>
+                            <path fill="#6c19ff"
+                                  d="M16,39c-0.446-1.722-2.138-3-4-3c-2.209,0-4,1.791-4,4c0,2.209,1.791,4,4,4h28v-5H16z">
+                            </path>
+                        </svg>
+                    </div>
+                </div>
+                <div class="col-lg-7">
+                    <div class="text-container text-white d-flex flex-column justify-content-center h-75 mb-3">
+                        <h2 class="fw-bold text-center">Ücretsiz Abone Ol</h2>
+                        <p class="text-center">Yeni çıkan dergilerden haberdar olmak için abone olun.</p>
+
+                        <div class="input-group mb-3 me-7">
+                            <input type="email" class="form-control form-control-lg" placeholder="Email Adresi">
+                            <button class="btn btn-primary text-white rounded-end">Abone Ol</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+</body>
+ 

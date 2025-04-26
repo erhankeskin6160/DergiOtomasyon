@@ -1,0 +1,34 @@
+﻿@model User
+@{
+    ViewData["Title"] = "AddUser";
+}
+
+
+<html>
+
+   <form  asp-action="AddUser">
+       <input type="hidden" asp-for="Id" />
+       <label>Name</label>
+       <input type="text" asp-for="Name"  />
+       <label>Last Name</label>
+       <input type="text" asp-for="LastName" />
+      
+       <label>User Name</label>
+
+       <input type="text" asp-for="UserName" />
+       
+       <label>Password<label>
+
+       <input type="text" asp-for="Password" />
+       
+       <label>Email </label>
+
+       <input type="email" asp-for="Email" />
+       
+       <label>Kayıt Tarihi</label>
+       <input type="date"  asp-for="RegistrationDate"/>
+
+      <input type="submit" value="Gönder" />
+
+   </form>
+</html>

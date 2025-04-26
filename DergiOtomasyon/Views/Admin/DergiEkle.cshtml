@@ -1,0 +1,67 @@
+﻿@model Magazine
+@{
+    ViewData["Title"] = "DergiEkle";
+    Layout = "~/Views/Shared/_AdminLayout.cshtml";
+}
+
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/css/bootstrap.min.css" rel="stylesheet">
+
+    <title>Dergi Ekle</title>
+</head>
+
+<body>
+    <form class="row g-3 mt-4" asp-action="DergiEkle" enctype="multipart/form-data">
+
+        <div class="col-md-6">
+           
+            <input type="hidden" class="form-control" asp-for=Id id="title" required>
+        </div>
+
+        <div class="col-md-12">
+            <label for="title" class="form-label">Başlık</label>
+            <input type="text" class="form-control col-12" asp-for=MagazineName id="title" required>
+        </div>
+
+
+        <div class="col-md-6">
+            <label for="publishDate" class="form-label">Editor</label>
+            <input type="text" class="form-control" asp-for="Editor" required>
+        </div>
+        <div class="col-md-6">
+            <label for="publishDate" class="form-label">Derginin Toplam Sayısı</label>
+            <input type="text" class="form-control" asp-for="MagazineIssue" required>
+        </div>
+
+        <div class="col-md-12">
+            <label for="description" class="form-label">Yayın Tarihi</label>
+            <input type="date" class="form-control" asp-for="PublisDate" rows="3"></>
+        </div>
+
+        <div class="col-md-12 form-check">
+            <input type="checkbox" class="form-check-input" asp-for=ısPuslihed>
+            <label class="form-check-label" for="isPublished">Yayınlandı mı?</label>
+        </div>
+         
+  @*       <input type="hidden" asp-for="MagazineInfosId" /> *@
+         <label>Dergi Kapağı</label>
+         <input type="file" asp-for="Img" />
+        <br />
+        
+        
+
+        
+
+        <div class="col-12 mt-3">
+            <button type="submit" class="btn btn-success">Kaydet</button>
+            <a href="/Admin/Index" class="btn btn-secondary">İptal</a>
+        </div>
+    </form>
+</body>
+
+</html>
