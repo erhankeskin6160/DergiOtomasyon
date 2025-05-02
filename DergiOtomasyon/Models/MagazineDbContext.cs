@@ -18,8 +18,14 @@ namespace DergiOtomasyon.Models
         public DbSet<Category> Categories { get; set;}
      
         public DbSet<Contanct> Contants { get; set; }
+
+        public DbSet<Favorite> Favorites { get; set; }
         //public DbSet<MagazineInfo> magazineInfos { get; set; }
 
-      
+        public DbSet<Notification> Notifications { get; set; }
+
+        public DbSet<SubscriptionPlan> SubscriptionPlans { get; set; }
+        public DbSet<UserSubscription> UserSubscriptions { get; set; }
+
     }
 }

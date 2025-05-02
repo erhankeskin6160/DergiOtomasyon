@@ -1,27 +1,30 @@
-﻿
+﻿@model User
 <html xmlns="http://www.w3.org/1999/xhtml">
-    <head><title></title></head>
-    <body>
+<head>
+    <title></title>
+</head>
+<body>
 
     <section id="profil" class="mb-5">
         <h3>👤 Profil Bilgileri</h3>
-        <form>
+        <form asp-action="EditProfile" asp-controller="Profile" method="post" enctype="multipart/form-data">
             <div class="row mb-3">
+                <input type="hidden" asp-for=Id />  
                 <div class="col-md-6">
                     <label class="form-label">Ad Soyad</label>
-                    <input type="text" class="form-control" value="Mehmet Yılmaz">
+                    <input type="text" asp-for="Name" class="form-control"  >
                 </div>
                 <div class="col-md-6">
                     <label class="form-label">E-posta</label>
-                    <input type="email" class="form-control" value="mehmet@example.com">
+                    <input type="email" asp-for="Email" class="form-control">
                 </div>
             </div>
             <div class="mb-3">
                 <label class="form-label">Profil Fotoğrafı</label>
-                <input type="file" class="form-control">
+                <input type="file" asp-for="UserImg" class="form-control">
             </div>
             <button class="btn btn-primary">Güncelle</button>
         </form>
     </section>
-    </body>
+</body>
 </html>

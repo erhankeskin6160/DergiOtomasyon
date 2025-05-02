@@ -4,6 +4,7 @@ using DergiOtomasyon.Models;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 #nullable disable
@@ -11,9 +12,11 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace DergiOtomasyon.Migrations
 {
     [DbContext(typeof(MagazineDbContext))]
-    partial class MagazineDbContextModelSnapshot : ModelSnapshot
+    [Migration("20250502122638_addsubscriptionplans")]
+    partial class addsubscriptionplans
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder

@@ -1,13 +1,44 @@
-﻿
-@{
+﻿@{
     ViewData["Title"] = "Index";
     Layout = "~/Views/Shared/_ProfileLayout.cshtml";
 }
 
- 
-         @Html.Partial("Profile.cshtml")
+@if (TempData["subscriptionstate"] != null)
+{
+    <div class="alert alert-info" id="subscriptionMessage">
+        @TempData["subscriptionstate"]
+    </div>
 
-         @Html.Partial("MyFavorite.cshtml")
+    <script>
+        setTimeout(function () {
+            var msgBox = document.getElementById("subscriptionMessage");
+            if (msgBox) {
+                msgBox.style.transition = "opacity 1s ease";
+                msgBox.style.opacity = "0";
+                setTimeout(function () {
+                    msgBox.style.display = "none";
+                }, 1000);
+            }
+        }, 5000);
+    </script>
+}
 
-@Html.Partial("MyBorrow.cshtml")
- 
+<section id="profil">
+    @await Component.InvokeAsync("MyProfile")
+</section>
+
+<section id="favoriler">
+    @await Component.InvokeAsync("MyFavorite")
+</section>
+
+<section id="gecmis">
+    @await Component.InvokeAsync("MyBorrow")
+</section>
+
+<section id="bildirimler">
+    @await Component.InvokeAsync("MyNotification")
+</section>
+
+<section id="abonelik">
+    @await Component.InvokeAsync("MySubscription")
+</section>

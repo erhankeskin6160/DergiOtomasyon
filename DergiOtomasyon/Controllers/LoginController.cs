@@ -35,7 +35,7 @@ namespace DergiOtomasyon.Controllers
             {
                 ViewBag.Error = "Kullanıcı adı veya şifre hatalı";
             }
-            return RedirectToAction("Index","Home");
+            return View();
         }
 
         public IActionResult Logout()

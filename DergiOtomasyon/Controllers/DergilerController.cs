@@ -149,7 +149,7 @@ namespace DergiOtomasyon.Controllers
             var magazinedetail = context.MagazinesInfo.Where(x => x.Id == id).FirstOrDefault();
             var magazinelist=context.MagazinesInfo.Where(x => x.MagazineId == magazinedetail.MagazineId).ToList();
 
-            TempData["magazine"] = magazinelist;
+            ViewBag.MagazineList = magazinelist;
             return View(magazinedetail);
         }
 
@@ -175,8 +175,15 @@ namespace DergiOtomasyon.Controllers
                 return NotFound("Kullanıcı bulunamadı.");
             }
 
+            var subscription = context.UserSubscriptions.FirstOrDefault(usersubscription => usersubscription.Id == UserId && usersubscription.IsActive);
+            if (subscription==null || subscription.EndDate<DateTime.Now)
+            {
+                TempData["subscriptionstate"] = "Aboneliğiniz yok veya aboneliğinizin süresi dolmuş lütfen abonelik alınız";
+                return RedirectToAction("Index", "UserSubscription");
+            }
 
-            
+
+
 
             var magazineloan = new Borrowing
             {
@@ -187,6 +194,43 @@ namespace DergiOtomasyon.Controllers
                 
             };
             context.Borrowings.Add(magazineloan);
+            context.SaveChanges();
+            return RedirectToAction("Index", "Home");
+        }
+        [HttpGet]
+        public IActionResult FavoriteMagazine(int MagazineInfoId)
+        {
+            var book = context.MagazinesInfo.FirstOrDefault(b => b.Id == MagazineInfoId);
+            if (book == null)
+            {
+                return NotFound("");
+            }
+
+            var UserId = HttpContext.Session.GetInt32("UserId");
+            if (!UserId.HasValue)
+            {
+                return RedirectToAction("Index", "Login");
+            }
+
+            var user = context.Users.FirstOrDefault(user => user.Id == UserId);
+            if (user == null)
+            {
+                return NotFound("Kullanıcı bulunamadı.");
+            }
+
+             bool isAlreadyFavorite = context.Favorites.Any(f => f.MagazineInfoId == MagazineInfoId && f.UserId == UserId.Value);
+            if (isAlreadyFavorite) 
+            {
+                TempData["Error"] = "Bu dergi zaten favorilerinizde mevcut.";
+                return RedirectToAction("Index", "Home");
+            }
+                var magazinefavorite = new Favorite
+            {
+                MagazineInfoId = MagazineInfoId,
+                UserId = UserId.Value,
+                Favorite_date = DateTime.Now.ToLocalTime(),
+            };
+            context.Favorites.Add(magazinefavorite);
             context.SaveChanges();
             return RedirectToAction("Index", "Home");
         }

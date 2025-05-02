@@ -1,0 +1,12 @@
+﻿@model List<Notification>
+<section id="bildirimler">
+    <h3>🔔 Bildirimler</h3>
+    <ul class="list-group">
+        @foreach (var notification in Model)
+        {
+            <li class="list-group-item">@notification.Title: "@notification.Description - @notification.Notification_date.ToString("f")"</li>
+
+        }
+         
+    </ul>
+</section>

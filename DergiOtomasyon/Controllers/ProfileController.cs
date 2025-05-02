@@ -1,17 +1,39 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using DergiOtomasyon.Models;
+using Microsoft.AspNetCore.Mvc;
 
 namespace DergiOtomasyon.Controllers
 {
     public class ProfileController : Controller
     {
+        MagazineDbContext dbContext = new MagazineDbContext();
+        public ProfileController(MagazineDbContext dbContext)
+        {
+            this.dbContext = dbContext;
+        }
         public IActionResult Index()
         {
+            var UserId = HttpContext.Session.GetInt32("UserId");
+            if (UserId==null)
+            {
+                return RedirectToAction("Index", "Login");
+            }
             return View();
         }
 
-        public PartialViewResult Profile() 
+       
+
+
+        [HttpPost]
+        public IActionResult EditProfile(User updateuser)
+            
         {
-           return  PartialView();
+            var user= dbContext.Users.Find(updateuser.Id);
+            user.Name = updateuser.Name;
+            user.LastName = updateuser.LastName;
+            user.Email = updateuser.Email;
+            user.UserImg = updateuser.UserImg;
+            dbContext.SaveChanges();
+            return RedirectToAction("Index", "Profile");
         }
 
        public PartialViewResult MyFavorite() 
@@ -22,8 +44,20 @@ namespace DergiOtomasyon.Controllers
 
         public PartialViewResult MyBorrow() 
         {
-            return PartialView();
+            var UserId = HttpContext.Session.GetInt32("UserId");
+            var borrow =dbContext.Borrowings.Where(x=>x.UserId==UserId).ToList();
+            ViewBag.borrow = borrow;
+            return PartialView(borrow);
 
+        }
+
+
+        public PartialViewResult MySubscription()
+        {
+            var UserId = HttpContext.Session.GetInt32("UserId");
+            var subscription = dbContext.UserSubscriptions.FirstOrDefault(x => x.UserId == UserId && x.IsActive == true);
+
+            return PartialView(subscription);
         }
     }
 }

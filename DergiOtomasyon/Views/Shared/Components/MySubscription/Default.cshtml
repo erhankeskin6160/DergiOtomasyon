@@ -1,0 +1,33 @@
+﻿@model UserSubscription
+
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+    <title></title>
+</head>
+<body>
+
+
+    <section id="abonelik" class="mb-5">
+ 
+<h2>Abonelik Planları</h2>
+
+
+        @if (Model != null)
+{
+    <div style="border:1px solid #ccc; padding:10px; margin:10px;">
+        <h4>@Model.SubscriptionPlan.PlanName</h4>
+        <p>Fiyat: @Model.SubscriptionPlan.Price ₺</p>
+        <p>Süre: @Model.SubscriptionPlan.DurationInMonths gün</p>
+         
+    </div>
+}
+ else
+ {
+        <div class="alert alert-warning">
+            Şu anda aktif bir aboneliğiniz bulunmamaktadır.
+        </div>
+ }
+    </section>
+</body>
+</html>

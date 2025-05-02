@@ -1,7 +1,10 @@
 using AutoMapper;
 using DergiOtomasyon.AutoMapper;
 using DergiOtomasyon.Models;
+using DergiOtomasyon.Service;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.DependencyInjection;
+using NETCore.MailKit.Core;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -20,6 +23,13 @@ builder.Services.AddSession(options =>
 //builder.Services.AddAutoMapper(typeof(MappingProfile));
 builder.Services.AddDistributedMemoryCache();
 builder.Services.AddAutoMapper(typeof(AutoMapperConfig));
+builder.Services.AddScoped<SubscriptionReminder>();
+builder.Services.AddHostedService<SubscriptionReminderHostedService>();
+builder.Services.AddScoped<IEmailService, DergiOtomasyon.Service.EmailService>();
+builder.Services.AddScoped<SubscriptionService>();
+builder.Services.AddHostedService<SubscriptionBackground>();
+
+
 var app = builder.Build();
 
 // Configure the HTTP request pipeline.

@@ -66,5 +66,6 @@ namespace DergiOtomasyon.Controllers
             return RedirectToAction("Index");
 
         }
+
     }
 }

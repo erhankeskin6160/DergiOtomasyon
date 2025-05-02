@@ -1,0 +1,59 @@
+﻿@model List<SubscriptionPlan>
+
+@{
+    ViewData["Title"] = "Index";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+ 
+@if (TempData["subscriptionstate"] != null)
+{
+    <div class="alert alert-info" id="subscriptionMessage">
+        @TempData["subscriptionstate"]
+    </div>
+
+    <script>
+        setTimeout(function () {
+            var msgBox = document.getElementById("subscriptionMessage");
+            if (msgBox) {
+                msgBox.style.transition = "opacity 1s ease";
+                msgBox.style.opacity = "0";
+                setTimeout(function () {
+                    msgBox.style.display = "none";
+                }, 1000); 
+            }
+        }, 5000);  
+    </script>
+}
+
+
+<h2>Abonelik Planları</h2>
+
+ 
+<table class="table">
+    <thead>
+        <tr>
+            <th>Plan Adı</th>
+            <th>Süre (gün)</th>
+            <th>Fiyat</th>
+            <th>İşlem</th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var plan in Model)
+        {
+            <tr>
+                <td>@plan.PlanName</td>
+                <td>@plan.DurationInMonths.ToString()</td>
+                <td>@plan.Price ₺</td>
+                <td>
+                    <!-- Abone Ol Butonu -->
+                    <form asp-controller="UserSubscription" asp-action="Subscribe" method="post">
+                        <input type="hidden" name="ıd" value="@plan.Id" />
+                        <button type="submit" class="btn btn-primary">Abone Ol</button>
+                    </form>
+                </td>
+            </tr>
+        }
+    </tbody>
+</table>

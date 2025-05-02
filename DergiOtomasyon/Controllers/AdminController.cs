@@ -175,6 +175,32 @@ namespace DergiOtomasyon.Controllers
             return RedirectToAction("Index");
         }
 
+
+        public IActionResult Subscription() 
+        {
+            return View(context.SubscriptionPlans.ToList());
+        }
+
+        [HttpGet]
+        public IActionResult SubscriptionCreate() 
+        {
+            return View();
+        }
+
+
+
+        [HttpPost]
+        public IActionResult SubscriptionCreate( SubscriptionPlan subscriptionPlan)
+        {
+            if (ModelState.IsValid==true)
+            {
+                context.SubscriptionPlans.Add(subscriptionPlan);
+                context.SaveChanges();
+                return RedirectToAction("Index");
+            }
+           
+            return View();
+        }
     }
 }
 

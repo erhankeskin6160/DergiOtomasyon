@@ -1,0 +1,31 @@
+﻿
+@{
+    ViewData["Title"] = "Subscription";
+    Layout = "~/Views/Shared/_AdminLayout.cshtml";
+}
+
+@model List<SubscriptionPlan>
+
+<h2>Abonelik Planları</h2>
+
+<a asp-action="SubscriptionCreate">Yeni Plan Ekle</a>
+
+<table>
+    <thead>
+        <tr>
+            <th>Plan Adı</th>
+            <th>Süre (gün)</th>
+            <th>Fiyat</th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var plan in Model)
+        {
+            <tr>
+                <td>@plan.PlanName</td>
+                <td>@plan.DurationInMonths.ToString("f")</td>
+                <td>@plan.Price ₺</td>
+            </tr>
+        }
+    </tbody>
+</table>

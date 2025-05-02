@@ -1,5 +1,7 @@
 ﻿@model List<MagazineInfo>
 @{
+    Layout = "~/Views/Shared/_Layout.cshtml";
+
     ViewData["Title"] = "Index";
     var magazineInfoCounts = (List<dynamic>)ViewData["MagazineInfoCounts"];
     var aktifKategori = Context.Request.Query["kategori"];
@@ -526,7 +528,7 @@
 
                                                     <div class="btn btn-primary btn-sm detay-btn">
 
-                                                        <a class="text-white" href="#">
+                                                            <a class="text-white" href=" @Url.Action("MagazineDetail","Dergiler")/@item.Id">
                                                             Detayları
                                                             Gör
                                                         </a>

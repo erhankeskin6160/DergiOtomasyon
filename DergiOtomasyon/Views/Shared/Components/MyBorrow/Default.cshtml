@@ -11,15 +11,15 @@
             </tr>
         </thead>
         <tbody>
-            @foreach(var borrow in Model)
+            @foreach (var borrow in Model)
             {
-            <tr>
-                <td>@borrow.MagazineInfo.TopicName</td>
-                <td>@borrow.BorrowingDate</td>
-                <td><a href="#" class="btn btn-sm btn-primary"> Dergi Detay</a></td>
-            </tr>
+                <tr>
+                    <td>@borrow.MagazineInfo.TopicName</td>
+                    <td>@borrow.BorrowingDate</td>
+                    <td><a href="#" class="btn btn-sm btn-primary"> Dergi Detay</a></td>
+                </tr>
             }
-             
+
         </tbody>
     </table>
 </section>

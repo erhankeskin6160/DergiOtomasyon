@@ -1,0 +1,16 @@
+﻿@model List<Favorite>
+
+<section id="favoriler" class="mb-5">
+    <h3>⭐ Favori Dergilerim</h3>
+    <ul class="list-group">
+        @foreach (var favorite in Model)
+        {
+        <li class="list-group-item d-flex justify-content-between align-items-center">
+                @favorite.MagazineInfo.TopicName - @favorite.MagazineInfo.PublicationDate.ToString("MMMM yyyy", new System.Globalization.CultureInfo("tr-TR"))
+
+                <a href="@Url.Action("MagazineDetail","Dergiler",new {Id=favorite.MagazineInfo.Id})" class="btn btn-sm btn-outline-primary">Görüntüle</a>
+        </li>
+        }
+       
+    </ul>
+</section>
