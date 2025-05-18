@@ -23,7 +23,7 @@
     <div class="row">
         <div class="col-md-8">
             <div class="card-img text-center">
-                <h2 class="mb-5 p-3 text-center text-bg-secondary w-50 mx-auto rounded-bottom-3">
+                <h2 class="mb-5 p-3 text-center text-bg-secondary w-50 mx-auto rounded-bottom-3 " id="dergiIsmi">
                     @Model.Magazine.MagazineName
                 </h2>
 
@@ -38,15 +38,21 @@
                         </li>
                         <br />
                         <li class="list-inline-item mt-4 detay-icon">
-                            <i class="fa-solid fa-thumbs-up fa-3x text-primary me-1"></i>
+                            <a href="@Url.Action("LikeMagazine", "Dergiler", new { MagazineInfoId = Model.Id })" title="Beğenilen Listeye  Ekle">
+                            <i class="fa-solid fa-thumbs-up fa-3x text-primary me-1">
+                               
+                               
+                            </i>
+                            </a>
                         </li>
                         <br />
-                        <li class="list-inline-item mt-4 detay-icon">
+                        <li class="list-inline-item mt-4 detay-icon" onclick="KopyalaIsim()">
+                            
                             <i class="fa-solid fa-copy fa-3x text-primary me-1 pb-2"></i>
                         </li>
                         <br />
-                        <li class="list-inline-item mt-4 me-2 detay-icon">
-                            <i class="fa-solid fa-print fa-3x text-primary me-1"></i>
+                        <li class="list-inline-item mt-4 me-2 detay-icon" onclick="Yazdir()">
+                            <i class="fa-solid fa-print fa-3x text-primary me-1 "></i>
                         </li>
                     </ul>
                 </div>
@@ -55,6 +61,21 @@
                 <p class="dergi-text">
                     @* @Model.MagazineDescrition?.Substring(1, 100) *@
                 </p>
+
+                <form method="post" asp-action="Rate" class="rating-form">
+                     <input type="hidden" asp-for="MagazineId"   />
+                   <div class="star-rating">
+                        @for (int i = 1; i <= 5; i++)
+                        {
+                            <button type="submit" name="point" value="@i" class="star-button" title="@i Yıldız">
+                                <i class="fa fa-star"></i>
+                            </button>
+                        }
+                    </div>
+                </form>
+
+                <p>Ortalama Puan: @Model.AverageRating.ToString("0.0")</p>
+
             </div>
         </div>
 
@@ -67,10 +88,10 @@
                     <p class="fw-bold">Dergi Editör: <span class="lead">@Model.Magazine.Editor</span></p>
                 </div>
             </div>
+ 
 
-            <a href="#" class="btn btn-primary p-2 mt-5 w-100 fw-bold">
-                <i class="fa-solid fa-file-pdf"></i>
-                İçerik Önizle
+            <a class="btn btn-primary p-2 mt-5 w-100 fw-bold" href=" @Url.Action("Borrow", "Dergiler")/@Model.Id">
+                Ödünç Al
             </a>
         </div>
     </div>
@@ -97,9 +118,27 @@
                                 
                             </div>
                         </div>
+
                     </div>
                 </div>
             }
         </div>
     </div>
 </div>
+<script>
+    function Yazdir() {
+          window.print();
+    }
+
+ 
+    function KopyalaIsim() {
+        var metin = document.getElementById("dergiIsmi").innerText;
+        navigator.clipboard.writeText(metin).then(function () {
+            alert("Kitap ismi kopyalandı: " + metin);
+        }, function (err) {
+            alert("Kopyalama başarısız oldu.");
+        });
+    }
+</script>
+
+ 

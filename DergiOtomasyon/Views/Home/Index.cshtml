@@ -51,9 +51,25 @@
         transform: translateY(-5px);
         box-shadow: 0 8px 16px rgba(0, 0, 0, 0.2);
         }
+
     </style>
 </head>
 <body>
+    @if (TempData["SuccesLike"] != null)
+    {
+        <div class="alert alert-primary" role="alert" id="successLikeAlert">
+            @TempData["SuccesLike"]
+        </div>
+        
+    }
+    <script>
+        setTimeout(function () {
+            var alertBox = document.getElementById('successLikeAlert');
+            if (alertBox) {
+                alertBox.style.display = 'none';
+            }
+        }, 5000); // 5000 milisaniye = 5 saniye
+    </script>
 
     <section>
 
@@ -247,8 +263,14 @@
         </div>
     </div>
     <section>
+
+        @{
+            var sorgusayfa = Context.Request.Query["page"];
+            int page = string.IsNullOrEmpty(sorgusayfa) ? 1 : Convert.ToInt32(sorgusayfa);
+        }
+        @await Component.InvokeAsync("NewPublications", new { page = page })
         <!-- Kitap Kartları -->
-        <div class="container">
+        @* <div class="container">
             <div class="mt-5">
                 <h3 class="mb-3">Yeni Yayınlar</h3>
                 <div class="row">
@@ -270,7 +292,7 @@
                                     <a href="@Url.Action("Borrow", "Dergiler", new { MagazineInfoId = item.Id })" class="btn btn-primary btn-sm index-detay-btn ms-3 mt-2 me-5">
                                         Ödünç Al
                                     </a>
-                                   
+
                                 <!-- <a href="#" class="btn btn-primary btn-sm ms-2 me-5">Detayları Gör</a> -->
 
 
@@ -293,12 +315,12 @@
 
                                 </div>
                             </div>
-                                
+
                         </div>
-                        
+
                     </div>
                     }
-                   
+
 
                     <div class="mt-1 p-3">
                         <nav aria-label="page navigation">
@@ -316,7 +338,7 @@
                         </nav>
                     </div>
                 </div>
-            </div>
+            </div> *@
     </section>
     <!-- Popüler Dergiler -->
     <section>
@@ -329,282 +351,67 @@
                     <h3 class="p-3"> Popüler Dergiler</h3>
 
                 </div>
-
+                @foreach (var populerdergi in ViewBag.populerdergi as List<Borrowing>)
+                    {
                 <div class="col-xl-2 me-4 mb-2 col-lg-4 col-md-6 col-sm-6">
-                    <div class="book-card">
-                        <img src="img/edebiyatdergisi.jpg" alt="Kitap Kapağı" class="mb-3">
-                        <div class="book-card-body">
-                            <h5 class="book-title text-center">Kitap Başlığı 1</h5>
-                            <p class="text-muted fs-6 text-center">Yayın Tarihi: Ekim 2024</p>
-                            <p class="text-break fw-medium ps-1">
-                                Kısa kitap açıklaması. Kitabın ana konuları ve içeriği
-                                hakkında kısa bilgi.
-                            </p>
+                    
+                        <div class="book-card">
+                            <img src="@populerdergi.MagazineInfo.MagazineImg" alt="Kitap Kapağı" class="mb-3">
+                            <div class="book-card-body">
+                                <h5 class="book-title text-center">@populerdergi.MagazineInfo.TopicName</h5>
+                                <p class="text-muted fs-6 text-center">@populerdergi.MagazineInfo.PublicationDate.ToShortDateString()</p>
+                                <p class="text-break fw-medium ps-1">
+                                    @populerdergi.MagazineInfo.MagazineDescrition.Substring(populerdergi.MagazineInfo.MagazineDescrition.Length);
+                                </p>
 
 
-                            <!--Button-->
-                            <div class="row">
+                                <!--Button-->
+                                <div class="row">
 
-                                <div class="col-6">
-
-
-                                    <a href="#" class="btn btn-primary btn-sm index-detay-btn ms-2">Detayları Gör</a>
-                                </div>
-                                <div class="col-6 d-flex justify-content-end gap-2">
-                                    <a href="" style="color: #333;">
-                                        <svg xmlns="http://www.w3.org/2000/svg"
-                                             viewBox="-2 -2 24 24" width="20" fill="currentColor">
-                                            <path d="M1 0h6a1 1 0 1 1 0 2H3.414L18 16.586V13a1 1 0 0 1 2 0v6a1 1 0 0 1-1 1h-6a1 1 0 0 1 0-2h3.586L2 3.414V7a1 1 0 1 1-2 0V1a1 1 0 0 1 1-1z">
-                                            </path>
-                                        </svg>
-                                    </a>
-                                    <a href="" style="color: #333;">
-                                        <svg xmlns="http://www.w3.org/2000/svg"
-                                             viewBox="-2 -2.5 24 24" width="28" fill="currentColor">
-                                            <path class=""
-                                                  d="M10 13.554l3.517 1.85-.672-3.917 2.846-2.774-3.932-.571L10 4.579 8.241 8.142l-3.932.571 2.846 2.774-.672 3.916L10 13.554zm0 2.26L3.827 19.06l1.179-6.875L.01 7.317l6.902-1.003L10 .06l3.087 6.254 6.902 1.003-4.995 4.868 1.18 6.875L10 15.814z">
-                                            </path>
-                                        </svg>
-                                    </a>
-
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-
-                <div div class="col-xl-2 me-4 mb-2 col-lg-4 col-md-6 col-sm-6">
-                    <div class="book-card">
-                        <img src="img/dergiyayın1.jpg" alt="Kitap Kapağı" class="mb-3">
-                        <div class="book-card-body">
-                            <h5 class="book-title text-center">Kitap Başlığı 1</h5>
-                            <p class="text-muted fs-6 text-center">Yayın Tarihi: Ekim 2024</p>
-                            <p class="text-break fw-medium ps-1">
-                                Kısa kitap açıklaması. Kitabın ana konuları ve içeriği
-                                hakkında kısa bilgi.
-                            </p>
+                                    <div class="col-6">
 
 
-                            <!--Button-->
-                            <div class="row">
+                                        <a href="@Url.Action("MagazineDetail","Dergiler")/@populerdergi.MagazineInfo.Id" class="btn btn-primary btn-sm index-detay-btn ms-3 mt-2 me-5">
+                                            Detayları
+                                            Gör
+                                        </a>
 
-                                <div class="col-6">
+                                        <a href="@Url.Action("Borrow", "Dergiler", new { MagazineInfoId = populerdergi.MagazineInfo.Id })" class="btn btn-primary btn-sm index-detay-btn ms-3 mt-2 me-5">
+                                            Ödünç Al
+                                        </a>
+                                    </div>
+                                    <div class="col-6 d-flex justify-content-end gap-2">
+                                        <a href="" style="color: #333;">
+                                            <svg xmlns="http://www.w3.org/2000/svg"
+                                            viewBox="-2 -2 24 24" width="20" fill="currentColor">
+                                                <path d="M1 0h6a1 1 0 1 1 0 2H3.414L18 16.586V13a1 1 0 0 1 2 0v6a1 1 0 0 1-1 1h-6a1 1 0 0 1 0-2h3.586L2 3.414V7a1 1 0 1 1-2 0V1a1 1 0 0 1 1-1z">
+                                                </path>
+                                            </svg>
+                                        </a>
+                                        <a href="" style="color: #333;">
+                                            <svg xmlns="http://www.w3.org/2000/svg"
+                                            viewBox="-2 -2.5 24 24" width="28" fill="currentColor">
+                                                <path class=""
+                                                d="M10 13.554l3.517 1.85-.672-3.917 2.846-2.774-3.932-.571L10 4.579 8.241 8.142l-3.932.571 2.846 2.774-.672 3.916L10 13.554zm0 2.26L3.827 19.06l1.179-6.875L.01 7.317l6.902-1.003L10 .06l3.087 6.254 6.902 1.003-4.995 4.868 1.18 6.875L10 15.814z">
+                                                </path>
+                                            </svg>
+                                        </a>
 
-
-                                    <a href="#" class="btn btn-primary btn-sm index-detay-btn ms-2">Detayları Gör</a>
-                                </div>
-                                <div class="col-6 d-flex justify-content-end gap-2">
-                                    <a href="" style="color: #333;">
-                                        <svg xmlns="http://www.w3.org/2000/svg"
-                                             viewBox="-2 -2 24 24" width="20" fill="currentColor">
-                                            <path d="M1 0h6a1 1 0 1 1 0 2H3.414L18 16.586V13a1 1 0 0 1 2 0v6a1 1 0 0 1-1 1h-6a1 1 0 0 1 0-2h3.586L2 3.414V7a1 1 0 1 1-2 0V1a1 1 0 0 1 1-1z">
-                                            </path>
-                                        </svg>
-                                    </a>
-                                    <a href="" style="color: #333;">
-                                        <svg xmlns="http://www.w3.org/2000/svg"
-                                             viewBox="-2 -2.5 24 24" width="28" fill="currentColor">
-                                            <path class=""
-                                                  d="M10 13.554l3.517 1.85-.672-3.917 2.846-2.774-3.932-.571L10 4.579 8.241 8.142l-3.932.571 2.846 2.774-.672 3.916L10 13.554zm0 2.26L3.827 19.06l1.179-6.875L.01 7.317l6.902-1.003L10 .06l3.087 6.254 6.902 1.003-4.995 4.868 1.18 6.875L10 15.814z">
-                                            </path>
-                                        </svg>
-                                    </a>
-
+                                    </div>
                                 </div>
                             </div>
+                           
                         </div>
-                    </div>
+                       
                 </div>
+                }
+               
 
-                <div div class="col-xl-2 me-4 mb-2 col-lg-4 col-md-6 col-sm-6">
-                    <div class="book-card">
-                        <img src="img/dergiyayın1.jpg" alt="Kitap Kapağı" class="mb-3">
-                        <div class="book-card-body">
-                            <h5 class="book-title text-center">Kitap Başlığı 1</h5>
-                            <p class="text-muted fs-6 text-center">Yayın Tarihi: Ekim 2024</p>
-                            <p class="text-break fw-medium ps-1">
-                                Kısa kitap açıklaması. Kitabın ana konuları ve içeriği
-                                hakkında kısa bilgi.
-                            </p>
-
-
-                            <!--Button-->
-                            <div class="row">
-
-                                <div class="col-6">
-
-
-                                    <a href="#" class="btn btn-primary btn-sm index-detay-btn ms-2">Detayları Gör</a>
-                                </div>
-                                <div class="col-6 d-flex justify-content-end gap-2">
-                                    <a href="" style="color: #333;">
-                                        <svg xmlns="http://www.w3.org/2000/svg"
-                                             viewBox="-2 -2 24 24" width="20" fill="currentColor">
-                                            <path d="M1 0h6a1 1 0 1 1 0 2H3.414L18 16.586V13a1 1 0 0 1 2 0v6a1 1 0 0 1-1 1h-6a1 1 0 0 1 0-2h3.586L2 3.414V7a1 1 0 1 1-2 0V1a1 1 0 0 1 1-1z">
-                                            </path>
-                                        </svg>
-                                    </a>
-                                    <a href="" style="color: #333;">
-                                        <svg xmlns="http://www.w3.org/2000/svg"
-                                             viewBox="-2 -2.5 24 24" width="28" fill="currentColor">
-                                            <path class=""
-                                                  d="M10 13.554l3.517 1.85-.672-3.917 2.846-2.774-3.932-.571L10 4.579 8.241 8.142l-3.932.571 2.846 2.774-.672 3.916L10 13.554zm0 2.26L3.827 19.06l1.179-6.875L.01 7.317l6.902-1.003L10 .06l3.087 6.254 6.902 1.003-4.995 4.868 1.18 6.875L10 15.814z">
-                                            </path>
-                                        </svg>
-                                    </a>
-
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-
-                <div div class="col-xl-2 me-4 mb-2 col-lg-4 col-md-6 col-sm-6">
-                    <div class="book-card">
-                        <img src="img/dergiyayın1.jpg" alt="Kitap Kapağı" class="mb-3">
-                        <div class="book-card-body">
-                            <h5 class="book-title text-center">Kitap Başlığı 1</h5>
-                            <p class="text-muted fs-6 text-center">Yayın Tarihi: Ekim 2024</p>
-                            <p class="text-break fw-medium ps-1">
-                                Kısa kitap açıklaması. Kitabın ana konuları ve içeriği
-                                hakkında kısa bilgi.
-                            </p>
-
-
-                            <!--Button-->
-                            <div class="row">
-
-                                <div class="col-6">
-
-
-                                    <a href="#" class="btn btn-primary btn-sm index-detay-btn ms-2">Detayları Gör</a>
-                                </div>
-                                <div class="col-6 d-flex justify-content-end gap-2">
-                                    <a href="" style="color: #333;">
-                                        <svg xmlns="http://www.w3.org/2000/svg"
-                                             viewBox="-2 -2 24 24" width="20" fill="currentColor">
-                                            <path d="M1 0h6a1 1 0 1 1 0 2H3.414L18 16.586V13a1 1 0 0 1 2 0v6a1 1 0 0 1-1 1h-6a1 1 0 0 1 0-2h3.586L2 3.414V7a1 1 0 1 1-2 0V1a1 1 0 0 1 1-1z">
-                                            </path>
-                                        </svg>
-                                    </a>
-                                    <a href="" style="color: #333;">
-                                        <svg xmlns="http://www.w3.org/2000/svg"
-                                             viewBox="-2 -2.5 24 24" width="28" fill="currentColor">
-                                            <path class=""
-                                                  d="M10 13.554l3.517 1.85-.672-3.917 2.846-2.774-3.932-.571L10 4.579 8.241 8.142l-3.932.571 2.846 2.774-.672 3.916L10 13.554zm0 2.26L3.827 19.06l1.179-6.875L.01 7.317l6.902-1.003L10 .06l3.087 6.254 6.902 1.003-4.995 4.868 1.18 6.875L10 15.814z">
-                                            </path>
-                                        </svg>
-                                    </a>
-
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-                <div class="col-xl-2 me-4 mb-2 col-lg-4 col-md-6 col-sm-6">
-                    <div class="book-card">
-                        <img src="img/akev.jpg" alt="Kitap Kapağı" class="mb-3">
-                        <div class="book-card-body">
-                            <h5 class="book-title text-center">Kitap Başlığı 1</h5>
-                            <p class="text-muted fs-6 text-center">Yayın Tarihi: Ekim 2024</p>
-                            <p class="text-break fw-medium ps-1">
-                                Kısa kitap açıklaması. Kitabın ana konuları ve içeriği
-                                hakkında kısa bilgi.
-                            </p>
-
-
-                            <!--Button-->
-                            <div class="row">
-
-                                <div class="col-6">
-
-
-                                    <a href="#" class="btn btn-primary btn-sm index-detay-btn ms-2">Detayları Gör</a>
-                                </div>
-                                <div class="col-6 d-flex justify-content-end gap-2">
-                                    <a href="" style="color: #333;">
-                                        <svg xmlns="http://www.w3.org/2000/svg"
-                                             viewBox="-2 -2 24 24" width="20" fill="currentColor">
-                                            <path d="M1 0h6a1 1 0 1 1 0 2H3.414L18 16.586V13a1 1 0 0 1 2 0v6a1 1 0 0 1-1 1h-6a1 1 0 0 1 0-2h3.586L2 3.414V7a1 1 0 1 1-2 0V1a1 1 0 0 1 1-1z">
-                                            </path>
-                                        </svg>
-                                    </a>
-                                    <a href="" style="color: #333;">
-                                        <svg xmlns="http://www.w3.org/2000/svg"
-                                             viewBox="-2 -2.5 24 24" width="28" fill="currentColor">
-                                            <path class=""
-                                                  d="M10 13.554l3.517 1.85-.672-3.917 2.846-2.774-3.932-.571L10 4.579 8.241 8.142l-3.932.571 2.846 2.774-.672 3.916L10 13.554zm0 2.26L3.827 19.06l1.179-6.875L.01 7.317l6.902-1.003L10 .06l3.087 6.254 6.902 1.003-4.995 4.868 1.18 6.875L10 15.814z">
-                                            </path>
-                                        </svg>
-                                    </a>
-
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-
-
-                <div class="col-xl-2 me-4 mb-2 col-lg-4 col-md-6 col-sm-6">
-                    <div class="book-card">
-                        <img src="img/nazialmanyası.jpg" alt="Kitap Kapağı" class="mb-3">
-                        <div class="book-card-body">
-                            <h5 class="book-title text-center">Kitap Başlığı 1</h5>
-                            <p class="text-muted fs-6 text-center">Yayın Tarihi: Ekim 2024</p>
-                            <p class="text-break fw-medium ps-1">
-                                Kısa kitap açıklaması. Kitabın ana konuları ve içeriği
-                                hakkında kısa bilgi.
-                            </p>
-
-
-                            <!--Button-->
-                            <div class="row">
-
-                                <div class="col-6">
-
-
-                                    <a href="#" class="btn btn-primary btn-sm index-detay-btn ms-2">Detayları Gör</a>
-                                </div>
-                                <div class="col-6 d-flex justify-content-end gap-2">
-                                    <a href="" style="color: #333;">
-                                        <svg xmlns="http://www.w3.org/2000/svg"
-                                             viewBox="-2 -2 24 24" width="20" fill="currentColor">
-                                            <path d="M1 0h6a1 1 0 1 1 0 2H3.414L18 16.586V13a1 1 0 0 1 2 0v6a1 1 0 0 1-1 1h-6a1 1 0 0 1 0-2h3.586L2 3.414V7a1 1 0 1 1-2 0V1a1 1 0 0 1 1-1z">
-                                            </path>
-                                        </svg>
-                                    </a>
-                                    <a href="" style="color: #333;">
-                                        <svg xmlns="http://www.w3.org/2000/svg"
-                                             viewBox="-2 -2.5 24 24" width="28" fill="currentColor">
-                                            <path class=""
-                                                  d="M10 13.554l3.517 1.85-.672-3.917 2.846-2.774-3.932-.571L10 4.579 8.241 8.142l-3.932.571 2.846 2.774-.672 3.916L10 13.554zm0 2.26L3.827 19.06l1.179-6.875L.01 7.317l6.902-1.003L10 .06l3.087 6.254 6.902 1.003-4.995 4.868 1.18 6.875L10 15.814z">
-                                            </path>
-                                        </svg>
-                                    </a>
-
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
+                 
 
             </div>
 
-            <div class="mt-1 p-3">
-                <nav aria-label="page navigation">
-                    <ul class="pagination">
-                        <li class="page-item disabled">
-                            <a href="#" class="page-link">Geri</a>
-                        </li>
-                        <li class="page-item active"><a href="#" class="page-link">1</a></li>
-                        <li class="page-item"><a href="#" class="page-link">2</a></li>
-                        <li class="page-item"><a href="#" class="page-link">3</a></li>
-                        <li class="page-item">
-                            <a href="#" class="page-link" aria-label="Next">İleri</a>
-                        </li>
-                    </ul>
-                </nav>
-            </div>
+           
         </div>
     </section>
 
@@ -624,39 +431,56 @@
                 </div>
 
                 <div class="col-2 mb-3">
-                    <div class="card card-category tecnology-category ">
-                        <div class="text-center text-white p-2">Teknoloji</div>
-
-                    </div>
+                    <a href="@Url.Action("Index", "Dergiler", new { kategori = "Teknoloji" })" style="text-decoration: none;">
+                        <div class="card card-category tecnology-category">
+                            <div class="text-center text-white p-2">Teknoloji</div>
+                        </div>
+                    </a>
                 </div>
+
                 <div class="col-2 mb-2">
+                    <a href="@Url.Action("Index", "Dergiler", new { kategori = "Sanat" })" style="text-decoration: none;">
+
                     <div class="card card-category art-category ">
                         <div class="text-center text-white p-2"> Sanat</div>
 
                     </div>
+                    </a>
                 </div>
                 <div class="col-2 mb-2">
+                    <a href="@Url.Action("Index", "Dergiler", new { kategori = "Tarih" })" style="text-decoration: none;">
+
                     <div class="card card-category history-category ">
                         <div class="text-center text-white p-2">Tarih</div>
 
                     </div>
+                    </a>
                 </div>
                 <div class="col-2 mb-2">
+                    <a href="@Url.Action("Index", "Dergiler", new { kategori = "Edebiyat" })" style="text-decoration: none;">
+
                     <div class="card card-category literature-category">
                         <div class="text-center text-white p-2">Edebiyat</div>
                     </div>
+                    </a>
                 </div>
                 <div class="col-2 mb-2">
+                    <a href="@Url.Action("Index", "Dergiler", new { kategori = "Müzik" })" style="text-decoration: none;">
+
                     <div class="card card-category music-category">
                         <div class="text-center text-white p-2">Müzik</div>
 
                     </div>
+                    </a>
                 </div>
                 <div class="col-2 mb-2">
+                    <a href="@Url.Action("Index", "Dergiler", new { kategori = "Ekonomi" })" style="text-decoration: none;">
+
                     <div class="card card-category economy-category">
                         <div class="text-center text-white p-2">Ekonomi</div>
 
                     </div>
+                    </a>
                 </div>
 
 

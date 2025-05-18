@@ -33,7 +33,7 @@ namespace DergiOtomasyon.Service
 
                     try
                     {
-                        await _emailSender.SendAsync(user.Email, "Abonelik Hatırlatması",, message);
+                        await _emailSender.SendAsync(user.Email, "Abonelik Hatırlatması", message);
                     }
                     catch (Exception exception)
                     {

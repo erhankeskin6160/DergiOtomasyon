@@ -3,6 +3,9 @@
     Layout = "~/Views/Shared/_ProfileLayout.cshtml";
 }
 
+
+ 
+
 @if (TempData["subscriptionstate"] != null)
 {
     <div class="alert alert-info" id="subscriptionMessage">
@@ -22,6 +25,9 @@
         }, 5000);
     </script>
 }
+
+ 
+
 
 <section id="profil">
     @await Component.InvokeAsync("MyProfile")

@@ -3,6 +3,25 @@
     ViewData["Title"] = "Index";
     Layout = "~/Views/Shared/_AdminLayout.cshtml";
 }
+@if (TempData["AdminSuccesLogin"] != null)
+{
+    <div class="alert alert-info" id="adminsucceslogin">
+        @TempData["AdminSuccesLogin"]
+    </div>
 
-<h1>Index</h1>
+    <script>
+        setTimeout(function () {
+            var msgBox = document.getElementById("adminsucceslogin");
+            if (msgBox) {
+                msgBox.style.transition = "opacity 1s ease";
+                msgBox.style.opacity = "0";
+                setTimeout(function () {
+                    msgBox.style.display = "none";
+                }, 1000);
+            }
+        }, 5000);
+    </script>
+}
+
+
 

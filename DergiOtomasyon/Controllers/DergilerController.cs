@@ -3,6 +3,7 @@ using DergiOtomasyon.DTO;
 using DergiOtomasyon.Models;
 using Microsoft.AspNetCore.Mvc;
 using System.Diagnostics.Metrics;
+using System.Linq;
 
 namespace DergiOtomasyon.Controllers
 {
@@ -17,7 +18,7 @@ namespace DergiOtomasyon.Controllers
         }
 
         [HttpGet]
-        public IActionResult Index(string? search,string? sıralama,string?alfabesıralama,string kategori, string? tarih, string? yayınyılı,bool?populersıralamaaktifmi=false,int? pagesize=20)
+        public IActionResult Index(string? search,string? sıralama,string?alfabesıralama,string kategori,int? yıldızsıralama,string?yayınevi,string?yazarfiltreleme, string? tarih, string? yayınyılı,string keyword,bool?populersıralamaaktifmi=false,bool encokbegenilen=false,int? pagesize=20)
         
         
         
@@ -26,6 +27,8 @@ namespace DergiOtomasyon.Controllers
 
             var allcategory = context.Categories.ToList();
             TempData["Kategoriler"] = allcategory;
+
+          
 
             //Dergilerin   Kategorisini filteler filtresi
             var magazinelist = string.IsNullOrEmpty(kategori)
@@ -68,6 +71,27 @@ namespace DergiOtomasyon.Controllers
                      .FirstOrDefault(p => p.MagazineInfoId == mi.Id)?.NumberReads ?? 0)
                  .ToList();
 
+                ViewBag.PopulerlikAktifMi = populersıralamaaktifmi;
+            }
+            //En çok beğenilene göre
+
+            if (encokbegenilen == true)
+            {
+                var likemagizeinfolist = context.Likes  
+                    .GroupBy(x => x.MagazineInfoId)
+                    .Select(like => new
+                    {
+                        MagazineInfoId = like.Key,
+                        NumberLike = like.Count()
+                    }).OrderByDescending(x=>x.NumberLike)
+                    .ToList();
+
+                magazineinfolist = magazineinfolist
+                    .OrderByDescending(m =>
+                        likemagizeinfolist.FirstOrDefault(p => p.MagazineInfoId == m.MagazineId)?.NumberLike ?? 0)
+                    .ToList();
+
+                ViewBag.EnCokBegilenAktifmi=encokbegenilen;
             }
 
             // Yayın Yılına Göre Filtreleme
@@ -131,10 +155,64 @@ namespace DergiOtomasyon.Controllers
             //pagesize göre sıralama
              magazineinfolist=magazineinfolist.Take((int)pagesize).ToList(); 
             var populerlikAktifMi = Request.Query["populerlikaktifmi"];
-            ViewBag.PopulerlikAktifMi = populerlikAktifMi;
+            
 
             ViewBag.InfoCount = magazineInfoCounts;
-          
+
+
+
+            // yıldız sayısana göre sıralama
+
+            if (yıldızsıralama.HasValue)
+            {
+                magazineinfolist = magazineinfolist.Where(x=>x.Ratings.Any(r => r.Point == yıldızsıralama)).ToList();
+            }
+            // Her dergideki yazarları al, virgülle ayır ve tekrarsız olarak listele
+            var authorlist = magazineinfolist
+                .SelectMany(m => m.Authors.Split(','))    
+                .Select(y => y.Trim().ToLowerInvariant())                   
+                 
+                .Distinct()                              
+                .ToList();
+
+            //Yazar Filtreleme
+
+            if (yazarfiltreleme!=null)
+            {
+                magazineinfolist = magazineinfolist
+    .Where(m => m.Authors.Split(',')
+        .Select(a => a.Trim())
+        .Contains(yazarfiltreleme))
+    .ToList();
+            }
+            ViewBag.authorlist = authorlist;
+
+            //yayınevine göre sıralama
+            if (!string.IsNullOrEmpty(yayınevi))
+            {
+                magazineinfolist = magazineinfolist
+                    .Where(m => m.Magazine.Publisher != null && m.Magazine.Publisher.IndexOf(yayınevi, StringComparison.OrdinalIgnoreCase) >= 0)
+                    .ToList();
+            }
+            ViewBag.Publisher = context.Magazines.Select(x=>x.Publisher).ToList();
+      context.Magazines.Select(x => x.Publisher).ToList();
+
+
+
+            // Keyword göre Sıralama
+            if (!string.IsNullOrEmpty(keyword))
+            {
+                var keywords = keyword.Split(',').Select(x => x.Trim().ToLower()).ToList();
+
+                 magazineinfolist = magazineinfolist.Where(x =>
+                    x.Keyword != null &&
+                    x.Keyword.Split(',')
+                        .Select(k => k.Trim().ToLower())
+                        .Any(k => keywords.Contains(k))
+                ).ToList();
+
+            }
+            ViewBag.AllMagazine = magazineinfolist.Count().ToString();
             return View(magazineinfolist);
         
 
@@ -175,7 +253,7 @@ namespace DergiOtomasyon.Controllers
                 return NotFound("Kullanıcı bulunamadı.");
             }
 
-            var subscription = context.UserSubscriptions.FirstOrDefault(usersubscription => usersubscription.Id == UserId && usersubscription.IsActive);
+            var subscription = context.UserSubscriptions.FirstOrDefault(usersubscription => usersubscription.UserId == UserId && usersubscription.IsActive);
             if (subscription==null || subscription.EndDate<DateTime.Now)
             {
                 TempData["subscriptionstate"] = "Aboneliğiniz yok veya aboneliğinizin süresi dolmuş lütfen abonelik alınız";
@@ -230,9 +308,95 @@ namespace DergiOtomasyon.Controllers
                 UserId = UserId.Value,
                 Favorite_date = DateTime.Now.ToLocalTime(),
             };
+
             context.Favorites.Add(magazinefavorite);
+            TempData["SuccesLike"] = "Dergi Favori  Listeye eklendi";
             context.SaveChanges();
             return RedirectToAction("Index", "Home");
+        }
+
+        [HttpGet]
+        public IActionResult LikeMagazine(int MagazineInfoId)
+        {
+            var book = context.MagazinesInfo.FirstOrDefault(b => b.Id == MagazineInfoId);
+            if (book == null)
+            {
+                return NotFound("");
+            }
+
+            var UserId = HttpContext.Session.GetInt32("UserId");
+            if (!UserId.HasValue)
+            {
+                return RedirectToAction("Index", "Login");
+            }
+
+            var user = context.Users.FirstOrDefault(user => user.Id == UserId);
+            if (user == null)
+            {
+                return NotFound("Kullanıcı bulunamadı.");
+            }
+
+            bool isAlreadyFavorite = context.Favorites.Any(f => f.MagazineInfoId == MagazineInfoId && f.UserId == UserId.Value);
+            if (isAlreadyFavorite)
+            {
+                TempData["Error"] = "Bu dergi zaten beğendiniz  .";
+                return RedirectToAction("Index", "Home");
+            }
+            var magazinelike = new Like
+            {
+                MagazineInfoId = MagazineInfoId,
+                UserId = UserId.Value,
+                Lıke_date = DateTime.Now.ToLocalTime(),
+            };
+            context.Likes.Add(magazinelike);
+            TempData["SuccesLike"] = "Dergi Beğenilen Listeye eklendi";
+            context.SaveChanges();
+            return RedirectToAction("Index", "Home");
+        }
+
+        public IActionResult MagizineCopy() 
+        {
+            var UserId = HttpContext.Session.GetInt32("UserId");
+            if (!UserId.HasValue)
+            {
+                return RedirectToAction("Index", "Login");
+            }
+            return View(context.MagazinesInfo.ToList());
+
+        }
+
+        [HttpPost]
+        public IActionResult Rate(int MagazineId, int point) 
+        {
+            var UserId = HttpContext.Session.GetInt32("UserId");
+            if (!UserId.HasValue)
+            {
+                return RedirectToAction("Index", "Login");
+            }
+            var rating = context.Ratings.FirstOrDefault(x => x.UserId == UserId && x.MagazineInfoId == MagazineId);
+            if (rating != null)
+            {
+                rating.Point = point;
+               rating.RatedDate = DateTime.Now;
+                return RedirectToAction("MagazineDetail", new { id = MagazineId });
+
+            }
+            else
+            {
+                var ratings = new Rating
+                {
+                    UserId = UserId.Value,
+                    MagazineInfoId = MagazineId,
+                    Point = point,
+                    RatedDate = DateTime.Now
+                };
+                context.Ratings.Add(ratings);
+                context.SaveChanges();
+                return RedirectToAction("Details", new { id = MagazineId });
+
+            }
+
+            return View();  
         }
 
     }

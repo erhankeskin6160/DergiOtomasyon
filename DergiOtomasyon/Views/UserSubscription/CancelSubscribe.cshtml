@@ -1,0 +1,60 @@
+﻿@model UserSubscription
+@{
+    ViewData["Title"] = "Abonelik İptal";
+}
+
+<div class="container mt-4">
+    <div class="row">
+        <div class="col-md-8 offset-md-2">
+            <div class="card">
+                <div class="card-header bg-danger text-white">
+                    <h5>Abonelik İptal İşlemi</h5>
+                </div>
+                <div class="card-body">
+                    <h6>Mevcut Abonelik Bilgileri:</h6>
+                    <ul>
+                        <li>Abonelik Planı: @Model.SubscriptionPlan.PlanName</li>
+                        <li>Başlangıç Tarihi: @Model.StartDate.ToString("dd.MM.yyyy")</li>
+                        <li>Bitiş Tarihi: @Model.EndDate.ToString("dd.MM.yyyy")</li>
+                    </ul>
+
+                    <div class="alert alert-warning">
+                        <strong>Uyarı!</strong> İptal seçeneklerinden birini seçiniz:
+                    </div>
+
+                    <div class="row mt-4">
+                        <div class="col-md-6">
+                            <div class="card">
+                                <div class="card-body text-center">
+                                    <h5>Hemen İptal Et</h5>
+                                    <p>Aboneliğiniz anında sonlandırılacak ve bu tarihten sonra hizmet alamayacaksınız.</p>
+                                    <a href="@Url.Action("CancelSubscribe", "Subscription", new { cancelImmediately = true })"
+                                       class="btn btn-danger" onclick="return confirm('Aboneliğinizi hemen iptal etmek istediğinize emin misiniz?')">
+                                        Hemen İptal Et
+                                    </a>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-md-6">
+                            <div class="card">
+                                <div class="card-body text-center">
+                                    <h5>Süre Sonunda İptal Et</h5>
+                                    <p>Aboneliğiniz şimdi yenilenmeyecek şekilde işaretlenecek ve mevcut süre bitiminde sonlanacaktır.</p>
+                                    <a href="@Url.Action("CancelSubscribe", "Subscription", new { cancelImmediately = false })"
+                                       class="btn btn-warning" onclick="return confirm('Aboneliğinizin süre sonunda iptal edilmesini onaylıyor musunuz?')">
+                                        Süre Sonunda İptal Et
+                                    </a>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="card-footer">
+                    <a href="@Url.Action("Index", "Profile")" class="btn btn-secondary">
+                        <i class="fa fa-arrow-left"></i> Vazgeç
+                    </a>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

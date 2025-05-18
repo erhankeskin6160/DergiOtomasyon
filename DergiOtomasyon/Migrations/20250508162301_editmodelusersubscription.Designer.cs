@@ -4,6 +4,7 @@ using DergiOtomasyon.Models;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 #nullable disable
@@ -11,9 +12,11 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace DergiOtomasyon.Migrations
 {
     [DbContext(typeof(MagazineDbContext))]
-    partial class MagazineDbContextModelSnapshot : ModelSnapshot
+    [Migration("20250508162301_editmodelusersubscription")]
+    partial class editmodelusersubscription
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -62,9 +65,6 @@ namespace DergiOtomasyon.Migrations
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
 
                     b.Property<DateTime>("BorrowingDate")
-                        .HasColumnType("datetime2");
-
-                    b.Property<DateTime>("DeliveryDate")
                         .HasColumnType("datetime2");
 
                     b.Property<bool?>("IsOverdue")
@@ -161,32 +161,6 @@ namespace DergiOtomasyon.Migrations
                     b.HasIndex("UserId");
 
                     b.ToTable("Favorites");
-                });
-
-            modelBuilder.Entity("DergiOtomasyon.Models.Like", b =>
-                {
-                    b.Property<int>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("int");
-
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
-
-                    b.Property<DateTime>("Lıke_date")
-                        .HasColumnType("datetime2");
-
-                    b.Property<int>("MagazineInfoId")
-                        .HasColumnType("int");
-
-                    b.Property<int>("UserId")
-                        .HasColumnType("int");
-
-                    b.HasKey("Id");
-
-                    b.HasIndex("MagazineInfoId");
-
-                    b.HasIndex("UserId");
-
-                    b.ToTable("Likes");
                 });
 
             modelBuilder.Entity("DergiOtomasyon.Models.Magazine", b =>
@@ -300,31 +274,6 @@ namespace DergiOtomasyon.Migrations
                     b.HasKey("Id");
 
                     b.ToTable("Notifications");
-                });
-
-            modelBuilder.Entity("DergiOtomasyon.Models.PenaltyLog", b =>
-                {
-                    b.Property<int>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("int");
-
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
-
-                    b.Property<int>("Amount")
-                        .HasColumnType("int");
-
-                    b.Property<int>("BorrowingId")
-                        .HasColumnType("int");
-
-                    b.Property<DateTime>("PenaltyDate")
-                        .HasColumnType("datetime2");
-
-                    b.Property<int>("UserId")
-                        .HasColumnType("int");
-
-                    b.HasKey("Id");
-
-                    b.ToTable("PenaltyLogs");
                 });
 
             modelBuilder.Entity("DergiOtomasyon.Models.Rating", b =>
@@ -455,8 +404,7 @@ namespace DergiOtomasyon.Migrations
 
                     b.HasIndex("SubscriptionPlanId");
 
-                    b.HasIndex("UserId")
-                        .IsUnique();
+                    b.HasIndex("UserId");
 
                     b.ToTable("UserSubscriptions");
                 });
@@ -481,25 +429,6 @@ namespace DergiOtomasyon.Migrations
                 });
 
             modelBuilder.Entity("DergiOtomasyon.Models.Favorite", b =>
-                {
-                    b.HasOne("DergiOtomasyon.Models.MagazineInfo", "MagazineInfo")
-                        .WithMany()
-                        .HasForeignKey("MagazineInfoId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.HasOne("DergiOtomasyon.Models.User", "User")
-                        .WithMany()
-                        .HasForeignKey("UserId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.Navigation("MagazineInfo");
-
-                    b.Navigation("User");
-                });
-
-            modelBuilder.Entity("DergiOtomasyon.Models.Like", b =>
                 {
                     b.HasOne("DergiOtomasyon.Models.MagazineInfo", "MagazineInfo")
                         .WithMany()

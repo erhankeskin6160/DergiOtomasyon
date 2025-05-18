@@ -10,13 +10,13 @@
        
         public DateTime BorrowingDate { get; set; } = DateTime.Now;//ödünç aldığı tarih
 
-        public DateTime DeliveryDate => BorrowingDate.AddDays(15);//iade edilmesi gereken Tarih
+        public DateTime DeliveryDate { get { return BorrowingDate.AddDays(15);  }set { } }
 
         public DateTime? ReturnDate { get; set; }  //iade edilen Tarih
 
         public bool? ısReturned{ get; set; }//iade edildimi
 
-        public bool? IsOverdue { get; set; }
+        public bool? IsOverdue { get; set; }//iade geçiktimi
          
 
         public double PenaltyAmount

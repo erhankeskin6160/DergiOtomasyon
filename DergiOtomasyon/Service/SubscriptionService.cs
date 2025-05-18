@@ -24,6 +24,6 @@ namespace DergiOtomasyon.Service
             }
 
             await _context.SaveChangesAsync();
-        }
+            }
     }
 }

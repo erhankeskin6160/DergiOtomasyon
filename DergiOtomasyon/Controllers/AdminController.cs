@@ -1,9 +1,15 @@
 ﻿using DergiOtomasyon.Models;
+using Microsoft.AspNetCore.Authentication;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore;
 using NuGet.Packaging.Signing;
+using System.Security.Claims;
 
 namespace DergiOtomasyon.Controllers
 {
+
+    [Authorize(AuthenticationSchemes = "Admin")]
     public class AdminController : Controller
     {
         MagazineDbContext context;
@@ -12,6 +18,44 @@ namespace DergiOtomasyon.Controllers
         {
             this.context = context;
         }
+
+        [AllowAnonymous]
+        public IActionResult Login(string Email, string Password) 
+        {
+            var admin = context.Admins.FirstOrDefault(x => x.Email == Email && x.Password == Password);
+
+            if (admin != null)
+            {
+                HttpContext.Session.SetInt32("UserId", admin.Id);
+                HttpContext.Session.SetString("Password", admin.Password);
+                HttpContext.Session.SetString("Email", admin.Email);
+
+                var claims = new List<Claim>
+                {
+            new Claim(ClaimTypes.Email, admin.Email),
+            
+
+                };
+                var identity = new ClaimsIdentity(claims, "Admin");
+                var principal = new ClaimsPrincipal(identity);
+
+                HttpContext.SignInAsync("Admin", principal);
+                TempData["AdminSuccesLogin"] = "Giriş Başarılı";
+                return RedirectToAction("Index", "Admin");
+            }
+            else
+            {
+                ViewBag.Error = "Kullanıcı adı veya şifre hatalı";
+            }
+            return View();
+        }
+
+        public IActionResult Logout() 
+        {
+            HttpContext.SignOutAsync();
+            return RedirectToAction("Admin", "Login");
+        }
+
         public IActionResult Index() {
             return View();
         }
@@ -124,6 +168,7 @@ namespace DergiOtomasyon.Controllers
 
         }
 
+        [HttpPost]
         public IActionResult KullanıcıSil(int id)
         {
 

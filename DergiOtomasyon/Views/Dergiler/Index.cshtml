@@ -6,6 +6,7 @@
     var magazineInfoCounts = (List<dynamic>)ViewData["MagazineInfoCounts"];
     var aktifKategori = Context.Request.Query["kategori"];
     var populerlikaktifmi = Context.Request.Query["populersıralamaaktifmi"];
+  
 }
 
 
@@ -78,7 +79,7 @@
 <body>
 
     <div class="container-fluid">
-       
+
         <div class="container my-5">
             <div class="row">
                 <!-- Sidebar Kategoriler -->
@@ -98,7 +99,7 @@
                                     @category.CategoryName
 
                                     @{
-                                        
+
                                         var countInfo = ((IEnumerable<dynamic>)ViewBag.InfoCount)
                                         .FirstOrDefault(x => x.CategoryName == category.CategoryName);
                                     }
@@ -109,7 +110,7 @@
                                             @countInfo.MagazineInfoCount
                                         </span>
                                     }
-                                   
+
                                 </a>
                             }
 
@@ -129,7 +130,7 @@
                             <!-- Dropdown Menüsü -->
                             <div class="dropdown mb-3">
                                 <button class="rounded-1 btn btn-outline-primary dropdown-toggle w-100" type="button"
-                                        id="dateFilter" data-bs-toggle="dropdown" aria-expanded="false">
+                                id="dateFilter" data-bs-toggle="dropdown" aria-expanded="false">
                                     Yayın Tarihine Göre
                                 </button>
                                 <ul class="dropdown-menu" aria-labelledby="dateFilter">
@@ -138,54 +139,43 @@
                                     <li><a class="dropdown-item" href="?kategori=@aktifKategori&tarih=1yil&@populerlikaktifmi">Son 1 Yıl</a></li>
                                 </ul>
                             </div>
-
-                            <!-- İkinci Filtre Seçeneği (Örnek: Popülerliğe Göre) -->
+ 
                             <div class="dropdown mb-3">
                                 <button class="rounded-1 btn btn-outline-primary dropdown-toggle w-100" type="button"
-                                        id="popularityFilter" data-bs-toggle="dropdown" aria-expanded="false">
+                                id="popularityFilter" data-bs-toggle="dropdown" aria-expanded="false">
                                     Popülerliğe Göre
                                 </button>
                                 <ul class="dropdown-menu" aria-labelledby="popularityFilter">
                                     <li class="dropdown-item">
                                         <div class="form-check">
-                                            <input class="form-check-input" type="checkbox" id="populerlikCheck" onchange="togglePopulerlik()" @(ViewBag.PopulerlikAktifMi=="True"? "checked":"")>
-
+                                            <input class="form-check-input" type="checkbox" id="populerlikCheck" onchange="togglePopulerlik()" @(ViewBag.PopulerlikAktifMi == true ? "checked" : " ")>
+                                                                                                                                                 
                                             <label class="form-check-label" for="populerlikCheck">
                                                 En Çok Okunanlar
                                             </label>
                                         </div>
                                     </li>
-                                    <li><a class="dropdown-item" href="#">En Yüksek Puanlar</a></li>
-                                    <li><a class="dropdown-item" href="#">En Beğenilenler</a></li>
+                                  
+
+
+                                     <li class="dropdown-item">
+                                        <div class="form-check">
+                                            <input class="form-check-input" type="checkbox" id="encokbegenilencheck" onchange="toggleEnCokBegenilen()" @(ViewBag.EnCokBegilenAktifmi == true ? "checked" : " ")>
+
+                                            <label class="form-check-label" for="encokbegenilencheck">
+                                                En Çok Beğenilen Kitaplar
+                                            </label>
+                                        </div>
+                                    </li>
                                 </ul>
                             </div>
                         </div>
 
-                        <!-- /* Dergi Türü Değişebilir checked olabilir -->
-                        <div class="dropdown mb-3">
-                            <button class="rounded-1 btn btn-outline-primary dropdown-toggle w-100" type="button"
-                                    id="TürFilter" data-bs-toggle="dropdown" aria-expanded="false">
-                                Dergi Türü
-                            </button>
-
-                            <ul class="dropdown-menu" aria-labelledby="popularityFilter">
-                                <li>
-                                    <a href="#" class="dropdown-item" onclick="changeTür('Dijital')">
-                                        <input type="checkbox" class="form-check-input fw-bold me-1" id="checkTür"><label for="checkTür" class="form-check-label">Dijital</label>
-                                    </a>
-                                </li>
-                                <li>
-                                    <a href=" #" class="dropdown-item" onclick="changeTür('Basılı')">
-                                        <input type="checkbox" class="form-check-input fw-bold me-1" id="checkTür"><label for="checkTür" class="form-check-label">Basılı</label>
-                                    </a>
-                                </li>
-
-                            </ul>
-                        </div>
+                       
 
                         <div class="dropdown mb-3">
                             <button class="rounded-1 btn btn-outline-primary dropdown-toggle w-100" type="button"
-                                    id="YayınYılı" data-bs-toggle="dropdown" aria-expanded="false">
+                            id="YayınYılı" data-bs-toggle="dropdown" aria-expanded="false">
                                 Yayın Yılı
                             </button>
 
@@ -212,7 +202,7 @@
                                 </li>
                                 <li>
                                     <a href="?yayınyılı=2024" class="dropdown-item"></a>
-                                    
+
                                 </li>
                                 <li>
                                     <a href="?yayınyılı=2025" class="dropdown-item"></a>
@@ -223,100 +213,51 @@
                             </ul>
                         </div>
 
+
                         <div class="dropdown mb-3">
                             <button class="rounded-1 btn btn-outline-primary dropdown-toggle w-100" type="button"
-                                    id="DilFilter" data-bs-toggle="dropdown" aria-expanded="false">
-                                Dil Seç
-                            </button>
-
-                            <ul class="dropdown-menu" aria-labelledby="YayınYılı">
-                                <li><a href="#" class="dropdown-item" onclick="dilFilter('Türkçe')">Türkçe</a></li>
-                                <li><a href="#" class="dropdown-item" onclick="dilFilter('Almanca')">Almanca</a></li>
-                                <li>
-                                    <a href="#" class="dropdown-item" onclick="dilFilter('İngilizce')">İngilizce</a>
-                                </li>
-                                <li>
-                                    <a href="#" class="dropdown-item" onclick="dilFilter('Fransızca')">Fransızca</a>
-                                </li>
-                                <li><a href="#" class="dropdown-item" onclick="dilFilter('Arapça')">Arapça</a></li>
-                                <li>
-                                    <a href="#" class="dropdown-item" onclick="dilFilter('İspanyolca')">İspanyolca</a>
-                                </li>
-                                <li>
-                                    <a href="#" class="dropdown-item" onclick="dilFilter('İtalyanca')">İtalyanca</a>
-                                </li>
-
-
-
-
-                            </ul>
-                        </div>
-                        <div class="dropdown mb-3">
-                            <button class="rounded-1 btn btn-outline-primary dropdown-toggle w-100" type="button"
-                                    id="YayınEvi" data-bs-toggle="dropdown" aria-expanded="false">
+                                name="yayınevi" data-bs-toggle="dropdown" aria-expanded="false">
                                 Yayınevi Seç
                             </button>
 
                             <ul class="dropdown-menu" aria-labelledby="Yayınevi">
-                                <li>
-                                    <a href="#" class="dropdown-item"
-                                       onclick="yayıneviFilter('Bilim ve Teknik Dergi')">Bilim ve Teknik Dergi</a>
-                                </li>
-                                <li>
-                                    <a href="#" class="dropdown-item" onclick="yayıneviFilter('Kafa')">Kafa</a>
-                                </li>
-                                <li>
-                                    <a href="#" class="dropdown-item" onclick="yayıneviFilter('Hamle')">Hamle</a>
-                                </li>
-                                <li>
-                                    <a href="#" class="dropdown-item" onclick="yayıneviFilter('Aktüel Tarih')">
-                                        Aktüel
-                                        Tarih
-                                    </a>
-                                </li>
-                                <li>
-                                    <a href="#" class="dropdown-item" onclick="yayıneviFilter('Derin Tarih')">
-                                        Derin
-                                        Tarih
-                                    </a>
-                                </li>
+                                @foreach (var yayınevi in ViewBag.Publisher as  List<string>)
+                                {
+                                    <li>
+                                        <a href="@Url.Action("Index", new { yayınevi = yayınevi })" class="dropdown-item">
+                                            @yayınevi
+                                        </a>
+
+                                    </li>
+                                }
+                               
 
                             </ul>
                         </div>
 
                         <div class="dropdown mb-3">
                             <button class="rounded-1 btn btn-outline-primary dropdown-toggle w-100" type="button"
-                                    id="YazarFilter" data-bs-toggle="dropdown" aria-expanded="false">
+                                    name="yazarfiltreleme" data-bs-toggle="dropdown" aria-expanded="false">
                                 Yazar Seç
                             </button>
 
                             <ul class="dropdown-menu" aria-labelledby="Yayınevi">
-                                <li>
-                                    <a href="#" class="dropdown-item" onclick="yazarFilter('Nuri Pakdil')">
-                                        Bilim ve
-                                        Teknik Dergi
-                                    </a>
-                                </li>
-                                <li>
-                                    <a href="#" class="dropdown-item" onclick="yazarFilter('Ali Ural')">Ali Ural</a>
-                                </li>
-                                <li>
-                                    <a href="#" class="dropdown-item"
-                                       onclick="yazarFilter('Abdurrahman Arslan')">Abdurrahman Arslan</a>
-                                </li>
-                                <li>
-                                    <a href="#" class="dropdown-item" onclick="yazarFilter('Erdem Bayazıt')">
-                                        Erdem
-                                        Beyazıt
-                                    </a>
-                                </li>
-                                <li>
-                                    <a href="#" class="dropdown-item" onclick="yazarFilter('Mehmet Akif İnan')">
-                                        Mehmet
-                                        Akif İnan
-                                    </a>
-                                </li>
+                                
+                                
+                                @foreach (var yazar in (List<string>) ViewBag.authorlist)
+                                {
+                                   
+                                  
+                                    <li>
+                                        <a href="@Url.Action("Index", new { yazarfiltreleme = yazar })" class="dropdown-item">
+                                            @yazar
+                                        </a>
+                                    </li>
+                                }
 
+                               
+                               
+                               
                             </ul>
                         </div>
 
@@ -375,51 +316,7 @@
                             </ul>
                         </div>
 
-                        <div class="dropdown mb-3">
-                            <button class="rounded-1 btn btn-outline-primary dropdown-toggle w-100" type="button"
-                                    id="sayfaAraligiDropdown" data-bs-toggle="dropdown" aria-expanded="false">
-                                Sayfa Aralığı Seç
-                            </button>
-
-                            <ul class="dropdown-menu p-3" aria-labelledby="sayfaAraligiDropdown">
-                                <li class="mb-2 text-center fw-bold">Sayfa Aralığı</li>
-
-                                <li class="d-flex gap-3 align-items-center justify-content-center">
-                                    <!-- Min Sayfa Sayısı -->
-                                    <div class="input-group-sm d-flex">
-                                        <button class="btn btn-outline-primary" type="button"
-                                                onclick="decreaseValue('minSayfa')">
-                                            -
-                                        </button>
-                                        <input type="number" id="minSayfa" class="form-control text-center" value="1"
-                                               min="1">
-                                        <button class="btn btn-outline-primary" type="button"
-                                                onclick="increaseValue('minSayfa')">
-                                            +
-                                        </button>
-                                    </div>
-                                    <span>-</span>
-                                    <!-- Maks Sayfa Sayısı -->
-                                    <div class="input-group-sm d-flex">
-                                        <button class="btn btn-outline-primary" type="button"
-                                                onclick="decreaseValue('maxSayfa')">
-                                            -
-                                        </button>
-                                        <input type="number" id="maxSayfa" class="form-control text-center" value="100"
-                                               min="1">
-                                        <button class="btn btn-outline-primary" type="button"
-                                                onclick="increaseValue('maxSayfa')">
-                                            +
-                                        </button>
-                                    </div>
-                                </li>
-
-                                <li class="mt-3 text-center">
-                                    <button class="btn btn-primary w-100" onclick="applyPageRange()">Uygula</button>
-                                </li>
-                            </ul>
-                        </div>
-
+                        
 
 
 
@@ -452,14 +349,18 @@
                             </ul>
                         </div>
                         <span class="ms-4">
+                            <form  action="Index" method="get">
+
+                           
                             <label class="lead text-primary fw-bolder p-1 me-1" for="anahtar">Anahtar Kelime</label>
-                            <input id="anahtar" type="text" class="input-group-sm "><br>
+                            <input name="keyword" type="text" class="input-group-sm " onchange="this.form.submit()"><br>
                             <i class="d-grid justify-content-end me-4 pe-2" style="font-size: 0.575em;">
                                 Toplu keyword
                                 için
                                 virgül
                                 koyun.
                             </i>
+                            </form>
                         </span>
 
                         <div class=" dropdown ms-5">
@@ -531,8 +432,11 @@
                                                             <a class="text-white" href=" @Url.Action("MagazineDetail","Dergiler")/@item.Id">
                                                             Detayları
                                                             Gör
+                                                             
                                                         </a>
                                                     </div>
+
+                                                         
                                                 </div>
                                                 <div class="col-6 d-flex justify-content-end gap-2">
 
@@ -583,10 +487,10 @@
                     const btn = document.getElementById("DilFilter")
                     btn.textContent = value;
                 }
-                function yayıneviFilter(value) {
-                    const btn = document.getElementById("YayınEvi")
-                    btn.textContent = value;
-                }
+                // function yayıneviFilter(value) {
+                //     const btn = document.getElementById("YayınEvi")
+                //     btn.textContent = value;
+                // }
 
                 function yazarFilter(value) {
                     const btn = document.getElementById("YazarFilter")
@@ -626,6 +530,14 @@
                     let max = document.getElementById("maxSayfa").value;
                     document.getElementById("sayfaAraligiDropdown").innerHTML = `Sayfa: ${min} - ${max}`;
                 }
+
+             
+        function dergiPuanlama(puan) {
+            const url = new URL(window.location.href);
+            url.searchParams.set("yıldızsıralama", puan);
+            window.location.href = url.toString();
+        }
+    
     </script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/lottie-web/5.9.6/lottie.min.js"></script>
 
@@ -642,8 +554,26 @@
 
                 if (check.checked) {
             params.set('populersıralamaaktifmi', 'true');
+            params.set('encokbegenilen', 'false');
         } else {
             params.set('populersıralamaaktifmi', 'false');
+        }
+
+            window.location.search = params.toString();
+        }
+
+
+
+        function toggleEnCokBegenilen() {
+            const check = document.getElementById('encokbegenilencheck');
+            const params = new URLSearchParams(window.location.search);
+
+                if (check.checked) {
+            params.set('encokbegenilen', 'true');
+                        params.set('populersıralamaaktifmi', 'else');
+
+        } else {
+            params.set('encokbegenilen', 'false');
         }
 
             window.location.search = params.toString();

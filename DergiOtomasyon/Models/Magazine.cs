@@ -17,6 +17,7 @@ namespace DergiOtomasyon.Models
 
         public DateTime PublisDate { get; set; }
 
+        public string? Publisher { get; set; }//Yayınevi
         public bool ısPuslihed { get; set; } //aktiflik durumu
 
         public string Img { get; set; }//dergi kapak

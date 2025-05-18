@@ -1,8 +1,10 @@
 ﻿using DergiOtomasyon.Models;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
 namespace DergiOtomasyon.Controllers
 {
+    [Authorize]
     public class ProfileController : Controller
     {
         MagazineDbContext dbContext = new MagazineDbContext();
@@ -17,6 +19,11 @@ namespace DergiOtomasyon.Controllers
             {
                 return RedirectToAction("Index", "Login");
             }
+
+            var issubscription = dbContext.UserSubscriptions.FirstOrDefault(x => x.UserId == UserId && x.IsActive == true);
+            ViewBag.issubscription = issubscription;
+
+           
             return View();
         }
 
@@ -58,6 +65,21 @@ namespace DergiOtomasyon.Controllers
             var subscription = dbContext.UserSubscriptions.FirstOrDefault(x => x.UserId == UserId && x.IsActive == true);
 
             return PartialView(subscription);
+        }
+
+        public IActionResult MagazineReturn(int MagazineInfoId) 
+        {
+            var UserId = HttpContext.Session.GetInt32("UserId");
+            var borrow = dbContext.Borrowings.FirstOrDefault(x => x.UserId == UserId && x.MagazineInfoId == MagazineInfoId);
+            if (borrow!=null)
+            {
+                borrow.ReturnDate = DateTime.Now;
+                borrow.ısReturned = true;
+
+                dbContext.SaveChanges();
+            }
+           
+            return RedirectToAction("Index", "Profile");
         }
     }
 }

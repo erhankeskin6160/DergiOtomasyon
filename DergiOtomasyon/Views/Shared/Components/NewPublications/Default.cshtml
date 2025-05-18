@@ -1,0 +1,94 @@
+﻿@using System.Globalization
+
+@model List<MagazineInfo>
+
+@{
+    int sayfa = ViewBag.Sayfa;
+    int totalpages = ViewBag.TotalSayfa;
+}
+<section>
+    <!-- Kitap Kartları -->
+    <div class="container">
+        <div class="mt-5">
+            <h3 class="mb-3">Yeni Yayınlar</h3>
+            <div class="row">
+                @foreach (var item in Model)
+                {
+                    <div class="me-4 mb-2 col-xl-2 col-lg-4 col-md-6 col-sm-6" id="books-card">
+
+                        <div class="book-card">
+                            <img class="book-img" src="img/yansımadergisi.jpg" alt="Kitap Kapağı">
+                            <div class="book-card-body">
+                                <h5 class="book-title text-center mt-2">@item.Magazine.MagazineName @item.TopicName</h5>
+                                <p class="text-muted fs-6 text-center">@item.Magazine.PublisDate.ToString("MMMM yyy", new CultureInfo("tr_TR"))</p>
+                                <p class="text-break fw-medium ps-1 mt-2">
+                                    @item.MagazineDescrition?
+                                </p>
+                                <a href="@Url.Action("MagazineDetail","Dergiler")/@item.Id" class="btn btn-primary btn-sm index-detay-btn ms-3 mt-2 me-5">
+                                    Detayları
+                                    Gör
+                                </a>
+                                <a href="@Url.Action("Borrow", "Dergiler", new { MagazineInfoId = item.Id })" class="btn btn-primary btn-sm index-detay-btn ms-3 mt-2 me-5">
+                                    Ödünç Al
+                                </a>
+
+                                <!-- <a href="#" class="btn btn-primary btn-sm ms-2 me-5">Detayları Gör</a> -->
+
+
+                                <div class=" d-inline justify-content-end gap-2">
+                                    <a href="" style="color: #333;">
+                                        <svg xmlns="http://www.w3.org/2000/svg"
+                                             viewBox="-2 -2 24 24" width="20" fill="currentColor">
+                                            <path d="M1 0h6a1 1 0 1 1 0 2H3.414L18 16.586V13a1 1 0 0 1 2 0v6a1 1 0 0 1-1 1h-6a1 1 0 0 1 0-2h3.586L2 3.414V7a1 1 0 1 1-2 0V1a1 1 0 0 1 1-1z">
+                                            </path>
+                                        </svg>
+                                    </a>
+                                    <a href="" style="color: #333;">
+                                        <svg xmlns="http://www.w3.org/2000/svg"
+                                             viewBox="-2 -2.5 24 24" width="28" fill="currentColor">
+                                            <path class=""
+                                                  d="M10 13.554l3.517 1.85-.672-3.917 2.846-2.774-3.932-.571L10 4.579 8.241 8.142l-3.932.571 2.846 2.774-.672 3.916L10 13.554zm0 2.26L3.827 19.06l1.179-6.875L.01 7.317l6.902-1.003L10 .06l3.087 6.254 6.902 1.003-4.995 4.868 1.18 6.875L10 15.814z">
+                                            </path>
+                                        </svg>
+                                    </a>
+
+                                </div>
+                            </div>
+
+                        </div>
+
+                    </div>
+                }
+
+
+                
+
+                <div class="mt-1 p-3">
+                    <nav aria-label="Sayfa Gezinme">
+                        <ul class="pagination">
+
+                          
+                            <li class="page-item @(sayfa == 1 ? "disabled" : "")">
+                                <a class="page-link" asp-route-page="@(sayfa - 1)">Geri</a>
+                            </li>
+
+                             
+                            @for (int i = 1; i <= totalpages; i++)
+                            {
+                                <li class="page-item @(i == sayfa ? "active" : "")">
+                                    <a class="page-link" asp-route-page="@i">@i</a>
+                                </li>
+                            }
+
+                            
+                            <li class="page-item @(sayfa == totalpages ? "disabled" : "")">
+                                <a class="page-link" asp-route-page="@(sayfa + 1)">İleri</a>
+                            </li>
+
+                        </ul>
+                    </nav>
+                </div>
+
+            </div>
+        </div>
+</section>

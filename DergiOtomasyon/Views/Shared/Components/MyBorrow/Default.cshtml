@@ -1,7 +1,7 @@
 ﻿@model List<Borrowing>
 
 <section id="gecmis" class="mb-5">
-    <h3>💾 Yer İşaretleri</h3>
+    <h3>📚 Okuma Geçmişi</h3>
     <table class="table table-bordered">
         <thead class="table-light">
             <tr>
@@ -11,15 +11,28 @@
             </tr>
         </thead>
         <tbody>
-            @foreach (var borrow in Model)
+            @foreach (var item in Model)
             {
                 <tr>
-                    <td>@borrow.MagazineInfo.TopicName</td>
-                    <td>@borrow.BorrowingDate</td>
-                    <td><a href="#" class="btn btn-sm btn-primary"> Dergi Detay</a></td>
-                </tr>
-            }
+                    <td>Psikoloji Dergisi - Ocak 2025</td>
+                    <td>12.01.2025</td>
+                    @if(@item.ısReturned==true)
+                    {
+                        <td><a asp-controller="Dergiler" asp-action="Borrow" asp-route-MagazineInfoId="@item.MagazineInfoId" class="btn btn-sm btn-primary">Tekrar Oku</a></td>
+                    }
+                    else
+                    {
+                        <td>
+                            <a asp-controller="Profile" asp-action="MagazineReturn" asp-route-MagazineInfoId="@item.MagazineInfoId" class="btn btn-sm btn-primary">
+                                Kitabı İade Et
+                            </a>
+                        </td>
 
-        </tbody>
-    </table>
-</section>
+                    }
+                    
+        </tr>
+        }
+         
+    </tbody>
+</table>
+ </section>

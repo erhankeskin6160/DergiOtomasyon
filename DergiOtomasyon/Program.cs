@@ -23,12 +23,30 @@ builder.Services.AddSession(options =>
 //builder.Services.AddAutoMapper(typeof(MappingProfile));
 builder.Services.AddDistributedMemoryCache();
 builder.Services.AddAutoMapper(typeof(AutoMapperConfig));
+builder.Services.AddScoped<AutoPenaltyService>();
+builder.Services.AddHostedService<AutoPenaltyBackgroundService>();
 builder.Services.AddScoped<SubscriptionReminder>();
 builder.Services.AddHostedService<SubscriptionReminderHostedService>();
 builder.Services.AddScoped<IEmailService, DergiOtomasyon.Service.EmailService>();
 builder.Services.AddScoped<SubscriptionService>();
 builder.Services.AddHostedService<SubscriptionBackground>();
+builder.Services.AddScoped<SubscriptionRenew>();
+builder.Services.AddHostedService<SubscriptionRenewBackground>();
+builder.Services.AddAuthentication(options => 
+{
+    options.DefaultScheme = "User";
+}).AddCookie("User", options =>
+{
+    options.LoginPath = "/Login/Index";
+    options.AccessDeniedPath = "/AccessDenied";
+}).AddCookie("Admin", optins =>
+{
+    optins.LoginPath = "/Admin/Login/";
+    optins.AccessDeniedPath = "/AccesDenied";
 
+}
+);
+     
 
 var app = builder.Build();
 

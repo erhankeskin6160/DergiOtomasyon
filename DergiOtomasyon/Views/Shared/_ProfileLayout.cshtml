@@ -1,4 +1,8 @@
-﻿<html>
+﻿@{
+    var subscription = ViewBag.issubscription;
+    bool automaticRenewal = subscription?.AutomaticRenewal ?? false;
+}
+<html>
     <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -54,10 +58,75 @@
             <li class="nav-item"><a class="nav-link text-white" href="#gecmis">📚 Okuma Geçmişi</a></li>
             <li class="nav-item"><a class="nav-link text-white" href="#bildirimler">🔔 Bildirimler</a></li>
         </ul>
+        @if (ViewBag.issubscription!=null)
+        {
+            <form asp-controller="UserSubscription" asp-action="UpdateAutoRenew" method="post" id="autoRenewForm">
+                <input type="hidden" name="UserSubscriptionsId" value="@subscription.Id" />
+                <input type="hidden" id="hiddenAutoRenew" name="autoRenew" value="@automaticRenewal.ToString().ToLower()" />
 
-        <button class="btn btn-primary btn-lg text-center justify-content-center mt-2 ms-5 fw-bolder">
-            Çıkış
-        </button>
+
+                <label for="autoRenewToggle">Otomatik Yenileme</label>
+                <label class="switch">
+                    <input type="checkbox" id="autoRenewToggle"
+                    @(automaticRenewal ? "checked" : "")
+                           onchange="toggleAutoRenew(this)" />
+                    <span class="slider round"></span>
+                </label>
+            </form>
+
+        }
+
+        <style>
+            .switch {
+                position: relative;
+                display: inline-block;
+                width: 50px;
+                height: 25px;
+                margin-left: 10px;
+            }
+
+                .switch input {
+                    opacity: 0;
+                    width: 0;
+                    height: 0;
+                }
+
+            .slider {
+                position: absolute;
+                cursor: pointer;
+                top: 0;
+                left: 0;
+                right: 0;
+                bottom: 0;
+                background-color: #ccc;
+                transition: 0.4s;
+                border-radius: 25px;
+            }
+
+                .slider:before {
+                    position: absolute;
+                    content: "";
+                    height: 18px;
+                    width: 18px;
+                    left: 4px;
+                    bottom: 3.5px;
+                    background-color: white;
+                    transition: 0.4s;
+                    border-radius: 50%;
+                }
+
+            input:checked + .slider {
+                background-color: #4CAF50;
+            }
+
+                input:checked + .slider:before {
+                    transform: translateX(24px);
+                }
+        </style>
+
+         
+
+        <a class="btn btn-primary btn-lg text-center justify-content-center mt-2 ms-5 fw-bolder" href="/Login/Logout">Çıkış</a>
     </nav>
 
     <!-- Main Content -->
@@ -65,5 +134,13 @@
         @RenderBody()
     </div>
 </body>
+<script>
+    function toggleAutoRenew(checkbox) {
+        // Eğer tikliyse true, değilse false olarak gizli inputa yaz
+        document.getElementById("hiddenAutoRenew").value = checkbox.checked;
+        document.getElementById("autoRenewForm").submit();
+    }
+</script>
+
 </html>
 
